@@ -84,6 +84,7 @@ namespace Zuse.Forms
                     lvi.Text = DateTime.Parse(el.Attributes["timestamp"].Value).ToLongTimeString();
                     lvi.SubItems.Add(el.Attributes["level"].Value);
                     lvi.SubItems.Add(el["message"].InnerText);
+                    lvi.Tag = el;
 
                     this.lstMessages.Items.Add(lvi);
                 }
@@ -99,6 +100,15 @@ namespace Zuse.Forms
         {
             ILog log = LogManager.GetLogger("Zuse", typeof(Zuse.Forms.FrmDebug));
             log.Info("Testing FrmDebug automatic refreshing");
+        }
+
+        private void lstMessages_ItemActivate(object sender, EventArgs e)
+        {
+            FrmDetails frmDetails = new FrmDetails();
+
+            frmDetails.ShowDialog();
+
+            frmDetails.Dispose();
         }
     }
 }

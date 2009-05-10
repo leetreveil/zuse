@@ -68,6 +68,7 @@
             this.lstMessages.TabIndex = 3;
             this.lstMessages.UseCompatibleStateImageBehavior = false;
             this.lstMessages.View = System.Windows.Forms.View.Details;
+            this.lstMessages.ItemActivate += new System.EventHandler(this.lstMessages_ItemActivate);
             this.lstMessages.DoubleClick += new System.EventHandler(this.lstMessages_DoubleClick);
             // 
             // columnTime
@@ -111,8 +112,9 @@
             this.Controls.Add(this.lstMessages);
             this.Controls.Add(this.cmbLogFile);
             this.Name = "FrmDebug";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Debug Log";
+            this.Text = "Zuse: Debug Log";
             this.Load += new System.EventHandler(this.FrmDebug_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher)).EndInit();
             this.ResumeLayout(false);

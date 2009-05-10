@@ -54,7 +54,8 @@ namespace Zuse
 
             if (!CheckHelperExists())
             {
-                throw new Exception("Cannot load without ZuseHelper.");
+                log.Fatal("Cannot start without ZuseHelper");
+                Application.Exit();
             }
 
             // Build the context menu for the system tray icon
@@ -116,14 +117,16 @@ namespace Zuse
 
         protected void Exit_Click(object sender, EventArgs e)
         {
-            this.manager.StopHelper();
-
             Application.Exit();
         }
 
         protected void Application_ApplicationExit(object sender, EventArgs e)
         {
-            this.manager.StopHelper();
+            try
+            {
+                this.manager.StopHelper();
+            }
+            catch { }
         }
 
         /// <summary>

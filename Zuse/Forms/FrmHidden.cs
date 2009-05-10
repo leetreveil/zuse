@@ -24,8 +24,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+using log4net;
+
 namespace Zuse.Forms
 {
+    using Zuse.Core;
     using Zuse.Scrobbler;
     using Zuse.Utilities;
 
@@ -34,10 +37,10 @@ namespace Zuse.Forms
 
     public partial class FrmHidden : Form
     {
+        private ILog log;
+
         public event PlayingNewTrack PlayingNewTrack;
         public event PlayingStopped PlayingStopped;
-
-        public static int WM_COPYDATA = 74;
 
         public FrmHidden()
         {
@@ -46,28 +49,37 @@ namespace Zuse.Forms
 
         private void FrmHidden_Load(object sender, EventArgs e)
         {
+            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Forms.FrmHidden));
         }
 
-        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WM_COPYDATA)
+            try
             {
-                COPYDATASTRUCT cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
-                string msg = MessageUtils.GetMessageString(cds);
-
-                if (msg.StartsWith("ZUNE"))
+                if (m.Msg == Win32.WM_COPYDATA)
                 {
-                    // @"ZUNE\0Music\00\0{0}\0"
-                    if (msg.Split('\\').Length == 5) { this.PlayingStopped(this); return; }
+                    COPYDATASTRUCT cds = (COPYDATASTRUCT)m.GetLParam(typeof(COPYDATASTRUCT));
+                    string msg = MessageUtils.GetMessageString(cds);
 
-                    Song song = MessageUtils.ParseMessageString(msg);
+                    if (msg.StartsWith("ZUNE"))
+                    {
+                        // @"ZUNE\0Music\00\0{0}\0" is sent when starting a new song.
+                        if (msg.Split('\\').Length == 5) { this.PlayingStopped(this); return; }
 
-                    if (this.PlayingNewTrack != null) this.PlayingNewTrack(this, song);
+                        // Otherwise we have the song info, and we should parse the string.
+                        Song song = MessageUtils.ParseMessageString(msg);
+
+                        // Trigger the event to the Manager class
+                        if (this.PlayingNewTrack != null) this.PlayingNewTrack(this, song);
+                    }
                 }
-            }
 
-            base.WndProc(ref m);
+                base.WndProc(ref m);
+            }
+            catch (Exception e)
+            {
+                log.Error("An unknown critical error occured", e); 
+            }
         }
 
         private void FrmHidden_FormClosing(object sender, FormClosingEventArgs e)

@@ -1,24 +1,6 @@
-﻿/*
- * Zuse - A Zune Last.fm plugin
- * Copyright (C) 2007-2009 Zachary Howe
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-namespace Zuse.Forms
+﻿namespace Zuse.Forms
 {
-    partial class FrmHidden
+    partial class FrmDetails
     {
         /// <summary>
         /// Required designer variable.
@@ -48,21 +30,17 @@ namespace Zuse.Forms
         {
             this.SuspendLayout();
             // 
-            // FrmHidden
+            // FrmDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 264);
+            this.ClientSize = new System.Drawing.Size(504, 196);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximizeBox = false;
-            this.Name = "FrmHidden";
+            this.Name = "FrmDetails";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmHidden";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.Load += new System.EventHandler(this.FrmHidden_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmHidden_FormClosing);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Event Details";
             this.ResumeLayout(false);
 
         }

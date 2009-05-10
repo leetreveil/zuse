@@ -20,31 +20,41 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
+
+using log4net;
 
 namespace Zuse.Utilities
 {
+    using Zuse.Core;
     using Zuse.Scrobbler;
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct COPYDATASTRUCT
-    {
-        public UIntPtr dwData;
-        public int cbData;
-        public IntPtr data;
-    }
 
     class MessageUtils
     {
+        private static ILog log;
+
+        static MessageUtils()
+        {
+            log = LogManager.GetLogger("Zuse", typeof(Zuse.Utilities.MessageUtils));
+        }
+
         public static Song ParseMessageString(string ex)
         {
-            string[] ps = ex.Split('\\');
+            try
+            {
+                string[] ps = ex.Split('\\');
 
-            string song = ps[4].Substring(1);
-            string artist = ps[5].Substring(1);
-            string album = ps[6].Substring(1);
-            
-            return new Song(song, artist, album, false);
+                string song = ps[4].Substring(1);
+                string artist = ps[5].Substring(1);
+                string album = ps[6].Substring(1);
+
+                return new Song(song, artist, album, false);
+            }
+            catch (Exception e)
+            {
+                log.Error(ex, e);
+
+                return null;
+            }
         }
 
         public static unsafe string GetMessageString(COPYDATASTRUCT cds)

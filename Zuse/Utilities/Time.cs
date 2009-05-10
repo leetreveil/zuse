@@ -24,16 +24,6 @@ namespace Zuse.Utilities
 {
     public class Time
     {
-        public static long GetUnixTimestamp()
-        {
-            return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
-        }
-
-        public static long GetUnixTimestamp(DateTime time)
-        {
-            return (long)(time - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds;
-        }
-
         public static string GetMinutesFromSeconds(int seconds)
         {
             int secs = seconds % 60;
