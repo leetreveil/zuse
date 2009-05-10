@@ -70,6 +70,7 @@ namespace Zuse.Core
 
         public void ShowDebugWindow()
         {
+            this.frmDebug = new FrmDebug();
             this.frmDebug.Show();
         }
 
@@ -106,7 +107,10 @@ namespace Zuse.Core
             {
                 this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 500, "");
             }
-            else this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, song.Length, "");
+            else
+            {
+                this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, song.Length, "");
+            }
 
             log.Info(string.Format("Starting song '{0:s}'", song.ToString())); 
         }

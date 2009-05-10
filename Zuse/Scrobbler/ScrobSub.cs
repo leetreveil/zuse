@@ -45,7 +45,7 @@ namespace Zuse.Scrobbler
         {
             try
             {
-                this.log = LogManager.GetLogger(typeof(Zuse.Scrobbler.ScrobSub));
+                this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Scrobbler.ScrobSub));
 
                 fd = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 fd.Connect(new IPEndPoint(IPAddress.Loopback, kDefaultPort));
@@ -53,9 +53,9 @@ namespace Zuse.Scrobbler
                 sw = new StreamWriter(ns);
                 sr = new StreamReader(ns);
             }
-            catch
+            catch (Exception e)
             {
-                throw new Exception("Couldn't communicate with Last.fm software.");
+                this.log.Error("Could not connect to Last.fm software", e);
             }
         }
 
@@ -100,7 +100,10 @@ namespace Zuse.Scrobbler
                 sw.WriteLine(osCmd);
                 sw.Flush();
             }
-            catch { }
+            catch (Exception e)
+            {
+                this.log.Error("Could not send message to Last.fm software", e);
+            }
         }
 
         private string Escape(string str)

@@ -47,7 +47,6 @@ namespace Zuse
 
         public Program()
         {
-            Application.ThreadException += new ThreadExceptionEventHandler(this.Application_ThreadException);
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
             log = LogManager.GetLogger("Zuse", typeof(Zuse.Program));
@@ -125,13 +124,6 @@ namespace Zuse
         protected void Application_ApplicationExit(object sender, EventArgs e)
         {
             this.manager.StopHelper();
-        }
-
-        protected void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            MessageBox.Show(e.Exception.Message);
-
-            log.Error(e.Exception.Message, e.Exception);
         }
 
         /// <summary>
