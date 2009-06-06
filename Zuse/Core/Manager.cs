@@ -18,8 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -34,6 +35,7 @@ namespace Zuse.Core
 
     class Manager
     {
+        private FileSystemWatcher fileSystemWatcher;
         private Process helperProc;
         private ScrobSub scrobbler;
         private FrmHidden frmHidden;

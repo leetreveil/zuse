@@ -97,6 +97,9 @@ namespace Zuse
 
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
+            if (Settings.Default.DebugMode)
+            {
+            }
         }
 
         protected void NotifyIcon_BalloonTipClosed(object sender, EventArgs e)
@@ -137,26 +140,24 @@ namespace Zuse
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            if (!Directory.Exists(Application.StartupPath + "\\Logs"))
-            { Directory.CreateDirectory(Application.StartupPath + "\\Logs"); }
+        
+            string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string log_path = appdata_path + "Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
 
             RollingFileAppender rfa = new RollingFileAppender();
             rfa.AppendToFile = true;
-            rfa.File = "Logs\\Zuse-" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
+            rfa.File = logpath;
             rfa.StaticLogFileName = true;
             rfa.Layout = new log4net.Layout.XmlLayout();
-            rfa.MaxFileSize = 100 * 1024;
-            rfa.Threshold = Level.Debug;
+            rfa.MaxFileSize = 1024 * 1024;
+            rfa.Threshold = Level.All;
             rfa.LockingModel = new FileAppender.MinimalLock();
             rfa.ActivateOptions();
 
             ILoggerRepository repo = LogManager.CreateRepository("Zuse");
-
             BasicConfigurator.Configure(repo, rfa);
             
             Program zuse = new Program();
-
             Application.Run();
         }
     }

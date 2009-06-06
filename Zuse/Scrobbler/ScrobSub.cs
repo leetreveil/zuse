@@ -38,7 +38,6 @@ namespace Zuse.Scrobbler
         private NetworkStream ns;
         private StreamWriter sw;
         private StreamReader sr;
-
         private ILog log;
 
         public ScrobSub()

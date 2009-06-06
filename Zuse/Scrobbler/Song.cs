@@ -29,15 +29,15 @@ namespace Zuse.Scrobbler
 
     public class Song
     {
-        public Song()
-        {
-        }
-
         private string title;
         private string artist;
         private string album;
         private int length;
         private string mbid;
+        
+        public Song()
+        {
+        }
 
         public string Title
         {
@@ -104,18 +104,12 @@ namespace Zuse.Scrobbler
             if (obj is Song)
             {
                 Song s = (Song)obj;
-
                 return (s.Artist == this.artist) && (s.Album == this.album) && (s.Title == this.title);
             }
             else
             {
                 return false;
             }
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
     }
 }
