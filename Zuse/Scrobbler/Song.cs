@@ -94,6 +94,11 @@ namespace Zuse.Scrobbler
             this.mbid = "";
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
             return string.Format("{0:s} - {1:s}", this.title, this.artist);

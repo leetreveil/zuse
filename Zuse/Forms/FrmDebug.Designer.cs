@@ -68,7 +68,6 @@
             this.lstMessages.TabIndex = 3;
             this.lstMessages.UseCompatibleStateImageBehavior = false;
             this.lstMessages.View = System.Windows.Forms.View.Details;
-            this.lstMessages.ItemActivate += new System.EventHandler(this.lstMessages_ItemActivate);
             this.lstMessages.DoubleClick += new System.EventHandler(this.lstMessages_DoubleClick);
             // 
             // columnTime

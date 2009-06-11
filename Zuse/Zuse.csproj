@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Core\Manager.cs" />
     <Compile Include="Core\Win32.cs" />
+    <Compile Include="Core\Win32Wrapper.cs" />
     <Compile Include="Forms\FrmDebug.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +89,7 @@
     <Compile Include="Forms\FrmDetails.Designer.cs">
       <DependentUpon>FrmDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Scrobbler\ClientLoader.cs" />
     <Compile Include="Scrobbler\ScrobSub.cs" />
     <Compile Include="Forms\FrmAbout.cs">
       <SubType>Form</SubType>
@@ -129,6 +131,7 @@
     <Compile Include="Scrobbler\Song.cs" />
     <Compile Include="Utilities\MessageUtils.cs" />
     <Compile Include="Utilities\Time.cs" />
+    <Compile Include="Web\UpdateChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

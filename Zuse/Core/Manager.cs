@@ -35,7 +35,6 @@ namespace Zuse.Core
 
     class Manager
     {
-        private FileSystemWatcher fileSystemWatcher;
         private Process helperProc;
         private ScrobSub scrobbler;
         private FrmHidden frmHidden;

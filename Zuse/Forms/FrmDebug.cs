@@ -102,7 +102,7 @@ namespace Zuse.Forms
             log.Info("Testing FrmDebug automatic refreshing");
         }
 
-        private void lstMessages_ItemActivate(object sender, EventArgs e)
+        private void ShowItemsDetailsDialog()
         {
             FrmDetails frmDetails = new FrmDetails();
 

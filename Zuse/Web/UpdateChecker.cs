@@ -23,6 +23,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.Reflection;
 using System.Windows.Forms;
 
 using log4net;
@@ -36,7 +37,7 @@ namespace Zuse.Web
 
 	public class UpdateChecker
 	{
-		private const string updateCheckUrl = "http://zusefm.org/updates/version_info.txt";
+		private const string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.php?v=";
 
 		private ILog log;
 		
@@ -44,15 +45,15 @@ namespace Zuse.Web
 		{
 			this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
 		}
-		
-		public bool IsUpdateAvailable()
-		{
-			WebClient wc = new WebClient();
-			string version_info = wc.DownloadString(this.updateCheckUrl);
-		
-			
-		
-			return false;
-		}
+
+        public bool IsUpdateAvailable()
+        {
+            string current_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            WebClient wc = new WebClient();
+            string version_info = wc.DownloadString(m_BaseUpdateCheckUrl + current_version);
+
+            return false;
+        }
 	}
 }

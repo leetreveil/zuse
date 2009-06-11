@@ -58,19 +58,31 @@ namespace Zuse
                 Application.Exit();
             }
 
-            // Build the context menu for the system tray icon
+            /* Build the context menu for the system tray icon */
+
+            /* About Zuse system tray menu option */
             this.contextMenuStrip = new ContextMenuStrip();
             ToolStripMenuItem item1 = new ToolStripMenuItem("Debug Log");
             item1.Click += new EventHandler(this.DebugLog_Click);
             this.contextMenuStrip.Items.Add(item1);
+
             this.contextMenuStrip.Items.Add(new ToolStripSeparator());
-            ToolStripMenuItem item2 = new ToolStripMenuItem("About Zuse");
+
+            /* Check for Updates system tray menu option */
+            ToolStripMenuItem item2 = new ToolStripMenuItem("Check for Updates");
             item2.Click += new EventHandler(this.About_Click);
             this.contextMenuStrip.Items.Add(item2);
-            this.contextMenuStrip.Items.Add(new ToolStripSeparator());
-            ToolStripMenuItem item3 = new ToolStripMenuItem("Exit");
-            item3.Click += new EventHandler(this.Exit_Click);
+
+            /* About Zuse system tray menu option */
+            ToolStripMenuItem item3 = new ToolStripMenuItem("About Zuse");
+            item3.Click += new EventHandler(this.About_Click);
             this.contextMenuStrip.Items.Add(item3);
+
+            this.contextMenuStrip.Items.Add(new ToolStripSeparator());
+
+            ToolStripMenuItem item4 = new ToolStripMenuItem("Exit");
+            item4.Click += new EventHandler(this.Exit_Click);
+            this.contextMenuStrip.Items.Add(item4);
 
             // Retrieve the stream of the system tray icon embedded in Zuse.exe
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -140,13 +152,16 @@ namespace Zuse
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-        
+
+            ClientLoader cl = new ClientLoader();
+            cl.IsAvailable();
+
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string log_path = appdata_path + "Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
 
             RollingFileAppender rfa = new RollingFileAppender();
             rfa.AppendToFile = true;
-            rfa.File = logpath;
+            rfa.File = log_path;
             rfa.StaticLogFileName = true;
             rfa.Layout = new log4net.Layout.XmlLayout();
             rfa.MaxFileSize = 1024 * 1024;
