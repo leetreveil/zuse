@@ -1,7 +1,0 @@
-### Formating
-
-<AppName>|<CurrentVersion>|<RootUpdateUrl>|<ChangeLogPath>|<
-
-### Example
-
-Zuse|2.0.0|http://zusefm.org/updates/2.0.0/|changelog.txt|

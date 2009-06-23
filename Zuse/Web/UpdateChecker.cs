@@ -37,13 +37,13 @@ namespace Zuse.Web
 
 	public class UpdateChecker
 	{
-		private const string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.php?v=";
+		private const string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
 
 		private ILog log;
 		
 		public UpdateChecker()
 		{
-			this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
+            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
 		}
 
         public bool IsUpdateAvailable()
@@ -51,9 +51,37 @@ namespace Zuse.Web
             string current_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             WebClient wc = new WebClient();
-            string version_info = wc.DownloadString(m_BaseUpdateCheckUrl + current_version);
+            string version_info = wc.DownloadString(m_BaseUpdateCheckUrl);
+            string[] version_s = version_info.Split(new char[] {'\n'});
+
+            foreach (string v in version_s)
+            {
+                string vs = v.Replace("\r", "");
+
+                if (!vs.StartsWith("#"))
+                {
+                    string[] vxs = vs.Split('|');
+
+                    /* Format: [0] <AppName>
+                               [1] <CurrentVersion>
+                               [2] <RootUpdateUrl>
+                               [3] <ChangeLogPath>
+                               [4] <UpdateInstallerPath> */
+
+
+                }
+                else continue;
+            }
 
             return false;
+        }
+
+        public void DownloadUpdate()
+        {
+            if (!this.IsUpdateAvailable())
+            {
+                throw new Exception("No new update available.");
+            }
         }
 	}
 }

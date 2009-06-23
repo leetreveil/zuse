@@ -37,6 +37,7 @@ namespace Zuse
     using Zuse.Forms;
     using Zuse.Scrobbler;
     using Zuse.Utilities;
+    using Zuse.Web;
 
     class Program
     {
@@ -153,11 +154,8 @@ namespace Zuse
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            ClientLoader cl = new ClientLoader();
-            cl.IsAvailable();
-
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string log_path = appdata_path + "Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
+            string log_path = appdata_path + "\\Zuse\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
 
             RollingFileAppender rfa = new RollingFileAppender();
             rfa.AppendToFile = true;
@@ -171,7 +169,12 @@ namespace Zuse
 
             ILoggerRepository repo = LogManager.CreateRepository("Zuse");
             BasicConfigurator.Configure(repo, rfa);
-            
+
+            /*
+            UpdateChecker upchk = new UpdateChecker();
+            upchk.IsUpdateAvailable();
+            */
+
             Program zuse = new Program();
             Application.Run();
         }

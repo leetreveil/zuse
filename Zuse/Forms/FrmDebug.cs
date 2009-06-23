@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -46,13 +47,13 @@ namespace Zuse.Forms
 
         public void RefreshView()
         {
-            foreach (string fn in Directory.GetFiles(Application.StartupPath + "\\Logs", "*.xml", SearchOption.AllDirectories))
+            foreach (string fn in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse\\Logs\\", "*.xml", SearchOption.AllDirectories))
             {
                 FileInfo fi = new FileInfo(fn);
 
                 this.cmbLogFile.Items.Add(fi);
             }
-            
+
             RollingFileAppender rfa = (RollingFileAppender)LogManager.GetAllRepositories()[0].GetAppenders()[0];
 
             foreach (FileInfo fi in this.cmbLogFile.Items)
@@ -109,6 +110,11 @@ namespace Zuse.Forms
             frmDetails.ShowDialog();
 
             frmDetails.Dispose();
+        }
+
+        private void btnOpenLogsDirectory_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", "/root," + Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse\\Logs");
         }
     }
 }
