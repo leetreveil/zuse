@@ -100,18 +100,19 @@ namespace Zuse.Core
                 Thread.Sleep(200);
             }
             
-            */
-
             song.FetchSongLength();
 
             if (song.Length == 0)
             {
-                this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 500, "");
             }
             else
             {
                 this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, song.Length, "");
             }
+             
+             */
+
+            this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 100, "");
 
             log.Info(string.Format("Starting song '{0:s}'", song.ToString())); 
         }

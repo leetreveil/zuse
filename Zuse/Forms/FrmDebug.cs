@@ -26,8 +26,11 @@ namespace Zuse.Forms
 
         private void FrmDebug_Load(object sender, EventArgs e)
         {
+            string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string log_path = appdata_path + "\\Zuse\\Logs\\";
+
             this.fileSystemWatcher.Changed += new System.IO.FileSystemEventHandler(FileSystemWatcher_Changed);
-            this.fileSystemWatcher.Path = Application.StartupPath + "\\Logs\\";
+            this.fileSystemWatcher.Path = log_path;
             this.fileSystemWatcher.Filter = "*.xml";
             this.fileSystemWatcher.EnableRaisingEvents = true;
 

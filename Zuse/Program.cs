@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Reflection;
@@ -57,6 +58,28 @@ namespace Zuse
             {
                 log.Fatal("Cannot start without ZuseHelper");
                 Application.Exit();
+            }
+
+            ClientLoader cl = new ClientLoader();
+
+            if (!cl.IsOpen())
+            {
+                if (cl.IsAvailable())
+                {
+                    if (MessageBox.Show("Zuse has detected that the Last.fm software is not running, would you like to open it?", "Open Last.fm Software?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        cl.Open();
+                    }
+                }
+                else
+                {
+                    if (MessageBox.Show("Zuse has detected that the Last.fm software is not installed on this computer, would you like to install it?", "Install Last.fm Software?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Process.Start("http://www.last.fm/download");
+
+                        MessageBox.Show("Zuse will now closed.", "Thank you!");
+                    }
+                }
             }
 
             /* Build the context menu for the system tray icon */
@@ -171,9 +194,9 @@ namespace Zuse
             BasicConfigurator.Configure(repo, rfa);
 
             /*
-            UpdateChecker upchk = new UpdateChecker();
-            upchk.IsUpdateAvailable();
-            */
+             * UpdateChecker upchk = new UpdateChecker();
+             * upchk.IsUpdateAvailable();
+             */
 
             Program zuse = new Program();
             Application.Run();

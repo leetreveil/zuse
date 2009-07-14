@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
@@ -51,7 +52,7 @@ namespace Zuse.Scrobbler
             {
                 foreach (Process proc in Process.GetProcesses())
                 {
-                    if (proc.StartInfo.FileName == clientPath)
+                    if (proc.ProcessName == Path.GetFileNameWithoutExtension(clientPath))
                     {
                         return proc;
                     }

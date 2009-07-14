@@ -33,7 +33,9 @@ namespace Zuse.Scrobbler
     class ScrobSub
     {
         private const int kDefaultPort = 33367;
-        private const string mPluginId = "Zuse";
+        private const string mPluginId = "zuse";
+        private const int kPortsToStep = 5;
+        private const int kLaunchWait = 60000; // in ms
         private Socket fd;
         private NetworkStream ns;
         private StreamWriter sw;
@@ -42,10 +44,15 @@ namespace Zuse.Scrobbler
 
         public ScrobSub()
         {
+            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Scrobbler.ScrobSub));
+
+            this.SendMessageToClient("BOOTSTRAP c=" + mPluginId + "&" + "&u=");
+        }
+
+        private void Connect()
+        {
             try
             {
-                this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Scrobbler.ScrobSub));
-
                 fd = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 fd.Connect(new IPEndPoint(IPAddress.Loopback, kDefaultPort));
                 ns = new NetworkStream(fd);
@@ -56,6 +63,14 @@ namespace Zuse.Scrobbler
             {
                 this.log.Error("Could not connect to Last.fm software", e);
             }
+        }
+
+        private void Shutdown()
+        {
+            ns.Close();
+            sw.Close();
+            sr.Close();
+            fd.Shutdown(SocketShutdown.Both);
         }
 
         public void Start(string artist, string track, string album, string mbId, int length, string filename)
@@ -94,10 +109,18 @@ namespace Zuse.Scrobbler
 
         private void SendMessageToClient(string osCmd)
         {
+            byte[] bys = Encoding.ASCII.GetBytes(osCmd);
+
+            string s = Encoding.UTF8.GetString(Encoding.Convert(Encoding.ASCII, Encoding.UTF8, bys));
+
             try
             {
+                Connect();
+
                 sw.WriteLine(osCmd);
                 sw.Flush();
+
+                Shutdown();
             }
             catch (Exception e)
             {
