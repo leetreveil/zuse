@@ -104,6 +104,7 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_APP_TITLE           "ZuseHelper"
     IDC_ZUSEHELPER          "MsnMsgrUIManager"
 END
 

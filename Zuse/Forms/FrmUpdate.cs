@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace Zuse.Forms
 {
-    public partial class FrmDetails : Form
+    public partial class FrmUpdate : Form
     {
-        public FrmDetails()
+        public FrmUpdate()
         {
             InitializeComponent();
         }

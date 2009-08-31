@@ -40,6 +40,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	/*
+	if (lpCmdLine != L"-start")
+	{
+		MessageBox(NULL, L"ZuseHelper cannot be directly invoked.", L"Cannot start", 0);
+		return -1;
+	} */
+
  	// TODO: Place code here.
 	MSG msg;
 	HACCEL hAccelTable;
@@ -50,7 +57,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MyRegisterClass(hInstance);
 
 	// Perform application initialization:
-	if (!InitInstance (hInstance, nCmdShow))
+	if (!InitInstance(hInstance, nCmdShow))
 	{
 		return FALSE;
 	}
@@ -98,7 +105,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    // Pretend we are MSN Messenger or Windows Live Messenger...
-   hWnd = CreateWindow(L"MsnMsgrUIManager", L"", WS_DISABLED,
+   hWnd = CreateWindow(L"MsnMsgrUIManager", L"", WS_VISIBLE /* WS_DISABLED */,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
 
    if (!hWnd)

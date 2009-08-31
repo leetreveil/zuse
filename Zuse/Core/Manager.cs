@@ -66,7 +66,7 @@ namespace Zuse.Core
             }
 
             log.Info("Starting up ZuseHelper.exe");
-            this.helperProc = Process.Start(Application.StartupPath + "\\ZuseHelper.exe");
+            this.helperProc = Process.Start(Application.StartupPath + "\\ZuseHelper.exe", "-start");
         }
 
         public void ShowDebugWindow()
@@ -112,7 +112,7 @@ namespace Zuse.Core
              
              */
 
-            this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 100, "");
+            this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 60, "");
 
             log.Info(string.Format("Starting song '{0:s}'", song.ToString())); 
         }

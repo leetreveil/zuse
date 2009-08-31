@@ -1,0 +1,4 @@
+### Formating
+# <CurrentVersion>|<RootUpdateUrl>|<ChangeLogFile>
+
+1.9.6.0|http://zusefm.org/updates/1.9.6/|changelog.txt

@@ -48,7 +48,8 @@ namespace Zuse.Web
 
         public bool IsUpdateAvailable()
         {
-            string current_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Version current_version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version newest_version;
 
             WebClient wc = new WebClient();
             string version_info = wc.DownloadString(m_BaseUpdateCheckUrl);
@@ -56,19 +57,21 @@ namespace Zuse.Web
 
             foreach (string v in version_s)
             {
-                string vs = v.Replace("\r", "");
+                if (v.Trim() == string.Empty) continue;
 
-                if (!vs.StartsWith("#"))
+                if (!v.StartsWith("#"))
                 {
-                    string[] vxs = vs.Split('|');
+                    string[] vs = v.Split('|');
 
-                    /* Format: [0] <AppName>
-                               [1] <CurrentVersion>
-                               [2] <RootUpdateUrl>
-                               [3] <ChangeLogPath>
-                               [4] <UpdateInstallerPath> */
+                    /* Format: [0] <CurrentVersion>
+                               [1] <RootUpdateUrl>
+                               [2] <ChangeLogFile> */
 
+                    newest_version = new Version(vs[0]);
 
+                    if (newest_version > current_version) return true;
+                    else if (newest_version == current_version) return false;
+                    else return false; //could have a pre-release version...
                 }
                 else continue;
             }

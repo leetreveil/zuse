@@ -33,7 +33,6 @@ using log4net.Repository;
 
 namespace Zuse
 {
-    using Zuse.Properties;
     using Zuse.Core;
     using Zuse.Forms;
     using Zuse.Scrobbler;
@@ -83,14 +82,16 @@ namespace Zuse
             }
 
             /* Build the context menu for the system tray icon */
-
-            /* About Zuse system tray menu option */
             this.contextMenuStrip = new ContextMenuStrip();
-            ToolStripMenuItem item1 = new ToolStripMenuItem("Debug Log");
-            item1.Click += new EventHandler(this.DebugLog_Click);
-            this.contextMenuStrip.Items.Add(item1);
 
-            this.contextMenuStrip.Items.Add(new ToolStripSeparator());
+            /* Add the debug log option if the debug mode is on */
+            if (ZuseSettings.DebugMode)
+            {
+                ToolStripMenuItem item1 = new ToolStripMenuItem("Debug Log");
+                item1.Click += new EventHandler(this.DebugLog_Click);
+                this.contextMenuStrip.Items.Add(item1);
+                this.contextMenuStrip.Items.Add(new ToolStripSeparator());
+            }
 
             /* Check for Updates system tray menu option */
             ToolStripMenuItem item2 = new ToolStripMenuItem("Check for Updates");
@@ -133,7 +134,7 @@ namespace Zuse
 
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            if (Settings.Default.DebugMode)
+            if (ZuseSettings.DebugMode)
             {
             }
         }
@@ -179,6 +180,10 @@ namespace Zuse
 
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string log_path = appdata_path + "\\Zuse\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
+            string settings_path = appdata_path + "\\Zuse\\Settings.xml";
+
+            if (!File.Exists(settings_path)) ZuseSettings.Save();
+            else ZuseSettings.Load();
 
             RollingFileAppender rfa = new RollingFileAppender();
             rfa.AppendToFile = true;
@@ -193,13 +198,17 @@ namespace Zuse
             ILoggerRepository repo = LogManager.CreateRepository("Zuse");
             BasicConfigurator.Configure(repo, rfa);
 
-            /*
-             * UpdateChecker upchk = new UpdateChecker();
-             * upchk.IsUpdateAvailable();
-             */
+            UpdateChecker upchk = new UpdateChecker();
+            bool updateAvailable = upchk.IsUpdateAvailable();
+
+            if (updateAvailable)
+            {
+            }
 
             Program zuse = new Program();
             Application.Run();
+
+            ZuseSettings.Save();
         }
     }
 }

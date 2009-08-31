@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Diagnostics;
 using System.Text;
@@ -109,9 +108,7 @@ namespace Zuse.Forms
         private void ShowItemsDetailsDialog()
         {
             FrmDetails frmDetails = new FrmDetails();
-
             frmDetails.ShowDialog();
-
             frmDetails.Dispose();
         }
 
