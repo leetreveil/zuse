@@ -62,8 +62,8 @@ namespace Zuse.Forms
             this.tabPageThirdParties = new System.Windows.Forms.TabPage();
             this.rtfThirdParties = new System.Windows.Forms.RichTextBox();
             this.tabPageDonars = new System.Windows.Forms.TabPage();
-            this.okButton = new System.Windows.Forms.Button();
             this.webBrowserDonors = new System.Windows.Forms.WebBrowser();
+            this.okButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxZuneLogo)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPageAbout.SuspendLayout();
@@ -91,7 +91,7 @@ namespace Zuse.Forms
             this.linkLabelJoinGroup1.AutoSize = true;
             this.linkLabelJoinGroup1.Location = new System.Drawing.Point(54, 270);
             this.linkLabelJoinGroup1.Name = "linkLabelJoinGroup1";
-            this.linkLabelJoinGroup1.Size = new System.Drawing.Size(173, 13);
+            this.linkLabelJoinGroup1.Size = new System.Drawing.Size(176, 13);
             this.linkLabelJoinGroup1.TabIndex = 2;
             this.linkLabelJoinGroup1.TabStop = true;
             this.linkLabelJoinGroup1.Text = "Join the Zuse Users Last.fm Group!";
@@ -103,7 +103,7 @@ namespace Zuse.Forms
             this.linkLabelJoinGroup2.AutoSize = true;
             this.linkLabelJoinGroup2.Location = new System.Drawing.Point(244, 270);
             this.linkLabelJoinGroup2.Name = "linkLabelJoinGroup2";
-            this.linkLabelJoinGroup2.Size = new System.Drawing.Size(177, 13);
+            this.linkLabelJoinGroup2.Size = new System.Drawing.Size(181, 13);
             this.linkLabelJoinGroup2.TabIndex = 3;
             this.linkLabelJoinGroup2.TabStop = true;
             this.linkLabelJoinGroup2.Text = "Join the Zune-Online Last.fm Group!";
@@ -171,7 +171,7 @@ namespace Zuse.Forms
             // labelCopyright
             // 
             this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCopyright.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCopyright.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCopyright.Location = new System.Drawing.Point(6, 17);
             this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelCopyright.MaximumSize = new System.Drawing.Size(0, 17);
@@ -184,7 +184,7 @@ namespace Zuse.Forms
             // labelVersion
             // 
             this.labelVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelVersion.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.Location = new System.Drawing.Point(6, 34);
             this.labelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelVersion.MaximumSize = new System.Drawing.Size(0, 17);
@@ -197,7 +197,7 @@ namespace Zuse.Forms
             // labelProductName
             // 
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelProductName.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelProductName.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelProductName.Location = new System.Drawing.Point(6, 0);
             this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
@@ -273,6 +273,15 @@ namespace Zuse.Forms
             this.tabPageDonars.Text = "Donors";
             this.tabPageDonars.UseVisualStyleBackColor = true;
             // 
+            // webBrowserDonors
+            // 
+            this.webBrowserDonors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowserDonors.Location = new System.Drawing.Point(3, 3);
+            this.webBrowserDonors.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserDonors.Name = "webBrowserDonors";
+            this.webBrowserDonors.Size = new System.Drawing.Size(442, 255);
+            this.webBrowserDonors.TabIndex = 0;
+            // 
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -282,15 +291,6 @@ namespace Zuse.Forms
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 27;
             this.okButton.Text = "&OK";
-            // 
-            // webBrowserDonors
-            // 
-            this.webBrowserDonors.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserDonors.Location = new System.Drawing.Point(3, 3);
-            this.webBrowserDonors.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserDonors.Name = "webBrowserDonors";
-            this.webBrowserDonors.Size = new System.Drawing.Size(442, 255);
-            this.webBrowserDonors.TabIndex = 0;
             // 
             // FrmAbout
             // 
@@ -302,6 +302,7 @@ namespace Zuse.Forms
             this.Controls.Add(this.linkLabelJoinGroup1);
             this.Controls.Add(this.pictureBoxZuneLogo);
             this.Controls.Add(this.tabControl);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

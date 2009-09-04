@@ -28,23 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.rtfChangelog = new System.Windows.Forms.RichTextBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblDetails = new System.Windows.Forms.Label();
             this.grpChangeLog = new System.Windows.Forms.GroupBox();
             this.grpChangeLog.SuspendLayout();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // rtfChangelog
             // 
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(3, 16);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(588, 174);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.rtfChangelog.BackColor = System.Drawing.SystemColors.Control;
+            this.rtfChangelog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtfChangelog.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.rtfChangelog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtfChangelog.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtfChangelog.Location = new System.Drawing.Point(3, 16);
+            this.rtfChangelog.Name = "rtfChangelog";
+            this.rtfChangelog.ReadOnly = true;
+            this.rtfChangelog.Size = new System.Drawing.Size(588, 174);
+            this.rtfChangelog.TabIndex = 0;
+            this.rtfChangelog.Text = "";
             // 
             // lblTitle
             // 
@@ -68,7 +71,7 @@
             // 
             // grpChangeLog
             // 
-            this.grpChangeLog.Controls.Add(this.richTextBox1);
+            this.grpChangeLog.Controls.Add(this.rtfChangelog);
             this.grpChangeLog.Location = new System.Drawing.Point(13, 117);
             this.grpChangeLog.Name = "grpChangeLog";
             this.grpChangeLog.Size = new System.Drawing.Size(594, 193);
@@ -84,6 +87,7 @@
             this.Controls.Add(this.grpChangeLog);
             this.Controls.Add(this.lblDetails);
             this.Controls.Add(this.lblTitle);
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "FrmUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zuse Update";
@@ -94,7 +98,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox rtfChangelog;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblDetails;
         private System.Windows.Forms.GroupBox grpChangeLog;

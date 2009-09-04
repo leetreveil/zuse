@@ -201,6 +201,10 @@ namespace Zuse
             UpdateChecker upchk = new UpdateChecker();
             bool updateAvailable = upchk.IsUpdateAvailable();
 
+            FrmUpdate frmUpdate = new FrmUpdate();
+            frmUpdate.SetDetails(new Version("1.9.8.0"));
+            frmUpdate.ShowDialog();
+
             if (updateAvailable)
             {
             }
