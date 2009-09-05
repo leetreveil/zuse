@@ -198,14 +198,10 @@ namespace Zuse
             ILoggerRepository repo = LogManager.CreateRepository("Zuse");
             BasicConfigurator.Configure(repo, rfa);
 
-            UpdateChecker upchk = new UpdateChecker();
-            bool updateAvailable = upchk.IsUpdateAvailable();
+            UpdateChecker.Check();
+            UpdateChecker.ShowUpdateDialog();
 
-            FrmUpdate frmUpdate = new FrmUpdate();
-            frmUpdate.SetDetails(new Version("1.9.8.0"));
-            frmUpdate.ShowDialog();
-
-            if (updateAvailable)
+            if (UpdateChecker.UpdateAvailable)
             {
             }
 

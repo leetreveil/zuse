@@ -37,16 +37,23 @@ namespace Zuse.Web
 
 	public class UpdateChecker
 	{
-		private const string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
+        public static bool UpdateAvailable
+        { get { return updateAvailable; } }
 
-		private ILog log;
+        private static string updateChangelog;
+        private static Version updateVersion;
+        private static bool updateAvailable;
+
+		private static string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
+
+		private static ILog log;
 		
-		public UpdateChecker()
+		static UpdateChecker()
 		{
-            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
+            log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
 		}
 
-        public bool IsUpdateAvailable()
+        public static void Check()
         {
             Version current_version = Assembly.GetExecutingAssembly().GetName().Version;
             Version newest_version;
@@ -68,23 +75,39 @@ namespace Zuse.Web
                                [2] <ChangeLogFile> */
 
                     newest_version = new Version(vs[0]);
+                    updateVersion = (Version)newest_version.Clone();
+                    updateChangelog = vs[1] + vs[2];
 
-                    if (newest_version > current_version) return true;
-                    else if (newest_version == current_version) return false;
-                    else return false; //could have a pre-release version...
+                    if (newest_version > current_version) updateAvailable = true;
+                    else if (newest_version == current_version) updateAvailable = false;
+                    else updateAvailable = false; //could have a pre-release version...
                 }
                 else continue;
             }
 
-            return false;
+            updateAvailable = false;
+
+            wc.Dispose();
         }
 
-        public void DownloadUpdate()
+        public static void DownloadUpdate()
         {
-            if (!this.IsUpdateAvailable())
+            if (!updateAvailable)
             {
                 throw new Exception("No new update available.");
             }
+        }
+
+        public static void ShowUpdateDialog()
+        {
+            WebClient wc = new WebClient();
+
+            FrmUpdate frmUpdate = new FrmUpdate();
+            frmUpdate.SetDetails(updateVersion);
+            frmUpdate.SetChangeLog(wc.DownloadString(updateChangelog));
+            frmUpdate.ShowDialog();
+
+            wc.Dispose();
         }
 	}
 }

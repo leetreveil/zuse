@@ -21,5 +21,10 @@ namespace Zuse.Forms
 
             this.lblDetails.Text = string.Format("You have version {0:s}, and {1:s} is available!", current_version.ToString(), new_version.ToString());
         }
+
+        public void SetChangeLog(string text)
+        {
+            this.rtfChangelog.Text = text;
+        }
     }
 }
