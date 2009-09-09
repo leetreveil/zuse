@@ -49,16 +49,14 @@ Section "Zuse (required)"
   
   ; Put file there
   File "Zuse.exe"
-  File "Zuse.exe.config"
   File "ZuseHelper.exe"
   File "log4net.dll"
-  File "MusicBrainz.dll"
 
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\Zuse "Install_Dir" "$INSTDIR"
   
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "DisplayName" "Docstoc Outlook"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "DisplayName" "Zuse"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoRepair" 1
@@ -69,8 +67,10 @@ Section "Microsoft .NET Framework v2.0"
   ReadRegDWORD $0 HKLM 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727' Install
 
   ${If} $0 == 1
+    ExecShell "open" "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en"
     DetailPrint '.NET Framework 2.0 already installed.'
   ${Else}
+    ExecShell "open" "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en"
   ${EndIf}
 SectionEnd
 

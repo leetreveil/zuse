@@ -69,29 +69,12 @@ namespace Zuse.Scrobbler
             set { this.mbid = value; }
         }
 
-        public void FetchSongLength()
-        {
-            MusicBrainz.Query<MusicBrainz.Track> tracks = MusicBrainz.Track.Query(this.title, this.artist, this.album);
-
-            if (tracks.Count > 0)
-            {
-                this.mbid = tracks[0].Id;
-                this.length = (int)tracks[0].GetDuration().TotalSeconds;
-            }
-        }
-
-        public Song(string title, string artist, string album, bool autoFetchLength)
+        public Song(string title, string artist, string album)
         {
             this.title = title;
             this.artist = artist;
             this.album = album;
-
-            if (autoFetchLength)
-            {
-                this.FetchSongLength();
-            }
-
-            this.mbid = "";
+            this.mbid = string.Empty;
         }
 
         public override int GetHashCode()

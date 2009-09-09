@@ -88,30 +88,6 @@ namespace Zuse.Core
 
         private void FrmHidden_PlayingNewTrack(object sender, Song song)
         {
-            /*
-             * The following commented code is used to fetch song length without
-             * disrupting the user experience. I'm not sure if it's needed.
-             
-            Thread th = new Thread(new ThreadStart(song.FetchSongLength));
-            th.Start();
-
-            while (th.ThreadState != System.Threading.ThreadState.Stopped)
-            {
-                Thread.Sleep(200);
-            }
-            
-            song.FetchSongLength();
-
-            if (song.Length == 0)
-            {
-            }
-            else
-            {
-                this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, song.Length, "");
-            }
-             
-             */
-
             this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, 60, "");
 
             log.Info(string.Format("Starting song '{0:s}'", song.ToString())); 

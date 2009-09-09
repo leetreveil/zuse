@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
 using System;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace Zuse
                     {
                         Process.Start("http://www.last.fm/download");
 
-                        MessageBox.Show("Zuse will now closed.", "Thank you!");
+                        MessageBox.Show("Zuse will now close.", "Thank you!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -95,7 +95,7 @@ namespace Zuse
 
             /* Check for Updates system tray menu option */
             ToolStripMenuItem item2 = new ToolStripMenuItem("Check for Updates");
-            item2.Click += new EventHandler(this.About_Click);
+            item2.Click += new EventHandler(this.CheckForUpdate_Click);
             this.contextMenuStrip.Items.Add(item2);
 
             /* About Zuse system tray menu option */
@@ -127,6 +127,20 @@ namespace Zuse
             this.manager.StartHelper();
         }
 
+        private void CheckForUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateChecker.Check();
+
+            if (UpdateChecker.UpdateAvailable)
+            {
+                UpdateChecker.ShowUpdateDialog();
+            }
+            else
+            {
+                MessageBox.Show("No update is available.", "Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private bool CheckHelperExists()
         {
             return File.Exists(Application.StartupPath + "\\ZuseHelper.exe");
@@ -134,9 +148,6 @@ namespace Zuse
 
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            if (ZuseSettings.DebugMode)
-            {
-            }
         }
 
         protected void NotifyIcon_BalloonTipClosed(object sender, EventArgs e)
@@ -199,10 +210,10 @@ namespace Zuse
             BasicConfigurator.Configure(repo, rfa);
 
             UpdateChecker.Check();
-            UpdateChecker.ShowUpdateDialog();
 
             if (UpdateChecker.UpdateAvailable)
             {
+                UpdateChecker.ShowUpdateDialog();
             }
 
             Program zuse = new Program();

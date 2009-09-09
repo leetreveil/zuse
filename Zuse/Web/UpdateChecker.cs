@@ -36,18 +36,21 @@ namespace Zuse.Web
 	using Zuse.Forms;
 
 	public class UpdateChecker
-	{
-        public static bool UpdateAvailable
-        { get { return updateAvailable; } }
-
+    {
+        private static string baseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
         private static string updateChangelog;
         private static Version updateVersion;
         private static bool updateAvailable;
-
-		private static string m_BaseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
-
 		private static ILog log;
-		
+
+        public static bool UpdateAvailable
+        {
+            get
+            {
+                return updateAvailable;
+            }
+        }
+
 		static UpdateChecker()
 		{
             log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
@@ -59,7 +62,7 @@ namespace Zuse.Web
             Version newest_version;
 
             WebClient wc = new WebClient();
-            string version_info = wc.DownloadString(m_BaseUpdateCheckUrl);
+            string version_info = wc.DownloadString(baseUpdateCheckUrl);
             string[] version_s = version_info.Split(new char[] {'\n'});
 
             foreach (string v in version_s)

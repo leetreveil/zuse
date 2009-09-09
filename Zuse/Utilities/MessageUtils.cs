@@ -47,7 +47,7 @@ namespace Zuse.Utilities
                 string artist = ps[5].Substring(1);
                 string album = ps[6].Substring(1);
 
-                return new Song(song, artist, album, false);
+                return new Song(song, artist, album);
             }
             catch (Exception e)
             {
