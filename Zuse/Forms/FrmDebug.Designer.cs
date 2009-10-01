@@ -63,7 +63,7 @@ namespace Zuse.Forms
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbLogFile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLogFile.FormattingEnabled = true;
-            this.cmbLogFile.Location = new System.Drawing.Point(63, 15);
+            this.cmbLogFile.Location = new System.Drawing.Point(63, 13);
             this.cmbLogFile.Name = "cmbLogFile";
             this.cmbLogFile.Size = new System.Drawing.Size(553, 21);
             this.cmbLogFile.TabIndex = 0;
@@ -115,7 +115,7 @@ namespace Zuse.Forms
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 19);
+            this.label1.Location = new System.Drawing.Point(10, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 5;
@@ -123,7 +123,7 @@ namespace Zuse.Forms
             // 
             // btnOpenLogsDirectory
             // 
-            this.btnOpenLogsDirectory.Location = new System.Drawing.Point(622, 14);
+            this.btnOpenLogsDirectory.Location = new System.Drawing.Point(622, 12);
             this.btnOpenLogsDirectory.Name = "btnOpenLogsDirectory";
             this.btnOpenLogsDirectory.Size = new System.Drawing.Size(110, 23);
             this.btnOpenLogsDirectory.TabIndex = 6;
@@ -140,6 +140,7 @@ namespace Zuse.Forms
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstMessages);
             this.Controls.Add(this.cmbLogFile);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FrmDebug";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

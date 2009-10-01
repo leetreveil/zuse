@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
+using System.Reflection;
 using System.IO;
 using System.Xml;
 
@@ -25,6 +26,10 @@ namespace Zuse.Forms
 
         private void FrmDebug_Load(object sender, EventArgs e)
         {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            Stream stream = asm.GetManifestResourceStream("Zuse.Resources.ZuseIcon.ico");
+            this.Icon = new System.Drawing.Icon(stream);
+
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string log_path = appdata_path + "\\Zuse\\Logs\\";
 

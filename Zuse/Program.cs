@@ -189,9 +189,13 @@ namespace Zuse
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string log_path = appdata_path + "\\Zuse\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
-            string settings_path = appdata_path + "\\Zuse\\Settings.xml";
+            string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse";
+            if (!Directory.Exists(appdata_path))
+            {
+                Directory.CreateDirectory(appdata_path);
+            }
+            string log_path = appdata_path + "\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
+            string settings_path = appdata_path + "\\Settings.xml";
 
             if (!File.Exists(settings_path)) ZuseSettings.Save();
             else ZuseSettings.Load();

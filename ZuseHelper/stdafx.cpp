@@ -17,3 +17,37 @@
  */
 
 #include "stdafx.h"
+
+void InitParams(LPTSTR lpCmdLine)
+{
+	for (int loop = 0; loop < lstrlen(lpCmdLine); loop++)
+	{
+		switch (lpCmdLine[loop])
+		{
+			case '-':
+			{
+				WCHAR* wch_option = &lpCmdLine[loop + 1];
+				char* ch_option = (char*)wch_option;
+
+				int cmp = strcmp(ch_option, "-start");
+
+				switch (cmp)
+				{
+					case 0:
+						MessageBox(NULL, L"INFO: Start params match", L"ZuseHelper", 0);
+						break;
+					default:
+						int const arraysize = 30;
+						TCHAR pszDest[arraysize];
+						size_t cbDest = arraysize * sizeof(TCHAR);
+						LPCTSTR pszFormat = TEXT("INFO: Start params: %d");
+
+						HRESULT hr = StringCbPrintf(pszDest, cbDest, pszFormat, cmp);
+
+						MessageBox(NULL, pszDest, L"ZuseHelper", 0);
+						break;
+				}
+			}
+		}
+	}
+}

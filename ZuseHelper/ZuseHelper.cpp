@@ -30,24 +30,21 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	/*
-	if (lpCmdLine != L"-start")
-	{
-		MessageBox(NULL, L"ZuseHelper cannot be directly invoked.", L"Cannot start", 0);
-		return -1;
-	} */
+	LPCWSTR start_option = TEXT("-start");
 
- 	// TODO: Place code here.
+	if (lstrcmp(lpCmdLine, LPCWSTR(start_option)) == 0)
+	{
+		MessageBox(NULL, L"ZuseHelper cannot be directly invoked.", L"ZuseHelper", 0);
+		return -1;
+	}
+
+	// Start the application
 	MSG msg;
 	HACCEL hAccelTable;
 
@@ -133,9 +130,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Parse the menu selections:
 		switch (wmId)
 		{
-		case IDM_ABOUT:
-			//DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
@@ -144,7 +138,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_COPYDATA:
-		// Forward this message to FrmHidden.
+		// Forward this message to FrmHidden in the main Zuse application.
 		SendMessage(FindWindow(NULL, L"FrmHidden"), message, wParam, lParam);
 		break;
 	case WM_PAINT:

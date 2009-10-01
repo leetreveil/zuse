@@ -69,7 +69,7 @@ Section "Microsoft .NET Framework v2.0"
   ${If} $0 == 1
     DetailPrint ".NET Framework 2.0 already installed."
   ${Else}
-     MessageBox MB_OK "The .NET Framework version 2.0 was not found. Please install the Microsoft .NET Framework 2.0 before running Zuse!"
+    MessageBox MB_OK "The .NET Framework version 2.0 was not found. Please install the Microsoft .NET Framework 2.0 before running Zuse!"
     ExecShell "open" "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en"
   ${EndIf}
 SectionEnd

@@ -69,6 +69,8 @@ namespace Zuse.Core
                         default: continue;
                     }
                 }
+
+                x.Close();
             }
             catch (Exception e)
             {
