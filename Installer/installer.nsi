@@ -5,7 +5,7 @@ Name "Zuse"
 OutFile "ZuseSetup.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\Zuse
+InstallDir "C:\Program Files\Zune"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -49,7 +49,6 @@ Section "Zuse (required)"
   
   ; Put file there
   File "Zuse.exe"
-  File "ZuseHelper.exe"
   File "log4net.dll"
 
   ; Write the installation path into the registry
@@ -60,17 +59,22 @@ Section "Zuse (required)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoRepair" 1
-  WriteUninstaller "uninstall.exe" 
+  WriteUninstaller "ZuseUninstall.exe"
+  
+  CreateShortcut "$DESKTOP\Zuse.lnk" "$INSTDIR\Zuse.exe"
+  CreateDirectory "$SMPROGRAMS\Zuse\"
+  CreateShortcut "$SMPROGRAMS\Zuse\Zuse.lnk" "$INSTDIR\Zuse.exe"
+  CreateShortcut "$SMPROGRAMS\Zuse\Uninstall.lnk" "$INSTDIR\ZuseUninstall.exe"
 SectionEnd
 
-Section "Microsoft .NET Framework v2.0"
-  ReadRegDWORD $0 HKLM 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727' Install
+Section "Microsoft .NET Framework v3.5"
+  ReadRegDWORD $0 HKLM 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5' Install
 
   ${If} $0 == 1
-    DetailPrint ".NET Framework 2.0 already installed."
+    DetailPrint ".NET Framework 3.5 already installed."
   ${Else}
-    MessageBox MB_OK "The .NET Framework version 2.0 was not found. Please install the Microsoft .NET Framework 2.0 before running Zuse!"
-    ExecShell "open" "http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en"
+    MessageBox MB_OK "The .NET Framework version 3.5 was not found. Please install the Microsoft .NET Framework 3.5 before running Zuse!"
+    ExecShell "open" "http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=333325fd-ae52-4e35-b531-508d977d32a6"
   ${EndIf}
 SectionEnd
 

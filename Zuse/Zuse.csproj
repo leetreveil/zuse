@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zuse</RootNamespace>
     <AssemblyName>Zuse</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>false</GenerateManifests>
@@ -40,7 +40,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>..\..\..\Program Files\Zune\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -63,10 +63,25 @@
       <HintPath>References\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Zune\UIX.dll</HintPath>
+    </Reference>
+    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Zune\ZuneDBApi.dll</HintPath>
+    </Reference>
+    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Zune\ZuneShell.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Manager.cs" />
@@ -98,12 +113,6 @@
     </Compile>
     <Compile Include="Forms\FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FrmHidden.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FrmHidden.Designer.cs">
-      <DependentUpon>FrmHidden.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,10 +162,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmDetails.resx">
       <DependentUpon>FrmDetails.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmHidden.resx">
-      <DependentUpon>FrmHidden.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmUpdate.resx">

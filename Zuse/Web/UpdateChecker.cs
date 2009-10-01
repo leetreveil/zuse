@@ -88,8 +88,6 @@ namespace Zuse.Web
                 else continue;
             }
 
-            updateAvailable = false;
-
             wc.Dispose();
         }
 

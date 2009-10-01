@@ -50,15 +50,6 @@ namespace Zuse
         {
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
-            log = LogManager.GetLogger("Zuse", typeof(Zuse.Program));
-            log.Info("Zuse is starting up!");
-
-            if (!CheckHelperExists())
-            {
-                log.Fatal("Cannot start without ZuseHelper");
-                Application.Exit();
-            }
-
             ClientLoader cl = new ClientLoader();
 
             if (!cl.IsOpen())
@@ -81,9 +72,17 @@ namespace Zuse
                 }
             }
 
+            log = LogManager.GetLogger("Zuse", typeof(Zuse.Program));
+            log.Info("Zuse is starting up!");
+
             /* Build the context menu for the system tray icon */
             this.contextMenuStrip = new ContextMenuStrip();
 
+            ToolStripMenuItem itemLaunch = new ToolStripMenuItem("Launch Zune");
+            itemLaunch.Click += new EventHandler(this.Launch_Click);
+            this.contextMenuStrip.Items.Add(itemLaunch);
+
+            this.contextMenuStrip.Items.Add(new ToolStripSeparator());
             /* Add the debug log option if the debug mode is on */
             if (ZuseSettings.DebugMode)
             {
@@ -124,7 +123,7 @@ namespace Zuse
 
             // Initialize main manager
             this.manager = new Manager();
-            this.manager.StartHelper();
+            this.manager.Launch();
         }
 
         private void CheckForUpdate_Click(object sender, EventArgs e)
@@ -141,17 +140,17 @@ namespace Zuse
             }
         }
 
-        private bool CheckHelperExists()
-        {
-            return File.Exists(Application.StartupPath + "\\ZuseHelper.exe");
-        }
-
         private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
         }
 
         protected void NotifyIcon_BalloonTipClosed(object sender, EventArgs e)
         {
+        }
+
+        protected void Launch_Click(object sender, EventArgs e)
+        {
+            this.manager.Launch();
         }
 
         protected void DebugLog_Click(object sender, EventArgs e)
@@ -175,7 +174,6 @@ namespace Zuse
         {
             try
             {
-                this.manager.StopHelper();
             }
             catch { }
         }
