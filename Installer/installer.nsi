@@ -88,13 +88,13 @@ Section "Uninstall"
   DeleteRegKey HKLM SOFTWARE\Zuse
 
   ; Remove files and uninstaller
-  Delete $INSTDIR\*.*
+  Delete $INSTDIR\Zuse.exe
+  Delete $INSTDIR\log4net.dll
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Zuse\*.*"
 
   ; Remove directories used
   RMDir "$SMPROGRAMS\Zuse"
-  RMDir "$INSTDIR"
 
 SectionEnd

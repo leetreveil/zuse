@@ -56,10 +56,6 @@ namespace Zuse
             {
                 if (cl.IsAvailable())
                 {
-                    if (MessageBox.Show("Zuse has detected that the Last.fm software is not running, would you like to open it?", "Open Last.fm Software?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        cl.Open();
-                    }
                 }
                 else
                 {
