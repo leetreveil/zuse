@@ -15,7 +15,8 @@
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>false</GenerateManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>Resources\ZuseIcon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <StartupObject>
     </StartupObject>
     <PublishUrl>publish\</PublishUrl>
@@ -70,9 +71,18 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64" />
-    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64" />
-    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
+    <Reference Include="UIX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\UIX.dll</HintPath>
+    </Reference>
+    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\ZuneDBApi.dll</HintPath>
+    </Reference>
+    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\ZuneShell.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Manager.cs" />
@@ -90,6 +100,12 @@
     </Compile>
     <Compile Include="Forms\FrmDetails.Designer.cs">
       <DependentUpon>FrmDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmUpdate.cs">
       <SubType>Form</SubType>
@@ -122,8 +138,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Scrobbler\Song.cs" />
-    <Compile Include="Utilities\MessageUtils.cs" />
-    <Compile Include="Utilities\Time.cs" />
     <Compile Include="Web\UpdateChecker.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,15 +158,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ZuseIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Forms\FrmDebug.resx">
       <DependentUpon>FrmDebug.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmDetails.resx">
       <DependentUpon>FrmDetails.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmUpdate.resx">

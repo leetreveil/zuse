@@ -25,16 +25,15 @@ using System.Threading;
 using System.Windows.Forms;
 
 using log4net;
-
 using Microsoft.Iris;
 using ZuneUI;
 using MicrosoftZuneLibrary;
+using MicrosoftZunePlayback;
 
 namespace Zuse.Core
 {
     using Zuse.Properties;
     using Zuse.Scrobbler;
-    using Zuse.Utilities;
     using Zuse.Forms;
 
     class Manager
@@ -71,7 +70,7 @@ namespace Zuse.Core
             this.frmDebug.RefreshView();
         }
 
-        public void Launch()
+        public void LaunchZune()
         {
             ClientLoader cl = new ClientLoader();
             if (cl.IsAvailable())
@@ -86,6 +85,16 @@ namespace Zuse.Core
 
             this.monitorTh = new Thread(new ThreadStart(this.MonitorThread));
             this.monitorTh.Start();
+        }
+
+        private void CloseZune_Do(object sender)
+        {
+            Microsoft.Iris.Application.Window.Close();
+        }
+
+        public void CloseZune()
+        {
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(CloseZune_Do), null, DeferredInvokePriority.Normal);
         }
 
         public void ZuneThread()
@@ -104,12 +113,55 @@ namespace Zuse.Core
             }
         }
 
-        private void ZuneNoShow(object sender)
+        private void ZuneWindow_DoShow(object sender)
         {
+            Microsoft.Iris.Application.Window.AlwaysOnTop = true;
+            Microsoft.Iris.Application.Window.WindowState = WindowState.Normal;
+            Microsoft.Iris.Application.Window.AlwaysOnTop = false;
         }
 
-        public void NotifyClient()
+        private void ZuneWindow_DoHide(object sender)
         {
+            Microsoft.Iris.Application.Window.WindowState = WindowState.Minimized;
+        }
+
+        public void ShowZuneWindow()
+        {
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_DoShow), null, DeferredInvokePriority.Normal);
+        }
+
+        public void HideZuneWindow()
+        {
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_DoHide), null, DeferredInvokePriority.Normal);
+        }
+
+        private void ZuneWindow_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Window window = (Window)sender;
+
+            if (e.PropertyName == "WindowState")
+            {
+                if (ZuseSettings.MinimizeToTray)
+                {
+                    switch (window.WindowState)
+                    {
+                        case WindowState.Maximized:
+                            window.ShowInTaskbar = true;
+                            break;
+                        case WindowState.Minimized:
+                            window.ShowInTaskbar = false;
+                            break;
+                        case WindowState.Normal:
+                            window.ShowInTaskbar = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void ZuneWindow_Setup(object sender)
+        {
+            Microsoft.Iris.Application.Window.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
         }
 
         public Song GetCurrentSong()
@@ -164,7 +216,7 @@ namespace Zuse.Core
                     break;
                 case MicrosoftZunePlayback.MCTransportState.Stopped:
                     log.Info("Playback stopped");
-                    //this.scrobbler.Stop();
+                    this.scrobbler.Stop();
                     break;
                 default:
                     break;
@@ -180,9 +232,9 @@ namespace Zuse.Core
 
             EventHandler foo = new EventHandler(ZunePlayer_StatusChanged);
 
-            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneNoShow), null, DeferredInvokePriority.Normal);
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_Setup), null, DeferredInvokePriority.Normal);
 
-            MicrosoftZunePlayback.PlayerInterop.Instance.TransportStatusChanged += foo;
+            PlayerInterop.Instance.TransportStatusChanged += foo;
 
             while (true)
             {

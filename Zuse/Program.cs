@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
 using System.IO;
 using System.Reflection;
@@ -36,7 +37,6 @@ namespace Zuse
     using Zuse.Core;
     using Zuse.Forms;
     using Zuse.Scrobbler;
-    using Zuse.Utilities;
     using Zuse.Web;
 
     class Program
@@ -45,6 +45,7 @@ namespace Zuse
         private NotifyIcon notifyIcon;
         private ContextMenuStrip contextMenuStrip;
         private ILog log;
+        private bool windowMinimized;
 
         public Program()
         {
@@ -54,10 +55,7 @@ namespace Zuse
 
             if (!cl.IsOpen())
             {
-                if (cl.IsAvailable())
-                {
-                }
-                else
+                if (!cl.IsAvailable())
                 {
                     if (MessageBox.Show("Zuse has detected that the Last.fm software is not installed on this computer, would you like to install it?", "Install Last.fm Software?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
@@ -77,47 +75,70 @@ namespace Zuse
             /* Add the debug log option if the debug mode is on */
             if (ZuseSettings.DebugMode)
             {
-                ToolStripMenuItem item1 = new ToolStripMenuItem("Debug Log");
-                item1.Click += new EventHandler(this.DebugLog_Click);
-                this.contextMenuStrip.Items.Add(item1);
+                ToolStripMenuItem itemDebugLog = new ToolStripMenuItem("Debug Log");
+                itemDebugLog.Click += new EventHandler(this.DebugLog_Click);
+                this.contextMenuStrip.Items.Add(itemDebugLog);
                 this.contextMenuStrip.Items.Add(new ToolStripSeparator());
             }
 
             /* Check for Updates system tray menu option */
-            ToolStripMenuItem item2 = new ToolStripMenuItem("Check for Updates");
-            item2.Click += new EventHandler(this.CheckForUpdate_Click);
-            this.contextMenuStrip.Items.Add(item2);
+            ToolStripMenuItem itemCheckUpdates = new ToolStripMenuItem("Check for Updates");
+            itemCheckUpdates.Click += new EventHandler(this.CheckForUpdate_Click);
+            this.contextMenuStrip.Items.Add(itemCheckUpdates);
 
             /* About Zuse system tray menu option */
-            ToolStripMenuItem item3 = new ToolStripMenuItem("About Zuse");
-            item3.Click += new EventHandler(this.About_Click);
-            this.contextMenuStrip.Items.Add(item3);
+            ToolStripMenuItem itemSettings = new ToolStripMenuItem("Settings");
+            itemSettings.Click += new EventHandler(this.Settings_Click);
+            this.contextMenuStrip.Items.Add(itemSettings);
+
+            /* About Zuse system tray menu option */
+            ToolStripMenuItem itemAbout = new ToolStripMenuItem("About Zuse");
+            itemAbout.Click += new EventHandler(this.About_Click);
+            this.contextMenuStrip.Items.Add(itemAbout);
 
             this.contextMenuStrip.Items.Add(new ToolStripSeparator());
 
-            ToolStripMenuItem item4 = new ToolStripMenuItem("Exit");
-            item4.Click += new EventHandler(this.Exit_Click);
-            this.contextMenuStrip.Items.Add(item4);
+            ToolStripMenuItem itemExit = new ToolStripMenuItem("Exit");
+            itemExit.Click += new EventHandler(this.Exit_Click);
+            this.contextMenuStrip.Items.Add(itemExit);
 
             // Retrieve the stream of the system tray icon embedded in Zuse.exe
             Assembly asm = Assembly.GetExecutingAssembly();
-            Stream stream = asm.GetManifestResourceStream("Zuse.Resources.ZuseIcon.ico");
-
+            Icon icon =  Icon.ExtractAssociatedIcon(asm.Location);
+            
             // Create the system tray icon and attach events
             this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Icon = new System.Drawing.Icon(stream);
+            this.notifyIcon.Icon = icon;
             this.notifyIcon.Visible = true;
             this.notifyIcon.Text = "Zuse";
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip;
             this.notifyIcon.BalloonTipClicked += new EventHandler(this.NotifyIcon_BalloonTipClicked);
             this.notifyIcon.BalloonTipClosed += new EventHandler(this.NotifyIcon_BalloonTipClosed);
+            this.notifyIcon.DoubleClick += new EventHandler(this.NotifyIcon_DoubleClick);
+
+            this.windowMinimized = true;
 
             // Initialize main manager
             this.manager = new Manager();
-            this.manager.Launch();
+            this.manager.LaunchZune();
         }
 
-        private void CheckForUpdate_Click(object sender, EventArgs e)
+        protected void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            switch (windowMinimized)
+            {
+                case true:
+                    this.manager.ShowZuneWindow();
+                    break;
+                case false:
+                    this.manager.HideZuneWindow();
+                    break;
+            }
+
+            windowMinimized = !windowMinimized;
+        }
+
+        protected void CheckForUpdate_Click(object sender, EventArgs e)
         {
             UpdateChecker.Check();
 
@@ -131,7 +152,7 @@ namespace Zuse
             }
         }
 
-        private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        protected void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
         }
 
@@ -139,14 +160,16 @@ namespace Zuse
         {
         }
 
-        protected void Launch_Click(object sender, EventArgs e)
-        {
-            this.manager.Launch();
-        }
-
         protected void DebugLog_Click(object sender, EventArgs e)
         {
             this.manager.ShowDebugWindow();
+        }
+
+        protected void Settings_Click(object sender, EventArgs e)
+        {
+            FrmSettings frmSettings = new FrmSettings();
+            frmSettings.ShowDialog();
+            frmSettings.Dispose();
         }
 
         protected void About_Click(object sender, EventArgs e)
@@ -158,6 +181,9 @@ namespace Zuse
 
         protected void Exit_Click(object sender, EventArgs e)
         {
+            log.Info("Zuse is closing down!");
+
+            this.manager.CloseZune();
             Application.Exit();
         }
 

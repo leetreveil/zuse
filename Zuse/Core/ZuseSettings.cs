@@ -32,11 +32,18 @@ namespace Zuse.Core
         private static string m_settingsFile;
         // These are actually settings:
         private static bool m_debugMode;
+        private static bool m_minimizeToTray;
 
         public static bool DebugMode
         {
             get { return m_debugMode; }
             set { m_debugMode = value; }
+        }
+
+        public static bool MinimizeToTray
+        {
+            get { return m_minimizeToTray; }
+            set { m_minimizeToTray = value; }
         }
 
         static ZuseSettings()
@@ -45,6 +52,7 @@ namespace Zuse.Core
             m_settingsFile += "\\Zuse\\Settings.xml";
 
             m_debugMode = true;
+            m_minimizeToTray = true;
         }
 
         public static void Load()
@@ -65,6 +73,9 @@ namespace Zuse.Core
                     {
                         case "DebugMode":
                             m_debugMode = bool.Parse(node.Attributes["Value"].Value);
+                            break;
+                        case "MinimizeToTray":
+                            m_minimizeToTray = bool.Parse(node.Attributes["Value"].Value);
                             break;
                         default: continue;
                     }
@@ -97,7 +108,12 @@ namespace Zuse.Core
 
                 xw.WriteStartElement("Setting");
                 xw.WriteAttributeString("Name", "DebugMode");
-                xw.WriteAttributeString("Value", "True");
+                xw.WriteAttributeString("Value", m_debugMode.ToString());
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("Setting");
+                xw.WriteAttributeString("Name", "MinimizeToTray");
+                xw.WriteAttributeString("Value", m_minimizeToTray.ToString());
                 xw.WriteEndElement();
 
                 xw.WriteEndElement();

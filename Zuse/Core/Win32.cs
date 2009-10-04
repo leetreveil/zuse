@@ -23,18 +23,8 @@ using System.Runtime.InteropServices;
 
 namespace Zuse.Core
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct COPYDATASTRUCT
-    {
-        public UIntPtr dwData;
-        public int cbData;
-        public IntPtr data;
-    }
-
     public static class Win32
     {
-        public static readonly int WM_COPYDATA = 74;
-
         [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWow64Process([In] IntPtr hProcess, [Out] out bool lpSystemInfo);

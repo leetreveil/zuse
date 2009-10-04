@@ -32,7 +32,6 @@ namespace Zuse.Web
 {
 	using Zuse.Properties;
 	using Zuse.Scrobbler;
-	using Zuse.Utilities;
 	using Zuse.Forms;
 
 	public class UpdateChecker
