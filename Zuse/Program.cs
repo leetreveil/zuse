@@ -74,11 +74,6 @@ namespace Zuse
             /* Build the context menu for the system tray icon */
             this.contextMenuStrip = new ContextMenuStrip();
 
-            ToolStripMenuItem itemLaunch = new ToolStripMenuItem("Launch Zune");
-            itemLaunch.Click += new EventHandler(this.Launch_Click);
-            this.contextMenuStrip.Items.Add(itemLaunch);
-
-            this.contextMenuStrip.Items.Add(new ToolStripSeparator());
             /* Add the debug log option if the debug mode is on */
             if (ZuseSettings.DebugMode)
             {

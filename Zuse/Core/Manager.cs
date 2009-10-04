@@ -26,6 +26,10 @@ using System.Windows.Forms;
 
 using log4net;
 
+using Microsoft.Iris;
+using ZuneUI;
+using MicrosoftZuneLibrary;
+
 namespace Zuse.Core
 {
     using Zuse.Properties;
@@ -35,8 +39,8 @@ namespace Zuse.Core
 
     class Manager
     {
-        private float currentSongPosition;
         private Song currentSong;
+        private float lastSongPosition;
         private Thread monitorTh;
         private Thread zuneTh;
         private ScrobSub scrobbler;
@@ -52,6 +56,8 @@ namespace Zuse.Core
             this.scrobbler = new ScrobSub();
 
             this.currentSong = new Song();
+
+            this.lastSongPosition = 300f;
         }
 
         public void ShowDebugWindow()
@@ -65,30 +71,13 @@ namespace Zuse.Core
             this.frmDebug.RefreshView();
         }
 
-        private void Zune_PlayingNewTrack(object sender, Song song, float pos, float length)
-        {
-            if (!currentSong.Equals(song))
-            {
-                this.scrobbler.Start(song.Artist, song.Title, song.Album, song.MBID, (int)length, "");
-
-                log.Info(string.Format("Starting song '{0:s}'", song.ToString()));
-
-                currentSong = song;
-                currentSongPosition = pos;
-            }
-        }
-
-        private void Zune_PlaybackStopped(object sender, EventArgs e)
-        {
-            log.Info("Stopped playing");
-
-            this.scrobbler.Stop();
-        }
-
         public void Launch()
         {
             ClientLoader cl = new ClientLoader();
-            if (cl.IsAvailable()) cl.Open();
+            if (cl.IsAvailable())
+            {
+                if (!cl.IsOpen()) cl.Open();
+            }
 
             this.KillZune();
 
@@ -103,36 +92,104 @@ namespace Zuse.Core
         {
             Microsoft.Zune.Shell.ZuneApplication.Launch("", IntPtr.Zero);
 
-            this.monitorTh.Abort();
+            System.Windows.Forms.Application.Exit();
         }
 
         public void KillZune()
         {
             foreach (Process proc in Process.GetProcessesByName("Zune"))
             {
-                log.Info("Killing existing Zune.exe process with PID of " + proc.Id.ToString());
+                log.Info("Killing Zune.exe process with PID of " + proc.Id.ToString());
                 proc.Kill();
+            }
+        }
+
+        private void ZuneNoShow(object sender)
+        {
+        }
+
+        public void NotifyClient()
+        {
+        }
+
+        public Song GetCurrentSong()
+        {
+            LibraryPlaybackTrack track = (LibraryPlaybackTrack)TransportControls.Instance.CurrentTrack;
+
+            AlbumMetadata album = FindAlbumInfoHelper.GetAlbumMetadata(track.AlbumLibraryId);
+
+            Song s = new Song(track.Title, album.AlbumArtist, album.AlbumTitle);
+            s.Length = ZuneUI.TransportControls.Instance.CurrentTrackDuration;
+
+            return s;
+        }
+
+        public float GetCurrentSongPosition()
+        {
+            return ZuneUI.TransportControls.Instance.CurrentTrackPosition;
+        }
+
+        private void ZunePlayer_StatusChanged(object sender, EventArgs e)
+        {
+            string current_uri = MicrosoftZunePlayback.PlayerInterop.Instance.CurrentUri;
+
+            if (current_uri == null) return;
+
+            switch (MicrosoftZunePlayback.PlayerInterop.Instance.TransportState)
+            {
+                case MicrosoftZunePlayback.MCTransportState.Playing:
+                    Song song = GetCurrentSong();
+                    float theshold = this.GetCurrentSongPosition() - this.lastSongPosition;
+                    if (theshold < 1 && theshold >= 0)
+                    {
+                        this.lastSongPosition = 300f;
+                        log.Info(string.Format("Playback resumed - '{0:s}'", song.ToString()));
+                        this.scrobbler.Resume();
+                        return;
+                    }
+                    else
+                    {
+                        if (!currentSong.Equals(song))
+                        {
+                            this.scrobbler.Start(song.Artist, song.Title, song.Album, song.Length, current_uri);
+                            currentSong = song;
+                        }
+                    }
+                    log.Info(string.Format("Playback started - '{0:s}'", song.ToString()));
+                    break;
+                case MicrosoftZunePlayback.MCTransportState.Paused:
+                    this.lastSongPosition = this.GetCurrentSongPosition();
+                    log.Info("Playback paused");
+                    this.scrobbler.Pause();
+                    break;
+                case MicrosoftZunePlayback.MCTransportState.Stopped:
+                    log.Info("Playback stopped");
+                    //this.scrobbler.Stop();
+                    break;
+                default:
+                    break;
             }
         }
 
         private void MonitorThread()
         {
-            Thread.Sleep(2000);
+            while (ZuneUI.ZuneShell.DefaultInstance == null)
+            {
+                Thread.Sleep(500);
+            }
 
-            ZuneUI.TransportControls.Instance.PlaybackStopped += new EventHandler(Zune_PlaybackStopped);
+            EventHandler foo = new EventHandler(ZunePlayer_StatusChanged);
+
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneNoShow), null, DeferredInvokePriority.Normal);
+
+            MicrosoftZunePlayback.PlayerInterop.Instance.TransportStatusChanged += foo;
 
             while (true)
             {
-                if (ZuneUI.TransportControls.Instance.Playing)
+                if (ZuneUI.ZuneShell.DefaultInstance == null)
                 {
-                    if (ZuneUI.TransportControls.Instance.CurrentTrack.IsInCollection)
-                    {
-                        ZuneUI.LibraryPlaybackTrack track = (ZuneUI.LibraryPlaybackTrack)ZuneUI.TransportControls.Instance.CurrentTrack;
-
-                        MicrosoftZuneLibrary.AlbumMetadata album = ZuneUI.FindAlbumInfoHelper.GetAlbumMetadata(track.AlbumLibraryId);
-
-                        this.Zune_PlayingNewTrack(this, new Song(track.Title, album.AlbumArtist, album.AlbumTitle), ZuneUI.TransportControls.Instance.CurrentTrackPosition, ZuneUI.TransportControls.Instance.CurrentTrackDuration);
-                    }
+                    MicrosoftZunePlayback.PlayerInterop.Instance.StatusChanged -= foo;
+                    return;
                 }
 
                 Thread.Sleep(1000);

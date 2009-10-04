@@ -32,11 +32,15 @@ namespace Zuse.Scrobbler
         private string title;
         private string artist;
         private string album;
-        private int length;
-        private string mbid;
+        private float length;
+        private string zuneid;
         
         public Song()
         {
+            this.title = string.Empty;
+            this.artist = string.Empty;
+            this.album = string.Empty;
+            this.zuneid = string.Empty;
         }
 
         public string Title
@@ -57,16 +61,16 @@ namespace Zuse.Scrobbler
             set { this.album = value; }
         }
 
-        public int Length
+        public float Length
         {
             get { return this.length; }
             set { this.length = value; }
         }
 
-        public string MBID
+        public string ZuneID
         {
-            get { return this.mbid; }
-            set { this.mbid = value; }
+            get { return this.zuneid; }
+            set { this.zuneid = value; }
         }
 
         public Song(string title, string artist, string album)
@@ -74,17 +78,17 @@ namespace Zuse.Scrobbler
             this.title = title;
             this.artist = artist;
             this.album = album;
-            this.mbid = string.Empty;
+            this.zuneid = string.Empty;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0:s} - {1:s} - {2:s}", this.title, this.artist, this.album);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0:s} - {1:s}", this.title, this.artist);
         }
 
         public override bool Equals(object obj)

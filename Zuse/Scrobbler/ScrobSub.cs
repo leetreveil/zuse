@@ -73,38 +73,43 @@ namespace Zuse.Scrobbler
             fd.Shutdown(SocketShutdown.Both);
         }
 
-        public void Start(string artist, string track, string album, string mbId, int length, string filename)
+        public void Start(string artist, string track, string album, int length, string filename)
         {
             string osCmd = "START c=" + mPluginId + "&" +
                            "a=" + Escape(artist) + "&" +
                            "t=" + Escape(track) + "&" +
                            "b=" + Escape(album) + "&" +
-                           "m=" + Escape(mbId) + "&" +
+                           "m=" + string.Empty + "&" +
                            "l=" + length.ToString() + "&" +
                            "p=" + Escape(filename);
 
-            SendMessageToClient(osCmd);
+            this.SendMessageToClient(osCmd);
+        }
+
+        public void Start(string artist, string track, string album, float length, string filename)
+        {
+            this.Start(artist, track, album, (int)length, filename);
         }
 
         public void Stop()
         {
             string osCmd = "STOP c=" + mPluginId;
 
-            SendMessageToClient(osCmd);
+            this.SendMessageToClient(osCmd);
         }
 
         public void Pause()
         {
             string osCmd = "PAUSE c=" + mPluginId;
 
-            SendMessageToClient(osCmd);
+            this.SendMessageToClient(osCmd);
         }
 
         public void Resume()
         {
             string osCmd = "RESUME c=" + mPluginId;
 
-            SendMessageToClient(osCmd);
+            this.SendMessageToClient(osCmd);
         }
 
         private void SendMessageToClient(string osCmd)
@@ -115,12 +120,12 @@ namespace Zuse.Scrobbler
 
             try
             {
-                Connect();
+                this.Connect();
 
                 sw.WriteLine(osCmd);
                 sw.Flush();
 
-                Shutdown();
+                this.Shutdown();
             }
             catch (Exception e)
             {

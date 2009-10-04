@@ -70,18 +70,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Zune\UIX.dll</HintPath>
-    </Reference>
-    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Zune\ZuneDBApi.dll</HintPath>
-    </Reference>
-    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\Zune\ZuneShell.dll</HintPath>
-    </Reference>
+    <Reference Include="UIX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64" />
+    <Reference Include="ZuneDBApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64" />
+    <Reference Include="ZuneShell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Manager.cs" />
