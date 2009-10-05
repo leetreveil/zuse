@@ -15,8 +15,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>false</GenerateManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Zuse.ico</ApplicationIcon>
     <StartupObject>
     </StartupObject>
     <PublishUrl>publish\</PublishUrl>
@@ -178,6 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Zuse.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Zuse.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

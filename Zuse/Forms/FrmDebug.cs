@@ -27,8 +27,7 @@ namespace Zuse.Forms
         private void FrmDebug_Load(object sender, EventArgs e)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            Stream stream = asm.GetManifestResourceStream("Zuse.Resources.ZuseIcon.ico");
-            this.Icon = new System.Drawing.Icon(stream);
+            this.Icon = Icon.ExtractAssociatedIcon(asm.Location);
 
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string log_path = appdata_path + "\\Zuse\\Logs\\";

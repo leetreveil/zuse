@@ -33,6 +33,12 @@ namespace Zuse.Forms
             InitializeComponent();
         }
 
+        private void FrmUpdate_Load(object sender, EventArgs e)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            this.Icon = Icon.ExtractAssociatedIcon(asm.Location);
+        }
+
         public void SetDetails(Version new_version)
         {
             Version current_version = Assembly.GetExecutingAssembly().GetName().Version;

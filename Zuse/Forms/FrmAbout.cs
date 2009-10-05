@@ -122,6 +122,8 @@ namespace Zuse.Forms
         private void FrmAbout_Load(object sender, EventArgs e)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
+            this.Icon = Icon.ExtractAssociatedIcon(asm.Location);
+
             StreamReader sr = null;
 
             Stream s1 = asm.GetManifestResourceStream("Zuse.Resources.LICENSE.rtf");

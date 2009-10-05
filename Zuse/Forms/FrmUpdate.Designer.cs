@@ -108,6 +108,7 @@ namespace Zuse.Forms
             this.Name = "FrmUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zuse Update";
+            this.Load += new System.EventHandler(this.FrmUpdate_Load);
             this.grpChangeLog.ResumeLayout(false);
             this.ResumeLayout(false);
 
