@@ -50,6 +50,8 @@ Section "Zuse (required)"
   ; Put file there
   File "Zuse.exe"
   File "log4net.dll"
+  File "Growl.Connector.dll"
+  File "Growl.CoreLibrary.dll"
 
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\Zuse "Install_Dir" "$INSTDIR"
@@ -90,11 +92,10 @@ Section "Uninstall"
   ; Remove files and uninstaller
   Delete $INSTDIR\Zuse.exe
   Delete $INSTDIR\log4net.dll
+  Delete $INSTDIR\Growl.Connector.dll
+  Delete $INSTDIR\Growl.CoreLibrary.dll
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Zuse\*.*"
-
-  ; Remove directories used
-  RMDir "$SMPROGRAMS\Zuse"
 
 SectionEnd

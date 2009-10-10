@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
@@ -26,8 +27,37 @@ using System.Windows.Forms;
 
 namespace Zuse.Forms
 {
+    using Zuse.Core;
+
     public partial class FrmUpdate : Form
     {
+        private string displayedUpdate;
+        private string updateDownloadUrl;
+
+        public string UpdateDownloadUrl
+        {
+            get
+            {
+                return this.updateDownloadUrl;
+            }
+            set
+            {
+                this.updateDownloadUrl = value;
+            }
+        }
+
+        public string DisplayingUpdate
+        {
+            get
+            {
+                return this.displayedUpdate;
+            }
+            set
+            {
+                this.displayedUpdate = value;
+            }
+        }
+
         public FrmUpdate()
         {
             InitializeComponent();
@@ -37,6 +67,15 @@ namespace Zuse.Forms
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             this.Icon = Icon.ExtractAssociatedIcon(asm.Location);
+
+            if (ZuseSettings.UpdateSkipVersions.Contains(this.displayedUpdate))
+            {
+                this.lblSkipThisUpdate.Visible = true;
+            }
+            else
+            {
+                this.lblSkipThisUpdate.Visible = false;
+            }
         }
 
         public void SetDetails(Version new_version)
@@ -46,9 +85,28 @@ namespace Zuse.Forms
             this.lblDetails.Text = string.Format("You have version {0:s}, and {1:s} is available!", current_version.ToString(), new_version.ToString());
         }
 
-        public void SetChangeLog(string text)
+        public void SetChangeLog(string url)
         {
-            this.rtfChangelog.Text = text;
+            this.webBrowserChangelog.Navigate(url);
+        }
+
+        private void btnInstallUpdate_Click(object sender, EventArgs e)
+        {
+            Process.Start(this.updateDownloadUrl);
+        }
+
+        private void btnSkipUpdate_Click(object sender, EventArgs e)
+        {
+            string msg = "If you skip this update, it will no longer appear as Zuse checks for updates on startup. Are you sure?";
+
+            if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                ZuseSettings.UpdateSkipVersions.Add(this.displayedUpdate);
+
+                ZuseSettings.Save();
+
+                this.DialogResult = DialogResult.Cancel;
+            }
         }
     }
 }

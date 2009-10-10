@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml;
 
 using log4net;
 
@@ -36,78 +37,79 @@ namespace Zuse.Web
 
 	public class UpdateChecker
     {
-        private static string baseUpdateCheckUrl = "http://zusefm.org/updates/version.txt";
-        private static string updateChangelog;
-        private static Version updateVersion;
-        private static bool updateAvailable;
-		private static ILog log;
+        private static ILog log;
+
+        private static string m_baseUpdateUrl = "http://zusefm.org/updates/";
+        private static string m_updateCheckFile = "check.php";
+        private static string m_downloadUrl = "";
+        private static Version m_latestVersion;
+        private static Version m_currentVersion;
+        private static WebClient m_webClient;
 
         public static bool UpdateAvailable
         {
             get
             {
-                return updateAvailable;
+                if (m_latestVersion > m_currentVersion) return true;
+                else return false;
+            }
+        }
+
+        public static Version LatestVersion
+        {
+            get
+            {
+                return m_latestVersion;
             }
         }
 
 		static UpdateChecker()
 		{
             log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
+
+            m_currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+            m_webClient = new WebClient();
+            m_webClient.Headers.Add("ZuseVersion", m_currentVersion.ToString());
+
+            m_latestVersion = null;
 		}
 
         public static void Check()
         {
-            Version current_version = Assembly.GetExecutingAssembly().GetName().Version;
-            Version newest_version;
+            XmlDocument xdoc = new XmlDocument();
 
-            WebClient wc = new WebClient();
-            string version_info = wc.DownloadString(baseUpdateCheckUrl);
-            string[] version_s = version_info.Split(new char[] {'\n'});
+            string updateXml = m_webClient.DownloadString(m_baseUpdateUrl + m_updateCheckFile);
+            xdoc.LoadXml(updateXml);
 
-            foreach (string v in version_s)
+            Version v1 = m_currentVersion;
+
+            foreach (XmlNode node in xdoc.GetElementsByTagName("Update"))
             {
-                if (v.Trim() == string.Empty) continue;
+                Version v = new Version(node.Attributes["Version"].Value);
 
-                if (!v.StartsWith("#"))
+                if (v1 < v)
                 {
-                    string[] vs = v.Split('|');
-
-                    /* Format: [0] <CurrentVersion>
-                               [1] <RootUpdateUrl>
-                               [2] <ChangeLogFile> */
-
-                    newest_version = new Version(vs[0]);
-                    updateVersion = (Version)newest_version.Clone();
-                    updateChangelog = vs[1] + vs[2];
-
-                    if (newest_version > current_version) updateAvailable = true;
-                    else if (newest_version == current_version) updateAvailable = false;
-                    else updateAvailable = false; //could have a pre-release version...
+                    v1 = v;
+                    m_downloadUrl = node.Attributes["Root"].Value;
                 }
                 else continue;
             }
 
-            wc.Dispose();
-        }
-
-        public static void DownloadUpdate()
-        {
-            if (!updateAvailable)
-            {
-                throw new Exception("No new update available.");
-            }
+            m_latestVersion = v1;
         }
 
         public static void ShowUpdateDialog()
         {
-            WebClient wc = new WebClient();
+            string changelog_url = m_baseUpdateUrl + "changelog.php";
 
             FrmUpdate frmUpdate = new FrmUpdate();
-            frmUpdate.SetDetails(updateVersion);
-            frmUpdate.SetChangeLog(wc.DownloadString(updateChangelog));
+            frmUpdate.DisplayingUpdate = m_latestVersion.ToString();
+            frmUpdate.UpdateDownloadUrl = m_downloadUrl;
+            frmUpdate.SetDetails(m_latestVersion);
+            frmUpdate.SetChangeLog(changelog_url);
             frmUpdate.ShowDialog();
-
-            wc.Dispose();
+            frmUpdate.Dispose();
         }
 	}
 }

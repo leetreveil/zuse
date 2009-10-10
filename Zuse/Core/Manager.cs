@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -30,6 +31,8 @@ using ZuneUI;
 using MicrosoftZuneLibrary;
 using MicrosoftZunePlayback;
 
+using Growl.Connector;
+
 namespace Zuse.Core
 {
     using Zuse.Properties;
@@ -38,6 +41,8 @@ namespace Zuse.Core
 
     class Manager
     {
+        private Growl.Connector.Application growlZuseApp;
+        private GrowlConnector growl;
         private Song currentSong;
         private float lastSongPosition;
         private Thread monitorTh;
@@ -57,6 +62,32 @@ namespace Zuse.Core
             this.currentSong = new Song();
 
             this.lastSongPosition = 300f;
+
+            this.InitGrowler();
+        }
+
+        public void InitGrowler()
+        {
+            this.growl = new GrowlConnector();
+
+            if (growl.IsGrowlRunning())
+            {
+                this.log.Info("Growl is running");
+
+                this.growlZuseApp = new Growl.Connector.Application("Zune");
+                this.growlZuseApp.Icon = Icon.ExtractAssociatedIcon("Zune.exe").ToBitmap();
+                
+                NotificationType notifyTypeOpen = new NotificationType("Zune Opening");
+                NotificationType notifyTypeClose = new NotificationType("Zune Closing");
+                NotificationType notifyTypePlaying = new NotificationType("Zune Now Playing");
+                NotificationType[] notificationTypes = new NotificationType[] { notifyTypeOpen, notifyTypeClose, notifyTypePlaying };
+
+                this.growl.Register(this.growlZuseApp, notificationTypes);
+            }
+            else
+            {
+                this.log.Info("Growl is not running, disabling support temporarily.");
+            }
         }
 
         public void ShowDebugWindow()
@@ -94,6 +125,10 @@ namespace Zuse.Core
 
         public void CloseZune()
         {
+            if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
+            {
+                this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Closing", "0", "Zune", "Zune is closing"));
+            }
             Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(CloseZune_Do), null, DeferredInvokePriority.Normal);
         }
 
@@ -161,6 +196,11 @@ namespace Zuse.Core
 
         private void ZuneWindow_Setup(object sender)
         {
+            if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
+            {
+                this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Opening", "0", "Zune", "Zune is opening"));
+            }
+
             Microsoft.Iris.Application.Window.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
         }
 
@@ -206,8 +246,12 @@ namespace Zuse.Core
                             this.scrobbler.Start(song.Artist, song.Title, song.Album, song.Length, current_uri);
                             currentSong = song;
                         }
+                        log.Info(string.Format("Playback started - '{0:s}'", song.ToString()));
                     }
-                    log.Info(string.Format("Playback started - '{0:s}'", song.ToString()));
+                    if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
+                    {
+                        this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Now Playing", "0", "Now Playing", song.ToString()));
+                    }
                     break;
                 case MicrosoftZunePlayback.MCTransportState.Paused:
                     this.lastSongPosition = this.GetCurrentSongPosition();

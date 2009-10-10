@@ -1,5 +1,6 @@
 @echo off
 
-del References\*.dll
+del References\UIX*.dll
+del References\Zune*.dll
 
 pause

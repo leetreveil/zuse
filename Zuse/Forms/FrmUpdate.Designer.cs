@@ -46,25 +46,15 @@ namespace Zuse.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.rtfChangelog = new System.Windows.Forms.RichTextBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblDetails = new System.Windows.Forms.Label();
             this.grpChangeLog = new System.Windows.Forms.GroupBox();
+            this.webBrowserChangelog = new System.Windows.Forms.WebBrowser();
+            this.btnSkipUpdate = new System.Windows.Forms.Button();
+            this.btnInstallUpdate = new System.Windows.Forms.Button();
+            this.lblSkipThisUpdate = new System.Windows.Forms.Label();
             this.grpChangeLog.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rtfChangelog
-            // 
-            this.rtfChangelog.BackColor = System.Drawing.SystemColors.Control;
-            this.rtfChangelog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtfChangelog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtfChangelog.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtfChangelog.Location = new System.Drawing.Point(3, 16);
-            this.rtfChangelog.Name = "rtfChangelog";
-            this.rtfChangelog.ReadOnly = true;
-            this.rtfChangelog.Size = new System.Drawing.Size(588, 174);
-            this.rtfChangelog.TabIndex = 0;
-            this.rtfChangelog.Text = "";
             // 
             // lblTitle
             // 
@@ -88,23 +78,78 @@ namespace Zuse.Forms
             // 
             // grpChangeLog
             // 
-            this.grpChangeLog.Controls.Add(this.rtfChangelog);
-            this.grpChangeLog.Location = new System.Drawing.Point(13, 117);
+            this.grpChangeLog.Controls.Add(this.webBrowserChangelog);
+            this.grpChangeLog.Font = new System.Drawing.Font("Tahoma", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpChangeLog.Location = new System.Drawing.Point(13, 111);
             this.grpChangeLog.Name = "grpChangeLog";
-            this.grpChangeLog.Size = new System.Drawing.Size(594, 193);
+            this.grpChangeLog.Size = new System.Drawing.Size(594, 189);
             this.grpChangeLog.TabIndex = 3;
             this.grpChangeLog.TabStop = false;
             this.grpChangeLog.Text = "Change Log";
             // 
+            // webBrowserChangelog
+            // 
+            this.webBrowserChangelog.AllowNavigation = false;
+            this.webBrowserChangelog.AllowWebBrowserDrop = false;
+            this.webBrowserChangelog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowserChangelog.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowserChangelog.Location = new System.Drawing.Point(3, 17);
+            this.webBrowserChangelog.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowserChangelog.Name = "webBrowserChangelog";
+            this.webBrowserChangelog.ScriptErrorsSuppressed = true;
+            this.webBrowserChangelog.Size = new System.Drawing.Size(588, 169);
+            this.webBrowserChangelog.TabIndex = 0;
+            // 
+            // btnSkipUpdate
+            // 
+            this.btnSkipUpdate.Location = new System.Drawing.Point(516, 312);
+            this.btnSkipUpdate.Name = "btnSkipUpdate";
+            this.btnSkipUpdate.Size = new System.Drawing.Size(91, 23);
+            this.btnSkipUpdate.TabIndex = 4;
+            this.btnSkipUpdate.Text = "Skip this update";
+            this.btnSkipUpdate.UseVisualStyleBackColor = true;
+            this.btnSkipUpdate.Click += new System.EventHandler(this.btnSkipUpdate_Click);
+            // 
+            // btnInstallUpdate
+            // 
+            this.btnInstallUpdate.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnInstallUpdate.Location = new System.Drawing.Point(406, 312);
+            this.btnInstallUpdate.Name = "btnInstallUpdate";
+            this.btnInstallUpdate.Size = new System.Drawing.Size(104, 23);
+            this.btnInstallUpdate.TabIndex = 5;
+            this.btnInstallUpdate.Text = "Download update";
+            this.btnInstallUpdate.UseVisualStyleBackColor = true;
+            this.btnInstallUpdate.Click += new System.EventHandler(this.btnInstallUpdate_Click);
+            // 
+            // lblSkipThisUpdate
+            // 
+            this.lblSkipThisUpdate.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSkipThisUpdate.ForeColor = System.Drawing.Color.Red;
+            this.lblSkipThisUpdate.Location = new System.Drawing.Point(10, 314);
+            this.lblSkipThisUpdate.Name = "lblSkipThisUpdate";
+            this.lblSkipThisUpdate.Size = new System.Drawing.Size(390, 17);
+            this.lblSkipThisUpdate.TabIndex = 6;
+            this.lblSkipThisUpdate.Text = "You have previously chosen to skip this update.";
+            this.lblSkipThisUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FrmUpdate
             // 
+            this.AcceptButton = this.btnInstallUpdate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 322);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.ClientSize = new System.Drawing.Size(619, 347);
+            this.Controls.Add(this.lblSkipThisUpdate);
+            this.Controls.Add(this.btnInstallUpdate);
+            this.Controls.Add(this.btnSkipUpdate);
             this.Controls.Add(this.grpChangeLog);
             this.Controls.Add(this.lblDetails);
             this.Controls.Add(this.lblTitle);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zuse Update";
@@ -116,9 +161,12 @@ namespace Zuse.Forms
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox rtfChangelog;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblDetails;
         private System.Windows.Forms.GroupBox grpChangeLog;
+        private System.Windows.Forms.Button btnSkipUpdate;
+        private System.Windows.Forms.Button btnInstallUpdate;
+        private System.Windows.Forms.WebBrowser webBrowserChangelog;
+        private System.Windows.Forms.Label lblSkipThisUpdate;
     }
 }

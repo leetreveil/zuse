@@ -109,13 +109,6 @@ namespace Zuse.Forms
             log.Info("Testing FrmDebug automatic refreshing");
         }
 
-        private void ShowItemsDetailsDialog()
-        {
-            FrmDetails frmDetails = new FrmDetails();
-            frmDetails.ShowDialog();
-            frmDetails.Dispose();
-        }
-
         private void btnOpenLogsDirectory_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", "/root," + Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse\\Logs");

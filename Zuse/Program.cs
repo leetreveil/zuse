@@ -212,9 +212,6 @@ namespace Zuse
             string log_path = appdata_path + "\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
             string settings_path = appdata_path + "\\Settings.xml";
 
-            if (!File.Exists(settings_path)) ZuseSettings.Save();
-            else ZuseSettings.Load();
-
             RollingFileAppender rfa = new RollingFileAppender();
             rfa.AppendToFile = true;
             rfa.File = log_path;
@@ -228,11 +225,20 @@ namespace Zuse
             ILoggerRepository repo = LogManager.CreateRepository("Zuse");
             BasicConfigurator.Configure(repo, rfa);
 
-            UpdateChecker.Check();
+            if (!File.Exists(settings_path)) ZuseSettings.Save();
+            else ZuseSettings.Load();
 
-            if (UpdateChecker.UpdateAvailable)
+            if (ZuseSettings.CheckForUpdates)
             {
-                UpdateChecker.ShowUpdateDialog();
+                UpdateChecker.Check();
+
+                if (UpdateChecker.UpdateAvailable)
+                {
+                    if (!ZuseSettings.UpdateSkipVersions.Contains(UpdateChecker.LatestVersion.ToString()))
+                    {
+                        UpdateChecker.ShowUpdateDialog();
+                    }
+                }
             }
 
             Program zuse = new Program();
