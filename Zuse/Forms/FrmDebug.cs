@@ -19,6 +19,8 @@ namespace Zuse.Forms
 
     public partial class FrmDebug : Form
     {
+        private string log_path;
+
         public FrmDebug()
         {
             InitializeComponent();
@@ -30,11 +32,11 @@ namespace Zuse.Forms
             this.Icon = Icon.ExtractAssociatedIcon(asm.Location);
 
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string log_path = appdata_path + "\\Zuse\\Logs\\";
+            log_path = appdata_path + "\\Zuse\\Logs\\";
 
             this.fileSystemWatcher.Changed += new System.IO.FileSystemEventHandler(FileSystemWatcher_Changed);
             this.fileSystemWatcher.Path = log_path;
-            this.fileSystemWatcher.Filter = "*.xml";
+            this.fileSystemWatcher.Filter = "*";
             this.fileSystemWatcher.EnableRaisingEvents = true;
 
             this.RefreshView();
@@ -53,7 +55,7 @@ namespace Zuse.Forms
 
         public void RefreshView()
         {
-            foreach (string fn in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse\\Logs\\", "*.xml", SearchOption.AllDirectories))
+            foreach (string fn in Directory.GetFiles(log_path, "*", SearchOption.AllDirectories))
             {
                 FileInfo fi = new FileInfo(fn);
 
@@ -75,26 +77,35 @@ namespace Zuse.Forms
         {
             this.lstMessages.Items.Clear();
 
-            FileInfo currentlog = (FileInfo)this.cmbLogFile.SelectedItem;
-
-            XmlDocument xdoc = new XmlDocument();
-            XmlElement rootel = xdoc.CreateElement("Root");
-            rootel.InnerXml = File.ReadAllText(currentlog.FullName);
-
-            foreach (object obj in rootel)
+            while (true)
             {
-                if (obj is XmlElement)
+                try
                 {
-                    XmlElement el = (XmlElement)obj;
+                    FileInfo currentlog = (FileInfo)this.cmbLogFile.SelectedItem;
 
-                    ListViewItem lvi = new ListViewItem();
-                    lvi.Text = DateTime.Parse(el.Attributes["timestamp"].Value).ToLongTimeString();
-                    lvi.SubItems.Add(el.Attributes["level"].Value);
-                    lvi.SubItems.Add(el["message"].InnerText);
-                    lvi.Tag = el;
+                    XmlDocument xdoc = new XmlDocument();
+                    XmlElement rootel = xdoc.CreateElement("Root");
+                    rootel.InnerXml = File.ReadAllText(currentlog.FullName);
 
-                    this.lstMessages.Items.Add(lvi);
+                    foreach (object obj in rootel)
+                    {
+                        if (obj is XmlElement)
+                        {
+                            XmlElement el = (XmlElement)obj;
+
+                            ListViewItem lvi = new ListViewItem();
+                            lvi.Text = DateTime.Parse(el.Attributes["timestamp"].Value).ToLongTimeString();
+                            lvi.SubItems.Add(el.Attributes["level"].Value);
+                            lvi.SubItems.Add(el["message"].InnerText);
+                            lvi.Tag = el;
+
+                            this.lstMessages.Items.Add(lvi);
+                        }
+                    }
+
+                    break;
                 }
+                catch { }
             }
         }
 

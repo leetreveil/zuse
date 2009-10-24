@@ -26,12 +26,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
-using log4net.Repository;
-
 namespace Zuse
 {
     using Zuse.Core;
@@ -44,13 +38,10 @@ namespace Zuse
         private Manager manager;
         private NotifyIcon notifyIcon;
         private ContextMenuStrip contextMenuStrip;
-        private ILog log;
         private bool windowMinimized;
 
         public Program()
         {
-            Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-
             ClientLoader cl = new ClientLoader();
 
             if (!cl.IsOpen())
@@ -66,8 +57,7 @@ namespace Zuse
                 }
             }
 
-            log = LogManager.GetLogger("Zuse", typeof(Zuse.Program));
-            log.Info("Zuse is starting up!");
+            Logger.Send(this.GetType(), LogLevel.Info, "Zuse is starting up!");
 
             /* Build the context menu for the system tray icon */
             this.contextMenuStrip = new ContextMenuStrip();
@@ -112,11 +102,9 @@ namespace Zuse
             this.notifyIcon.Visible = true;
             this.notifyIcon.Text = "Zuse";
             this.notifyIcon.ContextMenuStrip = this.contextMenuStrip;
-            this.notifyIcon.BalloonTipClicked += new EventHandler(this.NotifyIcon_BalloonTipClicked);
-            this.notifyIcon.BalloonTipClosed += new EventHandler(this.NotifyIcon_BalloonTipClosed);
             this.notifyIcon.DoubleClick += new EventHandler(this.NotifyIcon_DoubleClick);
 
-            this.windowMinimized = true;
+            this.windowMinimized = false;
 
             // Initialize main manager
             this.manager = new Manager();
@@ -152,14 +140,6 @@ namespace Zuse
             }
         }
 
-        protected void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
-        {
-        }
-
-        protected void NotifyIcon_BalloonTipClosed(object sender, EventArgs e)
-        {
-        }
-
         protected void DebugLog_Click(object sender, EventArgs e)
         {
             this.manager.ShowDebugWindow();
@@ -181,18 +161,11 @@ namespace Zuse
 
         protected void Exit_Click(object sender, EventArgs e)
         {
-            log.Info("Zuse is closing down!");
+            Logger.Send(this.GetType(), LogLevel.Info, "Zuse is closing down!");
 
             this.manager.CloseZune();
-            Application.Exit();
-        }
 
-        protected void Application_ApplicationExit(object sender, EventArgs e)
-        {
-            try
-            {
-            }
-            catch { }
+            Application.Exit();
         }
 
         /// <summary>
@@ -209,24 +182,15 @@ namespace Zuse
             {
                 Directory.CreateDirectory(appdata_path);
             }
-            string log_path = appdata_path + "\\Logs\\" + DateTime.Today.ToShortDateString().Replace('/', '-') + ".xml";
+            string log_path = appdata_path + "\\Logs\\";
             string settings_path = appdata_path + "\\Settings.xml";
 
-            RollingFileAppender rfa = new RollingFileAppender();
-            rfa.AppendToFile = true;
-            rfa.File = log_path;
-            rfa.StaticLogFileName = true;
-            rfa.Layout = new log4net.Layout.XmlLayout();
-            rfa.MaxFileSize = 1024 * 1024;
-            rfa.Threshold = Level.All;
-            rfa.LockingModel = new FileAppender.MinimalLock();
-            rfa.ActivateOptions();
-
-            ILoggerRepository repo = LogManager.CreateRepository("Zuse");
-            BasicConfigurator.Configure(repo, rfa);
+            Logger.Init(log_path);
 
             if (!File.Exists(settings_path)) ZuseSettings.Save();
             else ZuseSettings.Load();
+
+            if (ZuseSettings.UseGrowl) Growler.Init();
 
             if (ZuseSettings.CheckForUpdates)
             {

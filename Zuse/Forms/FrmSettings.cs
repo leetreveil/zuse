@@ -48,6 +48,19 @@ namespace Zuse.Forms
             this.chkDebugMode.Checked = ZuseSettings.DebugMode;
             this.chkMinimizeToTray.Checked = ZuseSettings.MinimizeToTray;
             this.chkUseGrowl.Checked = ZuseSettings.UseGrowl;
+            this.cmbGrowlLevel.Items.Add("All messages");
+            this.cmbGrowlLevel.Items.Add("Warning and error messages");
+            this.cmbGrowlLevel.Items.Add("Only error messages");
+            this.cmbGrowlLevel.SelectedIndex = ZuseSettings.LoggerGrowlLevel;
+            this.cmbTrackDisplayFmt.Items.Add("%artist% - %album% - %title%");
+            this.cmbTrackDisplayFmt.Items.Add("%artist% - %title%");
+            this.cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist%");
+            this.cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist% in \"%album%\"");
+            if (!this.cmbTrackDisplayFmt.Items.Contains(ZuseSettings.TrackDisplayFormat))
+            {
+                this.cmbTrackDisplayFmt.Items.Add(ZuseSettings.TrackDisplayFormat);
+            }
+            this.cmbTrackDisplayFmt.SelectedText = ZuseSettings.TrackDisplayFormat;
         }
 
         private void btnClearSkips_Click(object sender, EventArgs e)
@@ -62,8 +75,23 @@ namespace Zuse.Forms
             ZuseSettings.DebugMode = this.chkDebugMode.Checked;
             ZuseSettings.MinimizeToTray = this.chkMinimizeToTray.Checked;
             ZuseSettings.UseGrowl = this.chkUseGrowl.Checked;
+            ZuseSettings.LoggerGrowlLevel = this.cmbGrowlLevel.SelectedIndex;
+            ZuseSettings.TrackDisplayFormat = this.cmbTrackDisplayFmt.Text;
 
             ZuseSettings.Save();
+        }
+
+        private void chkMinimizeToTray_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.chkMinimizeToTray.Checked)
+            {
+                string msg = "Zuse may cause the Zune software to become buggy if you use the Zune Software's built-in Mini Player. Are you sure?";
+
+                if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                {
+                    this.chkMinimizeToTray.Checked = false;
+                }
+            }
         }
     }
 }

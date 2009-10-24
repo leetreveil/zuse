@@ -25,6 +25,8 @@ using System.Text;
 using System.Reflection;
 using System.Windows.Forms;
 
+using Microsoft.Win32;
+
 namespace Zuse.Forms
 {
     using Zuse.Core;
@@ -88,6 +90,8 @@ namespace Zuse.Forms
         public void SetChangeLog(string url)
         {
             this.webBrowserChangelog.Navigate(url);
+
+            this.webBrowserChangelog.Navigating += new WebBrowserNavigatingEventHandler(webBrowserChangelog_Navigating);
         }
 
         private void btnInstallUpdate_Click(object sender, EventArgs e)
@@ -97,16 +101,25 @@ namespace Zuse.Forms
 
         private void btnSkipUpdate_Click(object sender, EventArgs e)
         {
-            string msg = "If you skip this update, it will no longer appear as Zuse checks for updates on startup. Are you sure?";
-
-            if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (!this.lblSkipThisUpdate.Visible)
             {
-                ZuseSettings.UpdateSkipVersions.Add(this.displayedUpdate);
+                string msg = "If you skip this update, it will no longer appear as Zuse checks for updates on startup. Are you sure?";
 
-                ZuseSettings.Save();
+                if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    ZuseSettings.UpdateSkipVersions.Add(this.displayedUpdate);
 
-                this.DialogResult = DialogResult.Cancel;
+                    ZuseSettings.Save();
+                }
             }
+
+            this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void webBrowserChangelog_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            Process.Start(e.Url.ToString());
+            e.Cancel = true;
         }
     }
 }

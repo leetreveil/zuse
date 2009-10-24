@@ -40,12 +40,9 @@ namespace Zuse.Scrobbler
         private NetworkStream ns;
         private StreamWriter sw;
         private StreamReader sr;
-        private ILog log;
 
         public ScrobSub()
         {
-            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Scrobbler.ScrobSub));
-
             this.SendMessageToClient("BOOTSTRAP c=" + mPluginId + "&" + "&u=");
         }
 
@@ -61,7 +58,7 @@ namespace Zuse.Scrobbler
             }
             catch (Exception e)
             {
-                this.log.Error("Could not connect to Last.fm software", e);
+                Logger.Send(this.GetType(), LogLevel.Error, "Could not connect to Last.fm software", e);
             }
         }
 
@@ -129,7 +126,7 @@ namespace Zuse.Scrobbler
             }
             catch (Exception e)
             {
-                this.log.Error("Could not send message to Last.fm software", e);
+                Logger.Send(this.GetType(), LogLevel.Error, "Could not send messaege to Last.fm software", e);
             }
         }
 

@@ -31,8 +31,6 @@ using ZuneUI;
 using MicrosoftZuneLibrary;
 using MicrosoftZunePlayback;
 
-using Growl.Connector;
-
 namespace Zuse.Core
 {
     using Zuse.Properties;
@@ -41,53 +39,22 @@ namespace Zuse.Core
 
     class Manager
     {
-        private Growl.Connector.Application growlZuseApp;
-        private GrowlConnector growl;
-        private Song currentSong;
-        private float lastSongPosition;
+        private ZuneTrack currentTrack;
+        private float lastTrackPosition;
         private Thread monitorTh;
         private Thread zuneTh;
         private ScrobSub scrobbler;
         private FrmDebug frmDebug;
-        private ILog log;
 
         public Manager()
         {
-            this.log = LogManager.GetLogger("Zuse", typeof(Zuse.Core.Manager));
-
             this.frmDebug = new FrmDebug();
 
             this.scrobbler = new ScrobSub();
 
-            this.currentSong = new Song();
+            this.currentTrack = new ZuneTrack();
 
-            this.lastSongPosition = 300f;
-
-            this.InitGrowler();
-        }
-
-        public void InitGrowler()
-        {
-            this.growl = new GrowlConnector();
-
-            if (growl.IsGrowlRunning())
-            {
-                this.log.Info("Growl is running");
-
-                this.growlZuseApp = new Growl.Connector.Application("Zune");
-                this.growlZuseApp.Icon = Icon.ExtractAssociatedIcon("Zune.exe").ToBitmap();
-                
-                NotificationType notifyTypeOpen = new NotificationType("Zune Opening");
-                NotificationType notifyTypeClose = new NotificationType("Zune Closing");
-                NotificationType notifyTypePlaying = new NotificationType("Zune Now Playing");
-                NotificationType[] notificationTypes = new NotificationType[] { notifyTypeOpen, notifyTypeClose, notifyTypePlaying };
-
-                this.growl.Register(this.growlZuseApp, notificationTypes);
-            }
-            else
-            {
-                this.log.Info("Growl is not running, disabling support temporarily.");
-            }
+            this.lastTrackPosition = 300f;
         }
 
         public void ShowDebugWindow()
@@ -125,16 +92,14 @@ namespace Zuse.Core
 
         public void CloseZune()
         {
-            if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
-            {
-                this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Closing", "0", "Zune", "Zune is closing"));
-            }
             Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(CloseZune_Do), null, DeferredInvokePriority.Normal);
         }
 
         public void ZuneThread()
         {
             Microsoft.Zune.Shell.ZuneApplication.Launch("", IntPtr.Zero);
+
+            Growler.Notify("Program Closing", "Zune", "Zune is closing");
 
             System.Windows.Forms.Application.Exit();
         }
@@ -143,8 +108,13 @@ namespace Zuse.Core
         {
             foreach (Process proc in Process.GetProcessesByName("Zune"))
             {
-                log.Info("Killing Zune.exe process with PID of " + proc.Id.ToString());
-                proc.Kill();
+                string msg = "The Zune software is already running without Zuse loaded, would you like to close the existing open instance of Zune?";
+
+                if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Logger.Send(this.GetType(), LogLevel.Info, "Killing Zune.exe process with PID of " + proc.Id.ToString());
+                    proc.Kill();
+                }
             }
         }
 
@@ -196,32 +166,17 @@ namespace Zuse.Core
 
         private void ZuneWindow_Setup(object sender)
         {
-            if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
-            {
-                this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Opening", "0", "Zune", "Zune is opening"));
-            }
+            Growler.Notify("Program Opening", "Zune", "Zune is opening");
 
             Microsoft.Iris.Application.Window.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
         }
 
-        public Song GetCurrentSong()
-        {
-            LibraryPlaybackTrack track = (LibraryPlaybackTrack)TransportControls.Instance.CurrentTrack;
-
-            AlbumMetadata album = FindAlbumInfoHelper.GetAlbumMetadata(track.AlbumLibraryId);
-
-            Song s = new Song(track.Title, album.AlbumArtist, album.AlbumTitle);
-            s.Length = ZuneUI.TransportControls.Instance.CurrentTrackDuration;
-
-            return s;
-        }
-
-        public float GetCurrentSongPosition()
+        public float GetCurrentTrackPosition()
         {
             return ZuneUI.TransportControls.Instance.CurrentTrackPosition;
         }
 
-        private void ZunePlayer_StatusChanged(object sender, EventArgs e)
+        private void UpdateClient()
         {
             string current_uri = MicrosoftZunePlayback.PlayerInterop.Instance.CurrentUri;
 
@@ -230,41 +185,52 @@ namespace Zuse.Core
             switch (MicrosoftZunePlayback.PlayerInterop.Instance.TransportState)
             {
                 case MicrosoftZunePlayback.MCTransportState.Playing:
-                    Song song = GetCurrentSong();
-                    float theshold = this.GetCurrentSongPosition() - this.lastSongPosition;
+                    ZuneTrack track = ZuneTrack.GetFromCurrentTrack();
+                    if (track == null) return;
+                    float theshold = this.GetCurrentTrackPosition() - this.lastTrackPosition;
                     if (theshold < 1 && theshold >= 0)
                     {
-                        this.lastSongPosition = 300f;
-                        log.Info(string.Format("Playback resumed - '{0:s}'", song.ToString()));
+                        this.lastTrackPosition = 300f;
+                        Logger.Send(this.GetType(), LogLevel.Info, string.Format("Playback resumed - {0:s}", track.ToString()));
                         this.scrobbler.Resume();
                         return;
                     }
                     else
                     {
-                        if (!currentSong.Equals(song))
+                        if (!currentTrack.Equals(track))
                         {
-                            this.scrobbler.Start(song.Artist, song.Title, song.Album, song.Length, current_uri);
-                            currentSong = song;
+                            this.scrobbler.Start(track.Artist, track.Title, track.Album, track.Length, current_uri);
+                            currentTrack = track;
                         }
-                        log.Info(string.Format("Playback started - '{0:s}'", song.ToString()));
+                        Logger.Send(this.GetType(), LogLevel.Info, string.Format("Playback started - {0:s}", track.ToString()));
                     }
-                    if (ZuseSettings.UseGrowl && this.growlZuseApp != null)
-                    {
-                        this.growl.Notify(new Growl.Connector.Notification(this.growlZuseApp.Name, "Zune Now Playing", "0", "Now Playing", song.ToString()));
-                    }
+                    Growler.Notify("Now Playing", "Now Playing", track.ToString(), track.CoverUrl);
                     break;
                 case MicrosoftZunePlayback.MCTransportState.Paused:
-                    this.lastSongPosition = this.GetCurrentSongPosition();
-                    log.Info("Playback paused");
+                    this.lastTrackPosition = this.GetCurrentTrackPosition();
+                    Logger.Send(this.GetType(), LogLevel.Info, "Playback paused");
                     this.scrobbler.Pause();
                     break;
                 case MicrosoftZunePlayback.MCTransportState.Stopped:
-                    log.Info("Playback stopped");
+                    Logger.Send(this.GetType(), LogLevel.Info, "Playback stopped");
                     this.scrobbler.Stop();
                     break;
                 default:
                     break;
             }
+        }
+
+        private void ZunePlayer_UriSet(object sender, EventArgs e)
+        {
+            //Logger.Send(this.GetType(), LogLevel.Info, "Playback track changed to " + ZuneTrack.GetFromCurrentTrack().ToString());
+            Logger.Send(this.GetType(), LogLevel.Info, "Playback URI changed to " + PlayerInterop.Instance.CurrentUri);
+
+            UpdateClient();
+        }
+
+        private void ZunePlayer_StatusChanged(object sender, EventArgs e)
+        {
+            UpdateClient();
         }
 
         private void MonitorThread()
@@ -273,12 +239,13 @@ namespace Zuse.Core
             {
                 Thread.Sleep(500);
             }
+            
+            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_Setup), null, DeferredInvokePriority.Normal);
 
             EventHandler foo = new EventHandler(ZunePlayer_StatusChanged);
 
-            Microsoft.Iris.Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_Setup), null, DeferredInvokePriority.Normal);
-
             PlayerInterop.Instance.TransportStatusChanged += foo;
+            PlayerInterop.Instance.UriSet += new EventHandler(ZunePlayer_UriSet);
 
             while (true)
             {

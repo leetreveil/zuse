@@ -89,7 +89,6 @@ namespace Zuse.Forms
             // 
             // webBrowserChangelog
             // 
-            this.webBrowserChangelog.AllowNavigation = false;
             this.webBrowserChangelog.AllowWebBrowserDrop = false;
             this.webBrowserChangelog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowserChangelog.IsWebBrowserContextMenuEnabled = false;

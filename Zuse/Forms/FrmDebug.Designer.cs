@@ -123,6 +123,7 @@ namespace Zuse.Forms
             // 
             // btnOpenLogsDirectory
             // 
+            this.btnOpenLogsDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenLogsDirectory.Location = new System.Drawing.Point(622, 12);
             this.btnOpenLogsDirectory.Name = "btnOpenLogsDirectory";
             this.btnOpenLogsDirectory.Size = new System.Drawing.Size(110, 23);

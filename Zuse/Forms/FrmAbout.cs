@@ -137,7 +137,7 @@ namespace Zuse.Forms
             this.rtfThirdParties.Rtf = sr.ReadToEnd();
             sr.Close();
 
-            this.webBrowserDonors.Navigate("http://zuse.nfshost.com/donors/");
+            this.webBrowserDonors.Navigate("http://zusefm.org/donors/");
         }
 
         private void linkLabelJoinGroup1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

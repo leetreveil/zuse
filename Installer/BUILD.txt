@@ -1,0 +1,6 @@
+===== Zuse Installer Build Readme =====
+
+***** Build instructions *****
+
+See 'BUILD.txt'
+

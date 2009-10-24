@@ -21,9 +21,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Text;
-using System.Xml;
 using System.Windows.Forms;
+using System.Web;
+using System.Xml;
 
 using log4net;
 
@@ -90,7 +92,6 @@ namespace Zuse.Core
             }
         }
 
-        private static ILog log;
         // Where the settings file is:
         private static string m_settingsFile;
         // These are actually settings:
@@ -98,7 +99,15 @@ namespace Zuse.Core
         private static bool m_minimizeToTray;
         private static bool m_checkForUpdates;
         private static bool m_useGrowl;
+        private static int m_loggerGrowlLevel;
+        private static string m_trackDisplayFormat;
         private static StringCollection m_updateSkipVersions;
+
+        public static string TrackDisplayFormat
+        {
+            get { return m_trackDisplayFormat; }
+            set { m_trackDisplayFormat = value; }
+        }
 
         public static bool DebugMode
         {
@@ -124,6 +133,12 @@ namespace Zuse.Core
             set { m_useGrowl = value; }
         }
 
+        public static int LoggerGrowlLevel
+        {
+            get { return m_loggerGrowlLevel; }
+            set { m_loggerGrowlLevel = value; }
+        }
+
         public static StringCollection UpdateSkipVersions
         {
             get { return m_updateSkipVersions; }
@@ -132,15 +147,23 @@ namespace Zuse.Core
 
         static ZuseSettings()
         {
-            log = LogManager.GetLogger("Zuse", typeof(Zuse.Core.ZuseSettings));
-
             m_settingsFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             m_settingsFile += "\\Zuse\\Settings.xml";
 
+            LoadDefaults();
+        }
+
+        /// <summary>
+        /// Loads the default Zuse settings.
+        /// </summary>
+        public static void LoadDefaults()
+        {
             m_debugMode = true;
             m_minimizeToTray = false;
             m_checkForUpdates = true;
             m_useGrowl = false;
+            m_loggerGrowlLevel = 1;
+            m_trackDisplayFormat = "%artist% - %album% - %title%";
             m_updateSkipVersions = new StringCollection();
         }
 
@@ -151,9 +174,6 @@ namespace Zuse.Core
                 XmlTextReader x = new XmlTextReader(m_settingsFile);
                 XmlDocument xdoc = new XmlDocument();
                 xdoc.Load(x);
-
-                // Load version of settings file:
-                //m_version = xdoc.GetElementsByTagName("Version")[0].InnerText;
 
                 // Now load the actual settings:
                 foreach (XmlNode node in xdoc.GetElementsByTagName("Setting"))
@@ -172,6 +192,12 @@ namespace Zuse.Core
                         case "UseGrowl":
                             m_useGrowl = bool.Parse(node.Attributes["Value"].Value);
                             break;
+                        case "LoggerGrowlLevel":
+                            m_loggerGrowlLevel = int.Parse(node.Attributes["Value"].Value);
+                            break;
+                        case "TrackDisplayFormat":
+                            m_trackDisplayFormat = HttpUtility.HtmlDecode(node.Attributes["Value"].Value);
+                            break;
                         case "UpdateSkipVersions":
                             m_updateSkipVersions = StringCollection.FromString(node.Attributes["Value"].Value);
                             break;
@@ -180,10 +206,12 @@ namespace Zuse.Core
                 }
 
                 x.Close();
+
+                Logger.Send(typeof(ZuseSettings), LogLevel.Info, "Zuse settings have been loaded successfully");
             }
             catch (Exception e)
             {
-                log.Error(e.Message, e);
+                Logger.Send(typeof(ZuseSettings), LogLevel.Error, e.Message, e);
             }
         }
 
@@ -199,8 +227,6 @@ namespace Zuse.Core
 
                 xw.WriteStartDocument();
                 xw.WriteStartElement("Zuse");
-
-                xw.WriteElementString("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
                 xw.WriteStartElement("Settings");
 
@@ -229,6 +255,18 @@ namespace Zuse.Core
                 xw.WriteEndElement();
 
                 xw.WriteStartElement("Setting");
+                xw.WriteAttributeString("Name", "TrackDisplayFormat");
+                xw.WriteAttributeString("Type", "String");
+                xw.WriteAttributeString("Value", HttpUtility.HtmlEncode(m_trackDisplayFormat));
+                xw.WriteEndElement();
+                
+                xw.WriteStartElement("Setting");
+                xw.WriteAttributeString("Name", "LoggerGrowlLevel");
+                xw.WriteAttributeString("Type", "Int");
+                xw.WriteAttributeString("Value", m_loggerGrowlLevel.ToString());
+                xw.WriteEndElement();
+                
+                xw.WriteStartElement("Setting");
                 xw.WriteAttributeString("Name", "UpdateSkipVersions");
                 xw.WriteAttributeString("Type", "StringCollection");
                 xw.WriteAttributeString("Value", m_updateSkipVersions.ToString());
@@ -241,10 +279,12 @@ namespace Zuse.Core
 
                 xw.Flush();
                 xw.Close();
+
+                Logger.Send(typeof(ZuseSettings), LogLevel.Info, "Zuse settings have been saved successfully");
             }
             catch (Exception e)
             {
-                log.Error(e.Message, e);
+                Logger.Send(typeof(ZuseSettings), LogLevel.Error, e.Message, e);
             }
         }
     }

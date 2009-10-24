@@ -1,8 +1,9 @@
+!include "MUI2.nsh"
+!include "LogicLib.nsh"
+!define MUI_ABORTWARNING
+
 ; The name of the installer
 Name "Zuse"
-
-; The file to write
-OutFile "ZuseSetup.exe"
 
 ; The default installation directory
 InstallDir "C:\Program Files\Zune"
@@ -13,8 +14,6 @@ InstallDirRegKey HKLM "Software\Zuse" "Install_Dir"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
-
-!include LogicLib.nsh
 
 Function .onInit
   SetOutPath $TEMP
@@ -30,23 +29,28 @@ FunctionEnd
 
 ;--------------------------------
 ; Pages
+!insertmacro MUI_PAGE_LICENSE "gpl.txt"
+!insertmacro MUI_PAGE_COMPONENTS
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+  
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
 
-Page components
-Page directory
-Page instfiles
-
-UninstPage uninstConfirm
-UninstPage instfiles
+!insertmacro MUI_LANGUAGE "English"
 
 ;--------------------------------
 
 ; The stuff to install
 Section "Zuse (required)"
   SectionIn RO
-  
+
+  ;ReadRegDWORD $0 HKLM 'SOFTWARE\Microsoft\Zune' 'Installation Directory'
+  ;Pop $INSTDIR
+
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
-  
+
   ; Put file there
   File "Zuse.exe"
   File "log4net.dll"
@@ -54,19 +58,22 @@ Section "Zuse (required)"
   File "Growl.CoreLibrary.dll"
 
   ; Write the installation path into the registry
-  WriteRegStr HKLM SOFTWARE\Zuse "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM SOFTWARE\Zuse "Install_Dir" "$OUTDIR"
   
   ; Write the uninstall keys for Windows
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "DisplayIcon" "Zuse"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "DisplayName" "Zuse"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "UninstallString" '"$INSTDIR\ZuseUninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "DisplayVersion" "Zuse"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "Publisher" "Zachary Howe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "HelpLink" "http://zusefm.org/"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "UninstallString" '"$OUTDIR\ZuseUninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse" "NoRepair" 1
   WriteUninstaller "ZuseUninstall.exe"
   
-  CreateShortcut "$DESKTOP\Zuse.lnk" "$INSTDIR\Zuse.exe"
-  CreateDirectory "$SMPROGRAMS\Zuse\"
-  CreateShortcut "$SMPROGRAMS\Zuse\Zuse.lnk" "$INSTDIR\Zuse.exe"
-  CreateShortcut "$SMPROGRAMS\Zuse\Uninstall.lnk" "$INSTDIR\ZuseUninstall.exe"
+  CreateShortcut "$DESKTOP\Zuse.lnk" "$OUTDIR\Zuse.exe"
+  CreateShortcut "$SMPROGRAMS\Zune\Zuse.lnk" "$OUTDIR\Zuse.exe"
+  CreateShortcut "$SMPROGRAMS\Zune\Uninstall Zuse.lnk" "$OUTDIR\ZuseUninstall.exe"
 SectionEnd
 
 Section "Microsoft .NET Framework v3.5"
@@ -84,7 +91,6 @@ SectionEnd
 ; Uninstaller
 
 Section "Uninstall"
-  
   ; Remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Zuse"
   DeleteRegKey HKLM SOFTWARE\Zuse
@@ -96,6 +102,7 @@ Section "Uninstall"
   Delete $INSTDIR\Growl.CoreLibrary.dll
 
   ; Remove shortcuts, if any
-  Delete "$SMPROGRAMS\Zuse\*.*"
+  Delete "$SMPROGRAMS\Zune\Zuse.lnk"
 
+  Delete "$DESKTOP\Zuse.lnk"
 SectionEnd

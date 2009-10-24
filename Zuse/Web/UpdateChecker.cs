@@ -31,16 +31,16 @@ using log4net;
 
 namespace Zuse.Web
 {
+    using Zuse.Core;
 	using Zuse.Properties;
 	using Zuse.Scrobbler;
 	using Zuse.Forms;
 
 	public class UpdateChecker
     {
-        private static ILog log;
-
         private static string m_baseUpdateUrl = "http://zusefm.org/updates/";
         private static string m_updateCheckFile = "check.php";
+        private static string m_changelogFile = "changelog.php";
         private static string m_downloadUrl = "";
         private static Version m_latestVersion;
         private static Version m_currentVersion;
@@ -65,8 +65,6 @@ namespace Zuse.Web
 
 		static UpdateChecker()
 		{
-            log = LogManager.GetLogger("Zuse", typeof(Zuse.Web.UpdateChecker));
-
             m_currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             m_webClient = new WebClient();
@@ -79,29 +77,36 @@ namespace Zuse.Web
         {
             XmlDocument xdoc = new XmlDocument();
 
-            string updateXml = m_webClient.DownloadString(m_baseUpdateUrl + m_updateCheckFile);
-            xdoc.LoadXml(updateXml);
-
-            Version v1 = m_currentVersion;
-
-            foreach (XmlNode node in xdoc.GetElementsByTagName("Update"))
+            try
             {
-                Version v = new Version(node.Attributes["Version"].Value);
+                string updateXml = m_webClient.DownloadString(m_baseUpdateUrl + m_updateCheckFile);
+                xdoc.LoadXml(updateXml);
 
-                if (v1 < v)
+                Version v1 = m_currentVersion;
+
+                foreach (XmlNode node in xdoc.GetElementsByTagName("Update"))
                 {
-                    v1 = v;
-                    m_downloadUrl = node.Attributes["Root"].Value;
-                }
-                else continue;
-            }
+                    Version v = new Version(node.Attributes["Version"].Value);
 
-            m_latestVersion = v1;
+                    if (v1 < v)
+                    {
+                        v1 = v;
+                        m_downloadUrl = node.Attributes["Root"].Value;
+                    }
+                    else continue;
+                }
+
+                m_latestVersion = v1;
+            }
+            catch (Exception e)
+            {
+                Logger.Send(typeof(Zuse.Web.UpdateChecker), LogLevel.Error, e.Message, e);
+            }
         }
 
         public static void ShowUpdateDialog()
         {
-            string changelog_url = m_baseUpdateUrl + "changelog.php";
+            string changelog_url = m_baseUpdateUrl + m_changelogFile;
 
             FrmUpdate frmUpdate = new FrmUpdate();
             frmUpdate.DisplayingUpdate = m_latestVersion.ToString();
