@@ -56,6 +56,7 @@ namespace Zuse.Core
                 NotificationType notifyTypeWarning = new NotificationType("Program Warning");
                 NotificationType notifyTypeInfo = new NotificationType("Program Info");
                 NotificationType notifyTypePlaying = new NotificationType("Now Playing");
+
                 NotificationType[] notificationTypes = new NotificationType[] { notifyTypeOpen, notifyTypeClose, notifyTypeWarning, notifyTypeError, notifyTypeInfo, notifyTypePlaying };
 
                 growl.Register(growlZuseApp, notificationTypes);

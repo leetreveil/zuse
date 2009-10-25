@@ -5,7 +5,7 @@
 AppName={#AppName}
 AppVerName={#AppName} version {#AppVersion}
 DefaultDirName={pf}\Zune
-DefaultGroupName={#AppName}
+DefaultGroupName=Zune
 UninstallDisplayIcon={app}\Zune.exe
 OutputBaseFilename=Zuse-v{#AppVersion}
 LicenseFile={#file AddBackslash(SourcePath) + "..\LICENSE.txt"}
@@ -14,8 +14,8 @@ ArchitecturesAllowed=x86 x64
 ; ArchitecturesInstallIn64BitMode=x64
 
 [Files]
-Source: Zuse32.exe; DestName: Zuse.exe; DestDir: {app}; Flags: 32bit
-Source: Zuse64.exe; DestName: Zuse.exe; DestDir: {app}; Flags: 64bit
+Source: Zuse32.exe; DestName: Zuse.exe; DestDir: {app}
+; Source: Zuse64.exe; DestName: Zuse.exe; DestDir: {app}; Flags: 64bit
 Source: Growl.Connector.dll; DestDir: {app}
 Source: Growl.CoreLibrary.dll; DestDir: {app}
 Source: log4net.dll; DestDir: {app}
@@ -27,4 +27,7 @@ Name: {group}\Zuse; Filename: {app}\Zuse.exe
 
 [UninstallDelete]
 Type: files; Name: {app}\Zuse.exe
+Type: files; Name: {app}\Growl.Connector.dll
+Type: files; Name: {app}\Growl.CoreLibrary.dll
+Type: files; Name: {app}\log4net.dll
 

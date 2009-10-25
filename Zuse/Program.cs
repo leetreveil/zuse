@@ -53,6 +53,8 @@ namespace Zuse
                         Process.Start("http://www.last.fm/download");
 
                         MessageBox.Show("Zuse will now close.", "Thank you!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			            Application.Exit();
                     }
                 }
             }
