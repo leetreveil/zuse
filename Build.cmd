@@ -1,4 +1,4 @@
 @echo off
-C:\Tools\Nant\bin\nant.exe build32
-C:\Tools\Nant\bin\nant.exe build64
+C:\Nant\bin\nant.exe /f Zuse.build build32
+C:\Nant\bin\nant.exe /f Zuse.build build64
 pause
