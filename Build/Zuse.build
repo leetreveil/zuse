@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <project name="Zuse" default="build">
+  <property name="nant.settings.currentframework" value="net-3.5"/>
   <property name="basename" value="Zuse"/>
   <property name="debug" value="false"/>
-  <property name="nant.settings.currentframework" value="net-3.5"/>
+  <property name="srcdir" value="..\Source"/>
+  <property name="refs" value="..\References"/>
+  <property name="refs32" value="..\References32"/>
+  <property name="refs64" value="..\References64"/>
 
   <target name="clean">
     <delete>
@@ -18,7 +22,7 @@
   </target>
 
   <target name="build32">
-    <csc target="winexe" output="Release/${basename}32.exe" debug="${debug}" win32icon="Zuse\Icon.ico">
+    <csc target="winexe" output="Release/${basename}32.exe" debug="${debug}" win32icon="${srcdir}\Zuse\Icon.ico">
       <references>
         <include name="System.dll" />
         <include name="System.Data.dll" />
@@ -28,32 +32,32 @@
         <include name="System.Windows.Forms.dll" />
         <include name="System.Xml.dll" />
         <include name="System.Web.dll" />
-        <include name="References\Growl.Connector.dll" />
-        <include name="References\Growl.CoreLibrary.dll" />
-        <include name="References\log4net.dll" />
-        <include name="References32\UIX.dll" />
-        <include name="References32\ZuneDBApi.dll" />
-        <include name="References32\ZuneShell.dll" />
+        <include name="${refs}\Growl.Connector.dll" />
+        <include name="${refs}\Growl.CoreLibrary.dll" />
+        <include name="${refs}\log4net.dll" />
+        <include name="${refs32}\UIX.dll" />
+        <include name="${refs32}\ZuneDBApi.dll" />
+        <include name="${refs32}\ZuneShell.dll" />
       </references>
       <sources>
-        <include name="Source\Zuse\*.cs"/>
-        <include name="Source\Zuse\Core\*.cs"/>
-        <include name="Source\Zuse\Scrobbler\*.cs"/>
-        <include name="Source\Zuse\Properties\*.cs"/>
-        <include name="Source\Zuse\Forms\*.cs"/>
-        <include name="Source\Zuse\Web\*.cs"/>
-        <include name="Source\Zuse\Resources\*.cs"/>
+        <include name="${srcdir}\Zuse\*.cs"/>
+        <include name="${srcdir}\Zuse\Core\*.cs"/>
+        <include name="${srcdir}\Zuse\Scrobbler\*.cs"/>
+        <include name="${srcdir}\Zuse\Properties\*.cs"/>
+        <include name="${srcdir}\Zuse\Forms\*.cs"/>
+        <include name="${srcdir}\Zuse\Web\*.cs"/>
+        <include name="${srcdir}\Zuse\Resources\*.cs"/>
       </sources>
       <resources>
-        <include name="Source\Zuse\Forms\*.resx" />
-        <include name="Source\Zuse\Properties\*.resx" />
-        <include name="Source\Zuse\Resources\*" />
+        <include name="${srcdir}\Zuse\Forms\*.resx" />
+        <include name="${srcdir}\Zuse\Properties\*.resx" />
+        <include name="${srcdir}\Zuse\Resources\*" />
       </resources>
     </csc>
   </target>
         
   <target name="build64">
-    <csc target="winexe" output="Release/${basename}64.exe" debug="${debug}" win32icon="Zuse\Icon.ico">
+    <csc target="winexe" output="Release/${basename}64.exe" debug="${debug}" win32icon="${srcdir}\Zuse\Icon.ico">
       <references>
         <include name="System.dll" />
         <include name="System.Data.dll" />
@@ -63,26 +67,26 @@
         <include name="System.Windows.Forms.dll" />
         <include name="System.Xml.dll" />
         <include name="System.Web.dll" />
-        <include name="References\Growl.Connector.dll" />
-        <include name="References\Growl.CoreLibrary.dll" />
-        <include name="References\log4net.dll" />
-        <include name="References64\UIX.dll" />
-        <include name="References64\ZuneDBApi.dll" />
-        <include name="References64\ZuneShell.dll" />
+        <include name="${refs}\Growl.Connector.dll" />
+        <include name="${refs}\Growl.CoreLibrary.dll" />
+        <include name="${refs}\log4net.dll" />
+        <include name="${refs64}\UIX.dll" />
+        <include name="${refs64}\ZuneDBApi.dll" />
+        <include name="${refs64}\ZuneShell.dll" />
       </references>
       <sources>
-        <include name="Source\Zuse\*.cs"/>
-        <include name="Source\Zuse\Core\*.cs"/>
-        <include name="Source\Zuse\Scrobbler\*.cs"/>
-        <include name="Source\Zuse\Properties\*.cs"/>
-        <include name="Source\Zuse\Forms\*.cs"/>
-        <include name="Source\Zuse\Web\*.cs"/>
-        <include name="Source\Zuse\Resources\*.cs"/>
+        <include name="${srcdir}\Zuse\*.cs"/>
+        <include name="${srcdir}\Zuse\Core\*.cs"/>
+        <include name="${srcdir}\Zuse\Scrobbler\*.cs"/>
+        <include name="${srcdir}\Zuse\Properties\*.cs"/>
+        <include name="${srcdir}\Zuse\Forms\*.cs"/>
+        <include name="${srcdir}\Zuse\Web\*.cs"/>
+        <include name="${srcdir}\Zuse\Resources\*.cs"/>
       </sources>
       <resources>
-        <include name="Source\Zuse\Forms\*.resx" />
-        <include name="Source\Zuse\Properties\*.resx" />
-        <include name="Source\Zuse\Resources\*" />
+        <include name="${srcdir}\Zuse\Forms\*.resx" />
+        <include name="${srcdir}\Zuse\Properties\*.resx" />
+        <include name="${srcdir}\Zuse\Resources\*" />
       </resources>
     </csc>
   </target>

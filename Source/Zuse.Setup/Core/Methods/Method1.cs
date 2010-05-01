@@ -58,7 +58,7 @@ namespace Zuse.Setup.Core.Methods
 
             if (this.MethodMessage != null) this.MethodMessage(this, string.Format("Patching original file: {0:s}.original", Path.GetFileName(Consts.ZuneAssemblyLocation)));
             AssemblyDefinition zuneShellAssembly = AssemblyFactory.GetAssembly(Consts.ZuneAssemblyLocation + ".original");
-            AssemblyDefinition duubiAssembly = AssemblyFactory.GetAssembly("Zuse.dll");
+            AssemblyDefinition duubiAssembly = AssemblyFactory.GetAssembly("Duubi.dll");
 
             MethodDefinition startMethod = null;
 
