@@ -26,7 +26,6 @@ using System.Reflection;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
-
 using Mono.Cecil;
 using Mono.Cecil.Binary;
 using Mono.Cecil.Cil;

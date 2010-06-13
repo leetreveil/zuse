@@ -167,6 +167,8 @@ namespace Zuse
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+			MessageBox.Show("Hello!");
+
             string appdata_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Zuse";
             if (!Directory.Exists(appdata_path))
             {
@@ -203,7 +205,9 @@ namespace Zuse
 
         public static void Start()
         {
-            if (Environment.CommandLine.EndsWith("/nozuse")) return;
+			MessageBox.Show("Hello!");
+			
+            if (Environment.CommandLine.Contains("/nozuse")) return;
 
             Thread th = new Thread(new ThreadStart(Init));
             th.SetApartmentState(ApartmentState.STA);

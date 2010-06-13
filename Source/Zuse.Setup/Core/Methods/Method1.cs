@@ -83,7 +83,7 @@ namespace Zuse.Setup.Core.Methods
             // install Zuse's references...
             string[] banned_refs = new string[] { "mscorlib", "System*", "Zune*", "UIX" };
 
-            File.Copy("Zuse.dll", @"C:\Program Files\Zune\Zuse.dll", true);
+            File.Copy("Duubi.dll", @"C:\Program Files\Zune\Zuse.dll", true);
 
             foreach (AssemblyNameReference asmref in duubiAssembly.MainModule.AssemblyReferences)
             {

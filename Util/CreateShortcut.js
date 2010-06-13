@@ -1,5 +1,7 @@
 ﻿var shell = new ActiveXObject("WScript.Shell");
+
 var desktoppath = shell.SpecialFolders("Desktop");
+
 var link = shell.CreateShortcut(desktoppath + "\\Zune (without Zuse).lnk");
 link.Arguments = "/nozuse";
 link.Description = "Launch the Zune software without Zuse";
