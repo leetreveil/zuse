@@ -1,8 +1,8 @@
 @echo off
 
 :BUILD_START
-copy ..\Release\Zuse32.exe .\
-copy ..\Release\Zuse64.exe .\
+copy ..\Build\Release\Zuse32.exe .\
+copy ..\Build\Release\Zuse64.exe .\
 copy ..\References\log4net.dll .\
 copy ..\References\Growl.Connector.dll .\
 copy ..\References\Growl.CoreLibrary.dll .\

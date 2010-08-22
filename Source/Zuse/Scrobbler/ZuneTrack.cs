@@ -126,9 +126,17 @@ namespace Zuse.Scrobbler
 
         public static ZuneTrack GetFromCurrentTrack()
         {
+            var t = TransportControls.Instance.CurrentTrack;
+          
+            if (t.MediaType == MediaType.Podcast || t.MediaType == MediaType.PodcastEpisode)
+            {
+                return null;
+            }
+          
             if (TransportControls.Instance.CurrentTrack is LibraryPlaybackTrack)
             {
                 var track = (LibraryPlaybackTrack) TransportControls.Instance.CurrentTrack;
+                
                 AlbumMetadata album = FindAlbumInfoHelper.GetAlbumMetadata(track.AlbumLibraryId);
 
                 var s = new ZuneTrack(track.Title, album.AlbumArtist, album.AlbumTitle);
