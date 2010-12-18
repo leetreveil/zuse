@@ -88,7 +88,7 @@ namespace Zuse
             this.contextMenuStrip.Items.Add(itemExit);
 
             // Retrieve the stream of the system tray icon embedded in Zune.exe
-            Icon icon =  Icon.ExtractAssociatedIcon("Zune.exe");
+            Icon icon = Icon.ExtractAssociatedIcon("Zune.exe");
             
             // Create the system tray icon and attach events
             this.notifyIcon = new NotifyIcon();
@@ -205,8 +205,6 @@ namespace Zuse
 
         public static void Start()
         {
-			MessageBox.Show("Hello!");
-			
             if (Environment.CommandLine.Contains("/nozuse")) return;
 
             Thread th = new Thread(new ThreadStart(Init));

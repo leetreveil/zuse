@@ -163,12 +163,6 @@ namespace Zuse.Core
         {
             Growler.Notify("Program Opening", "Zune", "Zune is opening");
 
-            Shell.MainFrame.Test.Available = true;
-
-            Shell.MainFrame.Test.UpdateShowTest();
-
-            //ZuneUI.ZuneShell.DefaultInstance.NavigateToPage(new TestPage());
-
             Application.Window.PropertyChanged += new PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
         }
 
