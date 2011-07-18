@@ -136,6 +136,9 @@ namespace leetreveil.Zuse.Core
             if (TransportControls.Instance.CurrentTrack is LibraryPlaybackTrack)
             {
                 var track = (LibraryPlaybackTrack) TransportControls.Instance.CurrentTrack;
+
+                if (track.IsVideo)
+                    return null;
                 
                 AlbumMetadata album = FindAlbumInfoHelper.GetAlbumMetadata(track.AlbumLibraryId);
 
