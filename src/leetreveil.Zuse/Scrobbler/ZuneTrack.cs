@@ -87,7 +87,7 @@ namespace leetreveil.Zuse.Scrobbler
 
         public override string ToString()
         {
-            var fmt = (string) ZuseSettings.TrackDisplayFormat.Clone();
+            var fmt = (string) Properties.Settings.Default.TrackDisplayFormat.Clone();
             string str = null;
 
             try

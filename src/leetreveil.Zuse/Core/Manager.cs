@@ -139,7 +139,7 @@ namespace leetreveil.Zuse.Core
 
             if (e.PropertyName == "WindowState")
             {
-                if (ZuseSettings.MinimizeToTray)
+                if (Properties.Settings.Default.MinimizeToTray)
                 {
                     switch (window.WindowState)
                     {

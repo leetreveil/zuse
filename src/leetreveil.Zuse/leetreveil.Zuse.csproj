@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Manager.cs" />
-    <Compile Include="Core\ZuseSettings.cs" />
     <Compile Include="Forms\FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +109,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

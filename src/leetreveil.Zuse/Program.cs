@@ -29,6 +29,7 @@ using leetreveil.Zuse.Web;
 
 namespace leetreveil.Zuse
 {
+
     internal class Program
     {
         private ContextMenuStrip contextMenuStrip;
@@ -50,7 +51,7 @@ namespace leetreveil.Zuse
             contextMenuStrip = new ContextMenuStrip();
 
             /* Add the debug log option if the debug mode is on */
-            if (ZuseSettings.DebugMode)
+            if (Properties.Settings.Default.DebugMode)
             {
                 var itemDebugLog = new ToolStripMenuItem("Debug Log");
                 itemDebugLog.Click += new EventHandler(DebugLog_Click);
@@ -174,27 +175,19 @@ namespace leetreveil.Zuse
 
             Logger.Init(log_path);
 
-            if (!File.Exists(settings_path)) ZuseSettings.Save();
-            else ZuseSettings.Load();
-
-            if (ZuseSettings.CheckForUpdates)
+            if (Properties.Settings.Default.CheckForUpdates)
             {
                 //TODO: the update checker blocks the UI thread and will delay app load
                 //UpdateChecker.Check();
 
                 if (UpdateChecker.UpdateAvailable)
                 {
-                    if (!ZuseSettings.UpdateSkipVersions.Contains(UpdateChecker.LatestVersion.ToString()))
-                    {
-                        //TODO: Display message to user with update
-                    }
+                    //TODO: Display message to user with update
                 }
             }
 
             var zuse = new Program();
             Application.Run();
-
-            ZuseSettings.Save();
         }
     }
 }

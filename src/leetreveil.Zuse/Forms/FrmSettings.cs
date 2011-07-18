@@ -26,6 +26,8 @@ namespace leetreveil.Zuse.Forms
 {
     public partial class FrmSettings : Form
     {
+        private Properties.Settings _zuseSettings = Properties.Settings.Default;
+
         public FrmSettings()
         {
             InitializeComponent();
@@ -38,9 +40,9 @@ namespace leetreveil.Zuse.Forms
 
             lblNote.Text = "There is no need to save these settings. They will be saved automatically.";
 
-            chkCheckUpdates.Checked = ZuseSettings.CheckForUpdates;
-            chkDebugMode.Checked = ZuseSettings.DebugMode;
-            chkMinimizeToTray.Checked = ZuseSettings.MinimizeToTray;
+            chkCheckUpdates.Checked = _zuseSettings.CheckForUpdates;
+            chkDebugMode.Checked = _zuseSettings.DebugMode;
+            chkMinimizeToTray.Checked = _zuseSettings.MinimizeToTray;
             cmbGrowlLevel.Items.Add("All messages");
             cmbGrowlLevel.Items.Add("Warning and error messages");
             cmbGrowlLevel.Items.Add("Only error messages");
@@ -48,27 +50,21 @@ namespace leetreveil.Zuse.Forms
             cmbTrackDisplayFmt.Items.Add("%artist% - %title%");
             cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist%");
             cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist% in \"%album%\"");
-            if (!cmbTrackDisplayFmt.Items.Contains(ZuseSettings.TrackDisplayFormat))
+            if (!cmbTrackDisplayFmt.Items.Contains(_zuseSettings.TrackDisplayFormat))
             {
-                cmbTrackDisplayFmt.Items.Add(ZuseSettings.TrackDisplayFormat);
+                cmbTrackDisplayFmt.Items.Add(_zuseSettings.TrackDisplayFormat);
             }
-            cmbTrackDisplayFmt.SelectedText = ZuseSettings.TrackDisplayFormat;
-        }
-
-        private void btnClearSkips_Click(object sender, EventArgs e)
-        {
-            ZuseSettings.UpdateSkipVersions.Clear();
-            ZuseSettings.Save();
+            cmbTrackDisplayFmt.SelectedText = _zuseSettings.TrackDisplayFormat;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            ZuseSettings.CheckForUpdates = chkCheckUpdates.Checked;
-            ZuseSettings.DebugMode = chkDebugMode.Checked;
-            ZuseSettings.MinimizeToTray = chkMinimizeToTray.Checked;
-            ZuseSettings.TrackDisplayFormat = cmbTrackDisplayFmt.Text;
+            _zuseSettings.CheckForUpdates = chkCheckUpdates.Checked;
+            _zuseSettings.DebugMode = chkDebugMode.Checked;
+            _zuseSettings.MinimizeToTray = chkMinimizeToTray.Checked;
+            _zuseSettings.TrackDisplayFormat = cmbTrackDisplayFmt.Text;
 
-            ZuseSettings.Save();
+            _zuseSettings.Save();
         }
 
         private void chkMinimizeToTray_CheckedChanged(object sender, EventArgs e)
