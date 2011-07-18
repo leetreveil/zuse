@@ -121,7 +121,7 @@ namespace leetreveil.Zuse.Scrobbler
             }
             catch (Exception e)
             {
-                Logger.Send(GetType(), LogLevel.Error, "Could not send messaege to Last.fm software", e);
+                Logger.Send(GetType(), LogLevel.Error, "Could not send message to Last.fm software", e);
             }
         }
 

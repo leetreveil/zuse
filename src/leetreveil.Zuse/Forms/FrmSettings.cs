@@ -38,8 +38,6 @@ namespace leetreveil.Zuse.Forms
             Assembly asm = Assembly.GetExecutingAssembly();
             Icon = Icon.ExtractAssociatedIcon(asm.Location);
 
-            lblNote.Text = "There is no need to save these settings. They will be saved automatically.";
-
             chkCheckUpdates.Checked = _zuseSettings.CheckForUpdates;
             chkDebugMode.Checked = _zuseSettings.DebugMode;
             chkMinimizeToTray.Checked = _zuseSettings.MinimizeToTray;

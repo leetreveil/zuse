@@ -59,20 +59,10 @@ namespace leetreveil.Zuse
                 contextMenuStrip.Items.Add(new ToolStripSeparator());
             }
 
-            /* Check for Updates system tray menu option */
-            var itemCheckUpdates = new ToolStripMenuItem("Check for Updates");
-            itemCheckUpdates.Click += new EventHandler(CheckForUpdate_Click);
-            contextMenuStrip.Items.Add(itemCheckUpdates);
-
             /* About Zuse system tray menu option */
             var itemSettings = new ToolStripMenuItem("Settings");
             itemSettings.Click += new EventHandler(Settings_Click);
             contextMenuStrip.Items.Add(itemSettings);
-
-            /* About Zuse system tray menu option */
-            var itemAbout = new ToolStripMenuItem("About Zuse");
-            itemAbout.Click += new EventHandler(About_Click);
-            contextMenuStrip.Items.Add(itemAbout);
 
             contextMenuStrip.Items.Add(new ToolStripSeparator());
 
@@ -138,13 +128,6 @@ namespace leetreveil.Zuse
             var frmSettings = new FrmSettings();
             frmSettings.ShowDialog();
             frmSettings.Dispose();
-        }
-
-        protected void About_Click(object sender, EventArgs e)
-        {
-            var frmAbout = new FrmAbout();
-            frmAbout.ShowDialog();
-            frmAbout.Dispose();
         }
 
         protected void Exit_Click(object sender, EventArgs e)
