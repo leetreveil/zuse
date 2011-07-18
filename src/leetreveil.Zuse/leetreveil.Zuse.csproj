@@ -64,12 +64,6 @@
   <ItemGroup>
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Manager.cs" />
-    <Compile Include="Forms\FrmDebug.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FrmDebug.Designer.cs">
-      <DependentUpon>FrmDebug.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,9 +76,6 @@
     <Compile Include="Scrobbler\ScrobSub.cs" />
     <Compile Include="Core\ZuneTrack.cs" />
     <Compile Include="Web\UpdateChecker.cs" />
-    <EmbeddedResource Include="Forms\FrmDebug.resx">
-      <DependentUpon>FrmDebug.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>

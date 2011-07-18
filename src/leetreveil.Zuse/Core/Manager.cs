@@ -34,7 +34,6 @@ namespace leetreveil.Zuse.Core
     internal class Manager
     {
         private ZuneTrack currentTrack;
-        private FrmDebug frmDebug;
         private float lastTrackPosition;
         private Thread monitorTh;
         private ScrobSub scrobbler;
@@ -42,22 +41,10 @@ namespace leetreveil.Zuse.Core
 
         public Manager()
         {
-            frmDebug = new FrmDebug();
             scrobbler = new ScrobSub();
             currentTrack = new ZuneTrack();
 
             lastTrackPosition = 300f;
-        }
-
-        public void ShowDebugWindow()
-        {
-            frmDebug = new FrmDebug();
-            frmDebug.Show();
-        }
-
-        public void RefreshDebugView()
-        {
-            frmDebug.RefreshView();
         }
 
         public void LaunchZune()

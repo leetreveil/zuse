@@ -39,23 +39,8 @@ namespace leetreveil.Zuse
 
         public Program()
         {
-            //TODO: what if we set zuse to run at startup and it starts before the lastfm client?
-            if (!LastFM.IsClientRunning)
-            {
-                MessageBox.Show("Zuse couldn't detect Last.fm. Can you please make sure Last.fm is running before you start Zuse");
-            }
-
             /* Build the context menu for the system tray icon */
             contextMenuStrip = new ContextMenuStrip();
-
-            /* Add the debug log option if the debug mode is on */
-            if (Properties.Settings.Default.DebugMode)
-            {
-                var itemDebugLog = new ToolStripMenuItem("Debug Log");
-                itemDebugLog.Click += new EventHandler(DebugLog_Click);
-                contextMenuStrip.Items.Add(itemDebugLog);
-                contextMenuStrip.Items.Add(new ToolStripSeparator());
-            }
 
             /* About Zuse system tray menu option */
             var itemSettings = new ToolStripMenuItem("Settings");
@@ -116,16 +101,10 @@ namespace leetreveil.Zuse
             }
         }
 
-        protected void DebugLog_Click(object sender, EventArgs e)
-        {
-            manager.ShowDebugWindow();
-        }
-
         protected void Settings_Click(object sender, EventArgs e)
         {
             var frmSettings = new FrmSettings();
             frmSettings.ShowDialog();
-            frmSettings.Dispose();
         }
 
         protected void Exit_Click(object sender, EventArgs e)
@@ -148,9 +127,8 @@ namespace leetreveil.Zuse
             {
                 Directory.CreateDirectory(appdata_path);
             }
-            string log_path = appdata_path + "\\Logs\\";
-            string settings_path = appdata_path + "\\Settings.xml";
 
+            string log_path = appdata_path + "\\Logs\\";
             Logger.Init(log_path);
 
             if (Properties.Settings.Default.CheckForUpdates)

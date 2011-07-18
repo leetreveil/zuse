@@ -47,7 +47,6 @@ namespace leetreveil.Zuse.Forms
         private void InitializeComponent()
         {
             this.btnClose = new System.Windows.Forms.Button();
-            this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.chkCheckUpdates = new System.Windows.Forms.CheckBox();
             this.lblTrackDisplayFmt = new System.Windows.Forms.Label();
@@ -58,23 +57,13 @@ namespace leetreveil.Zuse.Forms
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(191, 166);
+            this.btnClose.Location = new System.Drawing.Point(191, 159);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // chkDebugMode
-            // 
-            this.chkDebugMode.AutoSize = true;
-            this.chkDebugMode.Location = new System.Drawing.Point(9, 58);
-            this.chkDebugMode.Name = "chkDebugMode";
-            this.chkDebugMode.Size = new System.Drawing.Size(138, 17);
-            this.chkDebugMode.TabIndex = 1;
-            this.chkDebugMode.Text = "Enable Debug Mode (*)";
-            this.chkDebugMode.UseVisualStyleBackColor = true;
             // 
             // chkMinimizeToTray
             // 
@@ -99,7 +88,7 @@ namespace leetreveil.Zuse.Forms
             // 
             // lblTrackDisplayFmt
             // 
-            this.lblTrackDisplayFmt.Location = new System.Drawing.Point(6, 78);
+            this.lblTrackDisplayFmt.Location = new System.Drawing.Point(6, 71);
             this.lblTrackDisplayFmt.Name = "lblTrackDisplayFmt";
             this.lblTrackDisplayFmt.Size = new System.Drawing.Size(260, 22);
             this.lblTrackDisplayFmt.TabIndex = 13;
@@ -108,7 +97,7 @@ namespace leetreveil.Zuse.Forms
             // 
             // lblProgramRestartRequired
             // 
-            this.lblProgramRestartRequired.Location = new System.Drawing.Point(0, 138);
+            this.lblProgramRestartRequired.Location = new System.Drawing.Point(0, 131);
             this.lblProgramRestartRequired.Name = "lblProgramRestartRequired";
             this.lblProgramRestartRequired.Size = new System.Drawing.Size(266, 16);
             this.lblProgramRestartRequired.TabIndex = 14;
@@ -118,7 +107,7 @@ namespace leetreveil.Zuse.Forms
             // cmbTrackDisplayFmt
             // 
             this.cmbTrackDisplayFmt.FormattingEnabled = true;
-            this.cmbTrackDisplayFmt.Location = new System.Drawing.Point(6, 103);
+            this.cmbTrackDisplayFmt.Location = new System.Drawing.Point(6, 96);
             this.cmbTrackDisplayFmt.Name = "cmbTrackDisplayFmt";
             this.cmbTrackDisplayFmt.Size = new System.Drawing.Size(260, 21);
             this.cmbTrackDisplayFmt.TabIndex = 15;
@@ -135,7 +124,6 @@ namespace leetreveil.Zuse.Forms
             this.Controls.Add(this.lblTrackDisplayFmt);
             this.Controls.Add(this.chkCheckUpdates);
             this.Controls.Add(this.chkMinimizeToTray);
-            this.Controls.Add(this.chkDebugMode);
             this.Controls.Add(this.btnClose);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -152,7 +140,6 @@ namespace leetreveil.Zuse.Forms
         #endregion
 
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.CheckBox chkCheckUpdates;
         private System.Windows.Forms.Label lblTrackDisplayFmt;

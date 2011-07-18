@@ -5,9 +5,6 @@
     <Setting Name="TrackDisplayFormat" Type="System.String" Scope="User">
       <Value Profile="(Default)">"%artist% - %album% - %title%"</Value>
     </Setting>
-    <Setting Name="DebugMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="MinimizeToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

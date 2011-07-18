@@ -39,11 +39,7 @@ namespace leetreveil.Zuse.Forms
             Icon = Icon.ExtractAssociatedIcon(asm.Location);
 
             chkCheckUpdates.Checked = _zuseSettings.CheckForUpdates;
-            chkDebugMode.Checked = _zuseSettings.DebugMode;
             chkMinimizeToTray.Checked = _zuseSettings.MinimizeToTray;
-            cmbGrowlLevel.Items.Add("All messages");
-            cmbGrowlLevel.Items.Add("Warning and error messages");
-            cmbGrowlLevel.Items.Add("Only error messages");
             cmbTrackDisplayFmt.Items.Add("%artist% - %album% - %title%");
             cmbTrackDisplayFmt.Items.Add("%artist% - %title%");
             cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist%");
@@ -58,7 +54,6 @@ namespace leetreveil.Zuse.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             _zuseSettings.CheckForUpdates = chkCheckUpdates.Checked;
-            _zuseSettings.DebugMode = chkDebugMode.Checked;
             _zuseSettings.MinimizeToTray = chkMinimizeToTray.Checked;
             _zuseSettings.TrackDisplayFormat = cmbTrackDisplayFmt.Text;
 
