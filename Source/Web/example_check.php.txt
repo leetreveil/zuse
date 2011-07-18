@@ -1,5 +1,0 @@
-<ZuseUpdates>
-  <Update Version="1.9.7.1" Date="2009-10-08" Root="http://bitbucket.org/wiz/zuse/downloads"/>
-  <Update Version="1.9.7.0" Date="2009-10-01" Root="http://zusefm.org/updates/1.9.7.0/"/>
-  <Update Version="1.9.6.0" Date="2009-09-05" Root="http://zusefm.org/updates/1.9.6.0/"/>
-</ZuseUpdates>
