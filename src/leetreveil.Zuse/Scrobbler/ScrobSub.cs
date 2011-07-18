@@ -21,9 +21,9 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Zuse.Core;
+using leetreveil.Zuse.Core;
 
-namespace Zuse.Scrobbler
+namespace leetreveil.Zuse.Scrobbler
 {
     internal class ScrobSub
     {

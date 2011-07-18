@@ -25,11 +25,11 @@ using Microsoft.Iris;
 using Microsoft.Zune.Shell;
 using MicrosoftZunePlayback;
 using ZuneUI;
-using Zuse.Forms;
-using Zuse.Scrobbler;
+using leetreveil.Zuse.Forms;
+using leetreveil.Zuse.Scrobbler;
 using Application=Microsoft.Iris.Application;
 
-namespace Zuse.Core
+namespace leetreveil.Zuse.Core
 {
     internal class Manager
     {

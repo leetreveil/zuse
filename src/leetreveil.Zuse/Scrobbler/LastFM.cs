@@ -20,9 +20,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
-using Zuse.Core;
+using leetreveil.Zuse.Core;
 
-namespace Zuse.Scrobbler
+namespace leetreveil.Zuse.Scrobbler
 {
     public static class LastFM
     {

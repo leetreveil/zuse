@@ -23,7 +23,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Zuse.Forms
+namespace leetreveil.Zuse.Forms
 {
     internal partial class FrmAbout : Form
     {

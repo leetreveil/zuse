@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-namespace Zuse.Forms
+namespace leetreveil.Zuse.Forms
 {
     partial class FrmDebug
     {

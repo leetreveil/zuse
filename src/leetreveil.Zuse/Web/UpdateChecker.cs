@@ -20,10 +20,10 @@ using System;
 using System.Net;
 using System.Reflection;
 using System.Xml;
-using Zuse.Core;
-using Zuse.Forms;
+using leetreveil.Zuse.Core;
+using leetreveil.Zuse.Forms;
 
-namespace Zuse.Web
+namespace leetreveil.Zuse.Web
 {
     public class UpdateChecker
     {

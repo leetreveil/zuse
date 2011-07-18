@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Zuse.Program</StartupObject>
+    <StartupObject>leetreveil.Zuse.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Growl.Connector">

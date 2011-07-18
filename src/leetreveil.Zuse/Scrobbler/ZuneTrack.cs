@@ -19,9 +19,9 @@
 using System;
 using MicrosoftZuneLibrary;
 using ZuneUI;
-using Zuse.Core;
+using leetreveil.Zuse.Core;
 
-namespace Zuse.Scrobbler
+namespace leetreveil.Zuse.Scrobbler
 {
     public class ZuneTrack
     {

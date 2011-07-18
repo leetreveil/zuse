@@ -26,7 +26,7 @@ using System.Xml;
 using log4net;
 using log4net.Appender;
 
-namespace Zuse.Forms
+namespace leetreveil.Zuse.Forms
 {
     public partial class FrmDebug : Form
     {

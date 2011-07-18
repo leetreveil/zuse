@@ -22,12 +22,12 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Zuse.Core;
-using Zuse.Forms;
-using Zuse.Scrobbler;
-using Zuse.Web;
+using leetreveil.Zuse.Core;
+using leetreveil.Zuse.Forms;
+using leetreveil.Zuse.Scrobbler;
+using leetreveil.Zuse.Web;
 
-namespace Zuse
+namespace leetreveil.Zuse
 {
     internal class Program
     {

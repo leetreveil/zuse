@@ -21,7 +21,7 @@ using System.Collections;
 using System.Web;
 using System.Xml;
 
-namespace Zuse.Core
+namespace leetreveil.Zuse.Core
 {
     public static class ZuseSettings
     {
