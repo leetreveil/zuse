@@ -38,26 +38,10 @@ namespace Zuse
 
         public Program()
         {
-            var cl = new ClientLoader();
-
-            if (!cl.IsOpen())
+            //TODO: what if we set zuse to run at startup and it starts before the lastfm client?
+            if (!LastFM.IsClientRunning)
             {
-                if (!cl.IsAvailable())
-                {
-                    if (
-                        MessageBox.Show(
-                            "Zuse has detected that the Last.fm software is not installed on this computer, would you like to install it?",
-                            "Install Last.fm Software?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                        DialogResult.Yes)
-                    {
-                        Process.Start("http://www.last.fm/download");
-
-                        MessageBox.Show("Zuse will now close.", "Thank you!", MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-
-                        Application.Exit();
-                    }
-                }
+                MessageBox.Show("Zuse couldn't detect Last.fm. Can you please make sure Last.fm is running before you start Zuse");
             }
 
             Logger.Send(GetType(), LogLevel.Info, "Zuse is starting up!");
@@ -135,7 +119,7 @@ namespace Zuse
 
             if (UpdateChecker.UpdateAvailable)
             {
-                UpdateChecker.ShowUpdateDialog();
+                //TODO: display message to user with update
             }
             else
             {
@@ -202,7 +186,7 @@ namespace Zuse
                 {
                     if (!ZuseSettings.UpdateSkipVersions.Contains(UpdateChecker.LatestVersion.ToString()))
                     {
-                        UpdateChecker.ShowUpdateDialog();
+                        //TODO: Display message to user with update
                     }
                 }
             }

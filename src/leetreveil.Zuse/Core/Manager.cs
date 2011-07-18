@@ -43,9 +43,7 @@ namespace Zuse.Core
         public Manager()
         {
             frmDebug = new FrmDebug();
-
             scrobbler = new ScrobSub();
-
             currentTrack = new ZuneTrack();
 
             lastTrackPosition = 300f;
@@ -64,10 +62,13 @@ namespace Zuse.Core
 
         public void LaunchZune()
         {
-            var cl = new ClientLoader();
-            if (cl.IsAvailable())
+            //TODO: what if we set zuse to run at startup and it starts before the lastfm client?
+            //we could just let everything load because the scrobbler uses sockets and it isn't 
+            //a requirement that the lastfm client is running before zuse is
+            //if we go to scrobble a track and the client isn't running then we should warn the user
+            if (!LastFM.IsClientRunning)
             {
-                if (!cl.IsOpen()) cl.Open();
+                MessageBox.Show("Zuse couldn't detect Last.fm. Can you please make sure Last.fm is running before you start Zuse");
             }
 
             KillZune();

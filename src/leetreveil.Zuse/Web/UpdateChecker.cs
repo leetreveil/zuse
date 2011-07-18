@@ -89,18 +89,5 @@ namespace Zuse.Web
                 Logger.Send(typeof (UpdateChecker), LogLevel.Error, e.Message, e);
             }
         }
-
-        public static void ShowUpdateDialog()
-        {
-            string changelog_url = m_baseUpdateUrl + m_changelogFile;
-
-            var frmUpdate = new FrmUpdate();
-            frmUpdate.DisplayingUpdate = m_latestVersion.ToString();
-            frmUpdate.UpdateDownloadUrl = m_downloadUrl;
-            frmUpdate.SetDetails(m_latestVersion);
-            frmUpdate.SetChangeLog(changelog_url);
-            frmUpdate.ShowDialog();
-            frmUpdate.Dispose();
-        }
     }
 }
