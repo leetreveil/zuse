@@ -92,9 +92,6 @@ namespace Zuse.Core
         public void ZuneThread()
         {
             ZuneApplication.Launch("", IntPtr.Zero);
-
-            Growler.Notify("Program Closing", "Zune", "Zune is closing");
-
             System.Windows.Forms.Application.Exit();
         }
 
@@ -161,8 +158,6 @@ namespace Zuse.Core
 
         private void ZuneWindow_Setup(object sender)
         {
-            Growler.Notify("Program Opening", "Zune", "Zune is opening");
-
             Application.Window.PropertyChanged += new PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
         }
 
@@ -201,7 +196,6 @@ namespace Zuse.Core
                         Logger.Send(GetType(), LogLevel.Info,
                                     string.Format("Playback started - {0:s}", track.ToString()));
                     }
-                    Growler.Notify("Now Playing", "Now Playing", track.ToString(), track.CoverUrl);
                     break;
                 case MCTransportState.Paused:
                     lastTrackPosition = GetCurrentTrackPosition();

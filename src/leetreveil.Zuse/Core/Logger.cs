@@ -74,30 +74,6 @@ namespace Zuse.Core
                     log.Info(msg);
                     break;
             }
-
-            Type llt = typeof (LogLevel);
-            var growlLevel = (LogLevel) Enum.ToObject(llt, ZuseSettings.LoggerGrowlLevel);
-
-            /* GrowlLevel says that anything greater or equal to it's value is Growl'd on screen.
-             * 
-             * For example:
-             *   level = Error/2; (an error being logged),
-             *   growlLevel = Warning/1; (growl everything if it's a warning or worse)
-             *   
-             * if (level >= growlLevel) would be true;
-             * 
-             * But for example:
-             *   level = Info/0; (trivial info being logged),
-             *   growlLevel = Error/2; (growl only Errors)
-             *   
-             * if (level >= growlLevel) would be false;
-             */
-            if (level >= growlLevel)
-            {
-                string alertType = Enum.GetName(llt, level);
-
-                Growler.Notify("Program " + alertType, "Zuse " + alertType, msg);
-            }
         }
     }
 }

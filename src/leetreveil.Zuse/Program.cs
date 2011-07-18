@@ -193,8 +193,6 @@ namespace Zuse
             if (!File.Exists(settings_path)) ZuseSettings.Save();
             else ZuseSettings.Load();
 
-            if (ZuseSettings.UseGrowl) Growler.Init();
-
             if (ZuseSettings.CheckForUpdates)
             {
                 //TODO: the update checker blocks the UI thread and will delay app load

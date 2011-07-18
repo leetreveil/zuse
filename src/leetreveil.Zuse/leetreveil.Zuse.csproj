@@ -65,7 +65,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Growler.cs" />
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Manager.cs" />
     <Compile Include="Core\ZuseSettings.cs" />

@@ -66,18 +66,6 @@ namespace Zuse.Core
             set { m_checkForUpdates = value; }
         }
 
-        public static bool UseGrowl
-        {
-            get { return m_useGrowl; }
-            set { m_useGrowl = value; }
-        }
-
-        public static int LoggerGrowlLevel
-        {
-            get { return m_loggerGrowlLevel; }
-            set { m_loggerGrowlLevel = value; }
-        }
-
         public static StringCollection UpdateSkipVersions
         {
             get { return m_updateSkipVersions; }

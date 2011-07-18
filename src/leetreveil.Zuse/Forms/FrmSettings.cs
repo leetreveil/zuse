@@ -41,11 +41,9 @@ namespace Zuse.Forms
             chkCheckUpdates.Checked = ZuseSettings.CheckForUpdates;
             chkDebugMode.Checked = ZuseSettings.DebugMode;
             chkMinimizeToTray.Checked = ZuseSettings.MinimizeToTray;
-            chkUseGrowl.Checked = ZuseSettings.UseGrowl;
             cmbGrowlLevel.Items.Add("All messages");
             cmbGrowlLevel.Items.Add("Warning and error messages");
             cmbGrowlLevel.Items.Add("Only error messages");
-            cmbGrowlLevel.SelectedIndex = ZuseSettings.LoggerGrowlLevel;
             cmbTrackDisplayFmt.Items.Add("%artist% - %album% - %title%");
             cmbTrackDisplayFmt.Items.Add("%artist% - %title%");
             cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist%");
@@ -68,8 +66,6 @@ namespace Zuse.Forms
             ZuseSettings.CheckForUpdates = chkCheckUpdates.Checked;
             ZuseSettings.DebugMode = chkDebugMode.Checked;
             ZuseSettings.MinimizeToTray = chkMinimizeToTray.Checked;
-            ZuseSettings.UseGrowl = chkUseGrowl.Checked;
-            ZuseSettings.LoggerGrowlLevel = cmbGrowlLevel.SelectedIndex;
             ZuseSettings.TrackDisplayFormat = cmbTrackDisplayFmt.Text;
 
             ZuseSettings.Save();
