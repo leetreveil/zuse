@@ -45,8 +45,6 @@ namespace leetreveil.Zuse
                 MessageBox.Show("Zuse couldn't detect Last.fm. Can you please make sure Last.fm is running before you start Zuse");
             }
 
-            Logger.Send(GetType(), LogLevel.Info, "Zuse is starting up!");
-
             /* Build the context menu for the system tray icon */
             contextMenuStrip = new ContextMenuStrip();
 
@@ -132,10 +130,7 @@ namespace leetreveil.Zuse
 
         protected void Exit_Click(object sender, EventArgs e)
         {
-            Logger.Send(GetType(), LogLevel.Info, "Zuse is closing down!");
-
             manager.CloseZune();
-
             Application.Exit();
         }
 

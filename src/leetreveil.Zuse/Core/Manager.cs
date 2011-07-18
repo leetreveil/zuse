@@ -214,9 +214,7 @@ namespace leetreveil.Zuse.Core
 
         private void ZunePlayer_UriSet(object sender, EventArgs e)
         {
-            //Logger.Send(this.GetType(), LogLevel.Info, "Playback track changed to " + ZuneTrack.GetFromCurrentTrack().ToString());
             Logger.Send(GetType(), LogLevel.Info, "Playback URI changed to " + PlayerInterop.Instance.CurrentUri);
-
             UpdateClient();
         }
 

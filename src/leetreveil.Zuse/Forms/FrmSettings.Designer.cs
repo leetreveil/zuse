@@ -50,8 +50,6 @@ namespace leetreveil.Zuse.Forms
             this.chkDebugMode = new System.Windows.Forms.CheckBox();
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.chkCheckUpdates = new System.Windows.Forms.CheckBox();
-            this.lblGrowlLevel = new System.Windows.Forms.Label();
-            this.cmbGrowlLevel = new System.Windows.Forms.ComboBox();
             this.lblTrackDisplayFmt = new System.Windows.Forms.Label();
             this.lblProgramRestartRequired = new System.Windows.Forms.Label();
             this.cmbTrackDisplayFmt = new System.Windows.Forms.ComboBox();
@@ -60,7 +58,7 @@ namespace leetreveil.Zuse.Forms
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(191, 236);
+            this.btnClose.Location = new System.Drawing.Point(191, 166);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
@@ -99,27 +97,9 @@ namespace leetreveil.Zuse.Forms
             this.chkCheckUpdates.Text = "Check for Updates to Zuse on Startup";
             this.chkCheckUpdates.UseVisualStyleBackColor = true;
             // 
-            // lblGrowlLevel
-            // 
-            this.lblGrowlLevel.Location = new System.Drawing.Point(6, 95);
-            this.lblGrowlLevel.Name = "lblGrowlLevel";
-            this.lblGrowlLevel.Size = new System.Drawing.Size(260, 22);
-            this.lblGrowlLevel.TabIndex = 10;
-            this.lblGrowlLevel.Text = "Log messages to show in Growl:";
-            this.lblGrowlLevel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmbGrowlLevel
-            // 
-            this.cmbGrowlLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbGrowlLevel.FormattingEnabled = true;
-            this.cmbGrowlLevel.Location = new System.Drawing.Point(6, 120);
-            this.cmbGrowlLevel.Name = "cmbGrowlLevel";
-            this.cmbGrowlLevel.Size = new System.Drawing.Size(260, 21);
-            this.cmbGrowlLevel.TabIndex = 11;
-            // 
             // lblTrackDisplayFmt
             // 
-            this.lblTrackDisplayFmt.Location = new System.Drawing.Point(6, 148);
+            this.lblTrackDisplayFmt.Location = new System.Drawing.Point(6, 78);
             this.lblTrackDisplayFmt.Name = "lblTrackDisplayFmt";
             this.lblTrackDisplayFmt.Size = new System.Drawing.Size(260, 22);
             this.lblTrackDisplayFmt.TabIndex = 13;
@@ -128,7 +108,7 @@ namespace leetreveil.Zuse.Forms
             // 
             // lblProgramRestartRequired
             // 
-            this.lblProgramRestartRequired.Location = new System.Drawing.Point(0, 208);
+            this.lblProgramRestartRequired.Location = new System.Drawing.Point(0, 138);
             this.lblProgramRestartRequired.Name = "lblProgramRestartRequired";
             this.lblProgramRestartRequired.Size = new System.Drawing.Size(266, 16);
             this.lblProgramRestartRequired.TabIndex = 14;
@@ -138,7 +118,7 @@ namespace leetreveil.Zuse.Forms
             // cmbTrackDisplayFmt
             // 
             this.cmbTrackDisplayFmt.FormattingEnabled = true;
-            this.cmbTrackDisplayFmt.Location = new System.Drawing.Point(6, 173);
+            this.cmbTrackDisplayFmt.Location = new System.Drawing.Point(6, 103);
             this.cmbTrackDisplayFmt.Name = "cmbTrackDisplayFmt";
             this.cmbTrackDisplayFmt.Size = new System.Drawing.Size(260, 21);
             this.cmbTrackDisplayFmt.TabIndex = 15;
@@ -148,13 +128,11 @@ namespace leetreveil.Zuse.Forms
             this.AcceptButton = this.btnClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 271);
+            this.ClientSize = new System.Drawing.Size(284, 200);
             this.ControlBox = false;
             this.Controls.Add(this.cmbTrackDisplayFmt);
             this.Controls.Add(this.lblProgramRestartRequired);
             this.Controls.Add(this.lblTrackDisplayFmt);
-            this.Controls.Add(this.cmbGrowlLevel);
-            this.Controls.Add(this.lblGrowlLevel);
             this.Controls.Add(this.chkCheckUpdates);
             this.Controls.Add(this.chkMinimizeToTray);
             this.Controls.Add(this.chkDebugMode);
@@ -177,8 +155,6 @@ namespace leetreveil.Zuse.Forms
         private System.Windows.Forms.CheckBox chkDebugMode;
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.CheckBox chkCheckUpdates;
-        private System.Windows.Forms.Label lblGrowlLevel;
-        private System.Windows.Forms.ComboBox cmbGrowlLevel;
         private System.Windows.Forms.Label lblTrackDisplayFmt;
         private System.Windows.Forms.Label lblProgramRestartRequired;
         private System.Windows.Forms.ComboBox cmbTrackDisplayFmt;
