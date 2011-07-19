@@ -22,14 +22,13 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using leetreveil.Zuse.Core;
-using leetreveil.Zuse.Forms;
-using leetreveil.Zuse.Scrobbler;
-using leetreveil.Zuse.Web;
+using Zuse.Core;
+using Zuse.Forms;
+using Zuse.Scrobbler;
+using Zuse.Web;
 
-namespace leetreveil.Zuse
+namespace Zuse
 {
-
     internal class Program
     {
         private ContextMenuStrip contextMenuStrip;

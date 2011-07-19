@@ -24,7 +24,7 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Repository;
 
-namespace leetreveil.Zuse.Core
+namespace Zuse.Core
 {
     public enum LogLevel
     {

@@ -20,9 +20,9 @@ using System;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using leetreveil.Zuse.Core;
+using Zuse.Core;
 
-namespace leetreveil.Zuse.Forms
+namespace Zuse.Forms
 {
     public partial class FrmSettings : Form
     {
