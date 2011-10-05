@@ -50,22 +50,23 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Zuse.Program</StartupObject>
+    <StartupObject>Zuse.PreApp</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>zuseicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="leetreveil.AutoUpdate.Framework, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="leetreveil.AutoUpdate.Framework">
       <HintPath>..\..\lib\leetreveil.AutoUpdate.Framework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Lpfm.LastFmScrobbler">
       <HintPath>..\..\lib\Lpfm.LastFmScrobbler.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -76,14 +77,17 @@
     <Reference Include="UIX, Version=4.8.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\UIX.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ZuneDBApi, Version=4.7.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ZuneDBApi.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ZuneShell, Version=4.7.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ZuneShell.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +109,7 @@
     <Compile Include="Forms\FrmErrorReport.Designer.cs">
       <DependentUpon>FrmErrorReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="PreApp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ZuneTrack.cs" />
@@ -115,7 +120,7 @@
       <DependentUpon>FrmErrorReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -136,6 +141,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Lpfm.LastFmScrobbler.dll" />
+    <EmbeddedResource Include="Resources\leetreveil.AutoUpdate.Framework.dll" />
+    <EmbeddedResource Include="Resources\log4net.dll" />
     <None Include="Resources\zuselogo.png" />
     <Content Include="zuseicon.ico" />
   </ItemGroup>
