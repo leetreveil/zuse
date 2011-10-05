@@ -1,6 +1,6 @@
 ﻿/*
  * Zuse - A Zune Last.fm plugin
- * Copyright (C) 2007-2010 Zachary Howe
+ * Copyright (C) 2011 Lee Treveil
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 using System;
 using System.Diagnostics;
@@ -36,7 +36,6 @@ namespace Zuse
         private ContextMenuStrip contextMenuStrip;
         private ZuneManager manager;
         private NotifyIcon notifyIcon;
-        private bool windowMinimized;
 
         public Program()
         {
@@ -67,8 +66,6 @@ namespace Zuse
             notifyIcon.Visible = true;
             notifyIcon.Text = "Zuse";
             notifyIcon.ContextMenuStrip = contextMenuStrip;
-
-            windowMinimized = false;
 
             string ApiKey = "28c09ec38e4b2fc3d0d9685702065295";
             string ApiSecret = "394e61d41eb59981ca4b4d275073c1d1";
