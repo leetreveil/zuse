@@ -25,9 +25,9 @@ using System.Windows.Forms;
 using Zuse.Core;
 using Zuse.Forms;
 using Zuse.Web;
-using Zuse.Properties;
 using leetreveil.Zuse.Properties;
 using Lpfm.LastFmScrobbler;
+using leetreveil.Zuse.Forms;
 
 namespace Zuse
 {
@@ -44,14 +44,22 @@ namespace Zuse
             contextMenuStrip = new ContextMenuStrip();
 
             /* About Zuse system tray menu option */
+            var itemAbout = new ToolStripMenuItem("About");
+            itemAbout.Click += delegate { new FrmAbout().ShowDialog(); };
+            contextMenuStrip.Items.Add(itemAbout);
+            
+            /* Settings Zuse system tray menu option */
             var itemSettings = new ToolStripMenuItem("Settings");
-            itemSettings.Click += new EventHandler(Settings_Click);
+            itemSettings.Click += delegate { new FrmSettings().ShowDialog(); };
             contextMenuStrip.Items.Add(itemSettings);
 
             contextMenuStrip.Items.Add(new ToolStripSeparator());
 
             var itemExit = new ToolStripMenuItem("Exit");
-            itemExit.Click += new EventHandler(Exit_Click);
+            itemExit.Click += delegate {
+                manager.CloseZune();
+                Application.Exit();
+            };
             contextMenuStrip.Items.Add(itemExit);
 
             // Retrieve the stream of the system tray icon embedded in Zuse.exe
@@ -90,6 +98,11 @@ namespace Zuse
             manager.LaunchZune();
         }
 
+        void itemAbout_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         protected void CheckForUpdate_Click(object sender, EventArgs e)
         {
             UpdateChecker.Check();
@@ -102,18 +115,6 @@ namespace Zuse
             {
                 MessageBox.Show("No update is available.", "Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        protected void Settings_Click(object sender, EventArgs e)
-        {
-            var frmSettings = new FrmSettings();
-            frmSettings.ShowDialog();
-        }
-
-        protected void Exit_Click(object sender, EventArgs e)
-        {
-            manager.CloseZune();
-            Application.Exit();
         }
 
         /// <summary>
