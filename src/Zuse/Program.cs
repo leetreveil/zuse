@@ -34,7 +34,7 @@ namespace Zuse
     internal class Program
     {
         private ContextMenuStrip contextMenuStrip;
-        private Manager manager;
+        private ZuneManager manager;
         private NotifyIcon notifyIcon;
         private bool windowMinimized;
 
@@ -64,7 +64,6 @@ namespace Zuse
             notifyIcon.Visible = true;
             notifyIcon.Text = "Zuse";
             notifyIcon.ContextMenuStrip = contextMenuStrip;
-            notifyIcon.DoubleClick += new EventHandler(NotifyIcon_DoubleClick);
 
             windowMinimized = false;
 
@@ -87,23 +86,8 @@ namespace Zuse
             }
 
             // Initialize main manager
-            manager = new Manager(scrobbler);
+            manager = new ZuneManager(scrobbler);
             manager.LaunchZune();
-        }
-
-        protected void NotifyIcon_DoubleClick(object sender, EventArgs e)
-        {
-            switch (windowMinimized)
-            {
-                case true:
-                    manager.ShowZuneWindow();
-                    break;
-                case false:
-                    manager.HideZuneWindow();
-                    break;
-            }
-
-            windowMinimized = !windowMinimized;
         }
 
         protected void CheckForUpdate_Click(object sender, EventArgs e)

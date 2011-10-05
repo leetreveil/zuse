@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Manager.cs" />
+    <Compile Include="Core\ScrobbleManager.cs" />
     <Compile Include="Core\ScrobbleMe.cs" />
     <Compile Include="Core\TrackWatcher.cs" />
     <Compile Include="Forms\FrmSettings.cs">
