@@ -40,39 +40,12 @@ namespace Zuse.Forms
             Icon = Icon.ExtractAssociatedIcon(asm.Location);
 
             chkCheckUpdates.Checked = _zuseSettings.CheckForUpdates;
-            chkMinimizeToTray.Checked = _zuseSettings.MinimizeToTray;
-            cmbTrackDisplayFmt.Items.Add("%artist% - %album% - %title%");
-            cmbTrackDisplayFmt.Items.Add("%artist% - %title%");
-            cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist%");
-            cmbTrackDisplayFmt.Items.Add("\"%title%\" by %artist% in \"%album%\"");
-            if (!cmbTrackDisplayFmt.Items.Contains(_zuseSettings.TrackDisplayFormat))
-            {
-                cmbTrackDisplayFmt.Items.Add(_zuseSettings.TrackDisplayFormat);
-            }
-            cmbTrackDisplayFmt.SelectedText = _zuseSettings.TrackDisplayFormat;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             _zuseSettings.CheckForUpdates = chkCheckUpdates.Checked;
-            _zuseSettings.MinimizeToTray = chkMinimizeToTray.Checked;
-            _zuseSettings.TrackDisplayFormat = cmbTrackDisplayFmt.Text;
-
             _zuseSettings.Save();
-        }
-
-        private void chkMinimizeToTray_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkMinimizeToTray.Checked)
-            {
-                string msg =
-                    "Zuse may cause the Zune software to become buggy if you use the Zune Software's built-in Mini Player. Are you sure?";
-
-                if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
-                {
-                    chkMinimizeToTray.Checked = false;
-                }
-            }
         }
     }
 }

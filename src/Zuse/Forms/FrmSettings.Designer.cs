@@ -47,11 +47,7 @@ namespace Zuse.Forms
         private void InitializeComponent()
         {
             this.btnClose = new System.Windows.Forms.Button();
-            this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.chkCheckUpdates = new System.Windows.Forms.CheckBox();
-            this.lblTrackDisplayFmt = new System.Windows.Forms.Label();
-            this.lblProgramRestartRequired = new System.Windows.Forms.Label();
-            this.cmbTrackDisplayFmt = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnClose
@@ -65,17 +61,6 @@ namespace Zuse.Forms
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // chkMinimizeToTray
-            // 
-            this.chkMinimizeToTray.AutoSize = true;
-            this.chkMinimizeToTray.Location = new System.Drawing.Point(9, 35);
-            this.chkMinimizeToTray.Name = "chkMinimizeToTray";
-            this.chkMinimizeToTray.Size = new System.Drawing.Size(188, 17);
-            this.chkMinimizeToTray.TabIndex = 2;
-            this.chkMinimizeToTray.Text = "Let Zune Minimize To System Tray";
-            this.chkMinimizeToTray.UseVisualStyleBackColor = true;
-            this.chkMinimizeToTray.CheckedChanged += new System.EventHandler(this.chkMinimizeToTray_CheckedChanged);
-            // 
             // chkCheckUpdates
             // 
             this.chkCheckUpdates.AutoSize = true;
@@ -86,32 +71,6 @@ namespace Zuse.Forms
             this.chkCheckUpdates.Text = "Check for Updates to Zuse on Startup";
             this.chkCheckUpdates.UseVisualStyleBackColor = true;
             // 
-            // lblTrackDisplayFmt
-            // 
-            this.lblTrackDisplayFmt.Location = new System.Drawing.Point(6, 71);
-            this.lblTrackDisplayFmt.Name = "lblTrackDisplayFmt";
-            this.lblTrackDisplayFmt.Size = new System.Drawing.Size(260, 22);
-            this.lblTrackDisplayFmt.TabIndex = 13;
-            this.lblTrackDisplayFmt.Text = "Track Display Format:";
-            this.lblTrackDisplayFmt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblProgramRestartRequired
-            // 
-            this.lblProgramRestartRequired.Location = new System.Drawing.Point(0, 131);
-            this.lblProgramRestartRequired.Name = "lblProgramRestartRequired";
-            this.lblProgramRestartRequired.Size = new System.Drawing.Size(266, 16);
-            this.lblProgramRestartRequired.TabIndex = 14;
-            this.lblProgramRestartRequired.Text = "(*) - Requires Program Restart";
-            this.lblProgramRestartRequired.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // cmbTrackDisplayFmt
-            // 
-            this.cmbTrackDisplayFmt.FormattingEnabled = true;
-            this.cmbTrackDisplayFmt.Location = new System.Drawing.Point(6, 96);
-            this.cmbTrackDisplayFmt.Name = "cmbTrackDisplayFmt";
-            this.cmbTrackDisplayFmt.Size = new System.Drawing.Size(260, 21);
-            this.cmbTrackDisplayFmt.TabIndex = 15;
-            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnClose;
@@ -119,11 +78,7 @@ namespace Zuse.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 200);
             this.ControlBox = false;
-            this.Controls.Add(this.cmbTrackDisplayFmt);
-            this.Controls.Add(this.lblProgramRestartRequired);
-            this.Controls.Add(this.lblTrackDisplayFmt);
             this.Controls.Add(this.chkCheckUpdates);
-            this.Controls.Add(this.chkMinimizeToTray);
             this.Controls.Add(this.btnClose);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -140,10 +95,6 @@ namespace Zuse.Forms
         #endregion
 
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.CheckBox chkCheckUpdates;
-        private System.Windows.Forms.Label lblTrackDisplayFmt;
-        private System.Windows.Forms.Label lblProgramRestartRequired;
-        private System.Windows.Forms.ComboBox cmbTrackDisplayFmt;
     }
 }

@@ -104,7 +104,6 @@ namespace Zuse.Core
                     };
 
                     var resp = _scrobbler.NowPlaying(scrobTrack);
-                    
                     Debug.WriteLine("successfully sent now playing: " + resp.Track.TrackName);
                 }
                 catch (LastFmApiException exception)
@@ -152,7 +151,8 @@ namespace Zuse.Core
         private void Reauthenticate()
         {
             MessageBox.Show("We need to re-authorize Zuse with last.fm, " +
-                "please follow the instructions in your web browser. Thank you.");
+                "please follow the instructions in your web browser. Thank you.",
+                "Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             // get a url to authenticate this application
             string url = _scrobbler.GetAuthorisationUri();
@@ -163,8 +163,6 @@ namespace Zuse.Core
 
         public void LaunchZune()
         {
-            //lastFM.Authenticate("", "");
-
             KillZune();
 
             _zuneThread = new Thread(new ThreadStart(ZuneThread));
@@ -227,35 +225,6 @@ namespace Zuse.Core
             Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_DoHide), null, DeferredInvokePriority.Normal);
         }
 
-        private void ZuneWindow_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var window = (Window) sender;
-
-            if (e.PropertyName == "WindowState")
-            {
-                if (Settings.Default.MinimizeToTray)
-                {
-                    switch (window.WindowState)
-                    {
-                        case WindowState.Maximized:
-                            window.ShowInTaskbar = true;
-                            break;
-                        case WindowState.Minimized:
-                            window.ShowInTaskbar = false;
-                            break;
-                        case WindowState.Normal:
-                            window.ShowInTaskbar = true;
-                            break;
-                    }
-                }
-            }
-        }
-
-        private void ZuneWindow_Setup(object sender)
-        {
-            Application.Window.PropertyChanged += new PropertyChangedEventHandler(ZuneWindow_PropertyChanged);
-        }
-
         public float GetCurrentTrackPosition()
         {
             return TransportControls.Instance.CurrentTrackPosition;
@@ -305,8 +274,6 @@ namespace Zuse.Core
             {
                 Thread.Sleep(500);
             }
-
-            Application.DeferredInvoke(new DeferredInvokeHandler(ZuneWindow_Setup), null, DeferredInvokePriority.Normal);
 
             var foo = new EventHandler(ZunePlayer_StatusChanged);
 

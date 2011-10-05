@@ -86,27 +86,6 @@ namespace Zuse.Core
             set { zuneid = value; }
         }
 
-        public override string ToString()
-        {
-            var fmt = (string) Settings.Default.TrackDisplayFormat.Clone();
-            string str = null;
-
-            try
-            {
-                fmt = fmt.Replace("%artist%", "{0:s}");
-                fmt = fmt.Replace("%album%", "{1:s}");
-                fmt = fmt.Replace("%title%", "{2:s}");
-
-                str = string.Format(fmt, artist, album, title);
-                return str;
-            }
-            catch (Exception e)
-            {
-                Logger.Send(GetType(), LogLevel.Error, "An error occured while formatting the track display string", e);
-                return str;
-            }
-        }
-
         public override int GetHashCode()
         {
             return base.GetHashCode();

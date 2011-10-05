@@ -76,7 +76,8 @@ namespace Zuse
             {
                 MessageBox.Show("Welcome to Zuse! Because this is the first time you have used Zuse " + 
                     "we need to authorize the application with last.fm. " +
-                    "Please follow the instructions in your web browser. Thank you.");
+                    "Please follow the instructions in your web browser. Thank you.",
+                    "Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // get a url to authenticate this application
                 string url = scrobbler.GetAuthorisationUri();
