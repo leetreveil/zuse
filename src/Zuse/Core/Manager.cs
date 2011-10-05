@@ -60,14 +60,10 @@ namespace Zuse.Core
             _monitorThread.Start();
         }
 
-        private void CloseZune_Do(object sender)
-        {
-            Application.Window.Close();
-        }
-
         public void CloseZune()
         {
-            Application.DeferredInvoke(new DeferredInvokeHandler(CloseZune_Do), null, DeferredInvokePriority.Normal);
+            Application.DeferredInvoke(
+                new DeferredInvokeHandler(delegate { Application.Window.Close(); }), null, DeferredInvokePriority.Normal);
         }
 
         public void ZuneThread()
@@ -113,38 +109,29 @@ namespace Zuse.Core
             }
         }
 
-        private void ZunePlayer_UriSet(object sender, EventArgs e)
-        {
-            UpdateClient();
-        }
-
-        private void ZunePlayer_StatusChanged(object sender, EventArgs e)
-        {
-            UpdateClient();
-        }
-
         private void MonitorThread()
         {
+            // wait for the Zune UI to initialize
             while (ZuneShell.DefaultInstance == null)
             {
                 Thread.Sleep(500);
             }
 
-            var foo = new EventHandler(ZunePlayer_StatusChanged);
+            PlayerInterop.Instance.TransportStatusChanged += delegate { UpdateClient(); };
+            PlayerInterop.Instance.UriSet += delegate { UpdateClient(); };
 
-            PlayerInterop.Instance.TransportStatusChanged += foo;
-            PlayerInterop.Instance.UriSet += new EventHandler(ZunePlayer_UriSet);
+            //TODO: not sure what the effects of removing this are,
+            //      foo is only set once so I cant see it creating a memory leak
+            //while (true)
+            //{
+            //    if (ZuneShell.DefaultInstance == null)
+            //    {
+            //        PlayerInterop.Instance.StatusChanged -= foo;
+            //        return;
+            //    }
 
-            while (true)
-            {
-                if (ZuneShell.DefaultInstance == null)
-                {
-                    PlayerInterop.Instance.StatusChanged -= foo;
-                    return;
-                }
-
-                Thread.Sleep(1000);
-            }
+            //    Thread.Sleep(1000);
+            //}
         }
     }
 }
