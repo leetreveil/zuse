@@ -23,7 +23,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Zuse.Core;
-using Zuse.Forms;
 using leetreveil.Zuse.Properties;
 using Lpfm.LastFmScrobbler;
 using leetreveil.Zuse.Forms;
@@ -49,11 +48,6 @@ namespace Zuse
             itemAbout.Click += delegate { new FrmAbout().ShowDialog(); };
             contextMenuStrip.Items.Add(itemAbout);
             
-            /* Settings Zuse system tray menu option */
-            var itemSettings = new ToolStripMenuItem("Settings");
-            itemSettings.Click += delegate { new FrmSettings().ShowDialog(); };
-            contextMenuStrip.Items.Add(itemSettings);
-
             contextMenuStrip.Items.Add(new ToolStripSeparator());
 
             var itemExit = new ToolStripMenuItem("Exit");

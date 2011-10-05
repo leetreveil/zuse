@@ -25,7 +25,6 @@ using Microsoft.Iris;
 using Microsoft.Zune.Shell;
 using MicrosoftZunePlayback;
 using ZuneUI;
-using Zuse.Forms;
 using Application=Microsoft.Iris.Application;
 using leetreveil.Zuse.Core;
 using leetreveil.Zuse.Properties;
