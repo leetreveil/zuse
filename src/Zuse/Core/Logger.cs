@@ -59,8 +59,8 @@ namespace Zuse.Core
 
         public static void Send(LogLevel level, string msg, Exception e)
         {
-            ILog log = LogManager.GetLogger("Zuse");
-            
+            ILog log = LogManager.GetLogger("Zuse", "");
+        
             switch (level)
             {
                 case LogLevel.Error:
