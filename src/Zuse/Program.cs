@@ -23,11 +23,11 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Zuse.Core;
-using leetreveil.Zuse.Properties;
+using Zuse.Properties;
 using Lpfm.LastFmScrobbler;
-using leetreveil.Zuse.Forms;
 using leetreveil.AutoUpdate.Framework;
 using System.Threading;
+using Zuse.Forms;
 
 namespace Zuse
 {

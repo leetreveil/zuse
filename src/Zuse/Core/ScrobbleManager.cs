@@ -4,11 +4,11 @@ using System.Text;
 using Zuse.Core;
 using System.Windows.Forms;
 using Lpfm.LastFmScrobbler;
-using leetreveil.Zuse.Properties;
+using Zuse.Properties;
 using Lpfm.LastFmScrobbler.Api;
 using System.Diagnostics;
 
-namespace leetreveil.Zuse.Core
+namespace Zuse.Core
 {
     internal class ScrobbleManager
     {

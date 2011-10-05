@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Zuse.Core;
 
-namespace leetreveil.Zuse.Core
+namespace Zuse.Core
 {
     public class ScrobbleMe
     {

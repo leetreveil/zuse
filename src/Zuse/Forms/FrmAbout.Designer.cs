@@ -1,4 +1,4 @@
-﻿namespace leetreveil.Zuse.Forms
+﻿namespace Zuse.Forms
 {
     partial class FrmAbout
     {
@@ -42,7 +42,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::leetreveil.Zuse.Properties.Resources.zuselogo;
+            this.pictureBox1.Image = global::Zuse.Properties.Resources.zuselogo;
             this.pictureBox1.Location = new System.Drawing.Point(68, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(130, 132);

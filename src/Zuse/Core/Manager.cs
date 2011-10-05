@@ -26,8 +26,7 @@ using Microsoft.Zune.Shell;
 using MicrosoftZunePlayback;
 using ZuneUI;
 using Application=Microsoft.Iris.Application;
-using leetreveil.Zuse.Core;
-using leetreveil.Zuse.Properties;
+using Zuse.Properties;
 using Lpfm.LastFmScrobbler;
 using Lpfm.LastFmScrobbler.Api;
 

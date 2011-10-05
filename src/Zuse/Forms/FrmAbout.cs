@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace leetreveil.Zuse.Forms
+namespace Zuse.Forms
 {
     public partial class FrmAbout : Form
     {

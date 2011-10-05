@@ -4,7 +4,7 @@ using Timer = System.Timers.Timer;
 using System;
 using System.Diagnostics;
 
-namespace leetreveil.Zuse.Core
+namespace Zuse.Core
 {
     internal class TrackWatcher
     {

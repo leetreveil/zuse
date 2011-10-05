@@ -20,7 +20,7 @@ using System;
 using MicrosoftZuneLibrary;
 using ZuneUI;
 using Zuse.Core;
-using leetreveil.Zuse.Properties;
+using Zuse.Properties;
 
 namespace Zuse.Core
 {

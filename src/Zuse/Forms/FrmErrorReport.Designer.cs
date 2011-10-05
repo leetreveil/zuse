@@ -1,4 +1,4 @@
-﻿namespace leetreveil.Zuse.Forms
+﻿namespace Zuse.Forms
 {
     partial class FrmErrorReport
     {
