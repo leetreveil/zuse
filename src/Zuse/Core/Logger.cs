@@ -52,19 +52,20 @@ namespace Zuse.Core
             BasicConfigurator.Configure(repo, rfa);
         }
 
-        public static void Send(Type sender, LogLevel level, string msg)
+        public static void Send(LogLevel level, string msg)
         {
-            Send(sender, level, msg, null);
+            Send(level, msg, null);
         }
 
-        public static void Send(Type sender, LogLevel level, string msg, Exception e)
+        public static void Send(LogLevel level, string msg, Exception e)
         {
-            ILog log = LogManager.GetLogger("Zuse", sender);
-
+            ILog log = LogManager.GetLogger("Zuse");
+            
             switch (level)
             {
                 case LogLevel.Error:
-                    log.Error(msg, e);
+                    if (e == null) log.Error(msg);
+                    else log.Error(msg, e);
                     break;
                 case LogLevel.Warning:
                     if (e == null) log.Warn(msg);

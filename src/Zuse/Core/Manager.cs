@@ -87,7 +87,7 @@ namespace Zuse.Core
 
                 if (MessageBox.Show(msg, "Zuse", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    Logger.Send(GetType(), LogLevel.Info, "Killing Zune.exe process with PID of " + proc.Id.ToString());
+                    Logger.Send(LogLevel.Info, "Killing Zune.exe process with PID of " + proc.Id.ToString());
                     proc.Kill();
                 }
             }
@@ -104,16 +104,16 @@ namespace Zuse.Core
                 case MCTransportState.Playing:
                     ZuneTrack track = ZuneTrack.GetFromCurrentTrack();
                     _trackWatcher.Playing(track);
-                    Logger.Send(GetType(), LogLevel.Info,
+                    Logger.Send(LogLevel.Info,
                                     string.Format("Playback started - {0:s}", track.ToString()));
                     break;
                 case MCTransportState.Paused:
                     _trackWatcher.Paused(ZuneTrack.GetFromCurrentTrack());
-                    Logger.Send(GetType(), LogLevel.Info, "Playback paused");
+                    Logger.Send(LogLevel.Info, "Playback paused");
                     break;
                 case MCTransportState.Stopped:
                     _trackWatcher.Stopped(ZuneTrack.GetFromCurrentTrack());
-                    Logger.Send(GetType(), LogLevel.Info, "Playback stopped");
+                    Logger.Send(LogLevel.Info, "Playback stopped");
                     break;
                 default:
                     break;
@@ -122,7 +122,7 @@ namespace Zuse.Core
 
         private void ZunePlayer_UriSet(object sender, EventArgs e)
         {
-            Logger.Send(GetType(), LogLevel.Info, "Playback URI changed to " + PlayerInterop.Instance.CurrentUri);
+            Logger.Send(LogLevel.Info, "Playback URI changed to " + PlayerInterop.Instance.CurrentUri);
             UpdateClient();
         }
 

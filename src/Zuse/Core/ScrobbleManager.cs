@@ -36,7 +36,7 @@ namespace leetreveil.Zuse.Core
                     var resp = _scrobbler.Scrobble(scrobTrack);
 
                     Debug.WriteLine("successfully scrobbled: " + resp.Track.TrackName);
-                    Logger.Send(GetType(), LogLevel.Info, "Successfully scrobbled: " + resp.Track.TrackName);
+                    Logger.Send(LogLevel.Info, "Successfully scrobbled: " + resp.Track.TrackName);
                 }
                 catch (LastFmApiException exception)
                 {
@@ -46,12 +46,12 @@ namespace leetreveil.Zuse.Core
                         return;
                     }
 
-                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                    Logger.Send(LogLevel.Error, "Scrobble was unsuccessful", exception);
                 }
                 catch (InvalidOperationException exception)
                 {
                     //occurs when the scrobble has been sent before it should have been
-                    Logger.Send(GetType(), LogLevel.Warning, exception.Message);
+                    Logger.Send(LogLevel.Error, "Scrobble was unsuccessful", exception);
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace leetreveil.Zuse.Core
                     }
 
                     //log unsuccessfull now playing
-                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                    Logger.Send(LogLevel.Error, "Submit now playing was unsuccessful", exception);
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace leetreveil.Zuse.Core
                         return false;
                     }
 
-                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                    Logger.Send(LogLevel.Error, "Unable to get session", exception);
                     return false;
                 }
             }

@@ -24,10 +24,11 @@ using System.Reflection;
 using System.Windows.Forms;
 using Zuse.Core;
 using Zuse.Forms;
-using Zuse.Web;
 using leetreveil.Zuse.Properties;
 using Lpfm.LastFmScrobbler;
 using leetreveil.Zuse.Forms;
+using leetreveil.AutoUpdate.Framework;
+using System.Threading;
 
 namespace Zuse
 {
@@ -98,25 +99,6 @@ namespace Zuse
             manager.LaunchZune();
         }
 
-        void itemAbout_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected void CheckForUpdate_Click(object sender, EventArgs e)
-        {
-            UpdateChecker.Check();
-
-            if (UpdateChecker.UpdateAvailable)
-            {
-                //TODO: display message to user with update
-            }
-            else
-            {
-                MessageBox.Show("No update is available.", "Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -138,19 +120,35 @@ namespace Zuse
             string log_path = appdata_path + "\\Logs\\";
             Logger.Init(log_path);
 
-            if (Settings.Default.CheckForUpdates)
-            {
-                //TODO: the update checker blocks the UI thread and will delay app load
-                //UpdateChecker.Check();
-
-                if (UpdateChecker.UpdateAvailable)
-                {
-                    //TODO: Display message to user with update
-                }
-            }
+            CheckForUpdates();
 
             var zuse = new Program();
             Application.Run();
+        }
+
+        static void CheckForUpdates() 
+        {
+            UpdateManager updateManager = UpdateManager.Instance;
+            updateManager.AppFeedUrl = "https://github.com/leetreveil/zuse/raw/master/updates.xml";
+        
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                try
+                {
+                    if (updateManager.CheckForUpdate())
+                    {
+                        var updateMsg = "A new update ({0} is available for Zuse. Go to https://github.com/leetreveil/zuse/downloads to download now.";
+                        var formatted = String.Format(updateMsg, updateManager.NewUpdate.Version);
+                        MessageBox.Show(formatted,"Zuse", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                    Logger.Send(LogLevel.Error, "Unable to check for updates", e);
+                }
+            });
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
