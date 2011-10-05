@@ -26,45 +26,152 @@ using Microsoft.Zune.Shell;
 using MicrosoftZunePlayback;
 using ZuneUI;
 using Zuse.Forms;
-using Zuse.Scrobbler;
 using Application=Microsoft.Iris.Application;
+using leetreveil.Zuse.Core;
+using leetreveil.Zuse.Properties;
+using Lpfm.LastFmScrobbler;
+using Lpfm.LastFmScrobbler.Api;
 
 namespace Zuse.Core
 {
     internal class Manager
     {
-        private ZuneTrack currentTrack;
-        private float lastTrackPosition;
-        private Thread monitorTh;
-        private ScrobSub scrobbler;
-        private Thread zuneTh;
+        private ZuneTrack _currentTrack;
+        private float _lastTrackPosition;
+        private Thread _monitorThread;
+        private Thread _zuneThread;
+        private TrackWatcher _trackWatcher;
+        private Scrobbler _scrobbler;
 
-        public Manager()
+        public Manager(Scrobbler scrobbler)
         {
-            scrobbler = new ScrobSub();
-            currentTrack = new ZuneTrack();
+            _scrobbler = scrobbler;
+            _currentTrack = new ZuneTrack();
+            _trackWatcher = new TrackWatcher();
 
-            lastTrackPosition = 300f;
+            _trackWatcher.TrackIsReadyToBeScrobbled += new Action<ScrobbleMe>(_trackWatcher_TrackIsReadyToBeScrobbled);
+            _trackWatcher.TrackHasStartedPlaying += new Action<ZuneTrack>(trackWatcher_TrackHasStartedPlaying);
+        }
+
+        void _trackWatcher_TrackIsReadyToBeScrobbled(ScrobbleMe scrobbleMe)
+        {
+            if (CheckForSession())
+            {
+                try
+                {
+                    var scrobTrack = new Track 
+                    { 
+                        TrackName = scrobbleMe.ZuneTrack.Title, 
+                        ArtistName = scrobbleMe.ZuneTrack.Artist,
+                        WhenStartedPlaying = scrobbleMe.TimeStarted, 
+                        Duration = TimeSpan.FromSeconds(scrobbleMe.ZuneTrack.Length)
+                    };
+
+                    var resp = _scrobbler.Scrobble(scrobTrack);
+
+                    Debug.WriteLine("successfully scrobbled: " + resp.Track.TrackName);
+                    Logger.Send(GetType(), LogLevel.Info, "Successfully scrobbled: " + resp.Track.TrackName);
+                }
+                catch (LastFmApiException exception)
+                {
+                    if (exception.ErrorCode == 9) // re-authenticate
+                    {
+                        Reauthenticate();
+                        return;
+                    }
+
+                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                }
+                catch (InvalidOperationException exception)
+                {
+                    //occurs when the scrobble has been sent before it should have been
+                    Logger.Send(GetType(), LogLevel.Warning, exception.Message);
+                }
+            }
+        }
+
+        void trackWatcher_TrackHasStartedPlaying(ZuneTrack track)
+        {
+            if (CheckForSession())
+            {
+                try
+                {
+                    var scrobTrack = new Track
+                    { 
+                        TrackName = track.Title, 
+                        ArtistName = track.Artist, 
+                        Duration = TimeSpan.FromSeconds(track.Length) 
+                    };
+
+                    var resp = _scrobbler.NowPlaying(scrobTrack);
+                    
+                    Debug.WriteLine("successfully sent now playing: " + resp.Track.TrackName);
+                }
+                catch (LastFmApiException exception)
+                {
+                    if (exception.ErrorCode == 9) // re-authenticate
+                    {
+                        Reauthenticate();
+                        return;
+                    }
+
+                    //log unsuccessfull now playing
+                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                }
+            }
+        }
+
+        private bool CheckForSession()
+        {
+            if (String.IsNullOrEmpty(Settings.Default.SessionKey))
+            {
+                try
+                {
+                    var sessionKey = _scrobbler.GetSession();
+                    Settings.Default.SessionKey = sessionKey;
+                    Settings.Default.Save();
+
+                    return true;
+                }
+                catch (LastFmApiException exception)
+                {
+                    if (exception.ErrorCode == 9) // re-authenticate
+                    {
+                        Reauthenticate();
+                        return false;
+                    }
+
+                    Logger.Send(GetType(), LogLevel.Error, exception.Message);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void Reauthenticate()
+        {
+            MessageBox.Show("We need to re-authorize Zuse with last.fm, " +
+                "please follow the instructions in your web browser. Thank you.");
+
+            // get a url to authenticate this application
+            string url = _scrobbler.GetAuthorisationUri();
+
+            // open the URL in the default browser
+            Process.Start(url);
         }
 
         public void LaunchZune()
         {
-            //TODO: what if we set zuse to run at startup and it starts before the lastfm client?
-            //we could just let everything load because the scrobbler uses sockets and it isn't 
-            //a requirement that the lastfm client is running before zuse is
-            //if we go to scrobble a track and the client isn't running then we should warn the user
-            if (!LastFM.IsClientRunning)
-            {
-                MessageBox.Show("Zuse couldn't detect Last.fm. Can you please make sure Last.fm is running before you start Zuse");
-            }
+            //lastFM.Authenticate("", "");
 
             KillZune();
 
-            zuneTh = new Thread(new ThreadStart(ZuneThread));
-            zuneTh.Start();
+            _zuneThread = new Thread(new ThreadStart(ZuneThread));
+            _zuneThread.Start();
 
-            monitorTh = new Thread(new ThreadStart(MonitorThread));
-            monitorTh.Start();
+            _monitorThread = new Thread(new ThreadStart(MonitorThread));
+            _monitorThread.Start();
         }
 
         private void CloseZune_Do(object sender)
@@ -126,7 +233,7 @@ namespace Zuse.Core
 
             if (e.PropertyName == "WindowState")
             {
-                if (Properties.Settings.Default.MinimizeToTray)
+                if (Settings.Default.MinimizeToTray)
                 {
                     switch (window.WindowState)
                     {
@@ -157,42 +264,24 @@ namespace Zuse.Core
         private void UpdateClient()
         {
             string current_uri = PlayerInterop.Instance.CurrentUri;
-
             if (current_uri == null) return;
 
             switch (PlayerInterop.Instance.TransportState)
             {
                 case MCTransportState.Playing:
                     ZuneTrack track = ZuneTrack.GetFromCurrentTrack();
-                    if (track == null) return;
-                    float theshold = GetCurrentTrackPosition() - lastTrackPosition;
-                    if (theshold < 1 && theshold >= 0)
-                    {
-                        lastTrackPosition = 300f;
-                        Logger.Send(GetType(), LogLevel.Info,
-                                    string.Format("Playback resumed - {0:s}", track.ToString()));
-                        scrobbler.Resume();
-                        return;
-                    }
-                    else
-                    {
-                        if (!currentTrack.Equals(track))
-                        {
-                            scrobbler.Start(track.Artist, track.Title, track.Album, track.Length, current_uri);
-                            currentTrack = track;
-                        }
-                        Logger.Send(GetType(), LogLevel.Info,
+                    _trackWatcher.Playing(track);
+                    Logger.Send(GetType(), LogLevel.Info,
                                     string.Format("Playback started - {0:s}", track.ToString()));
-                    }
                     break;
                 case MCTransportState.Paused:
-                    lastTrackPosition = GetCurrentTrackPosition();
+                    _trackWatcher.Paused(ZuneTrack.GetFromCurrentTrack());
+                    _lastTrackPosition = GetCurrentTrackPosition();
                     Logger.Send(GetType(), LogLevel.Info, "Playback paused");
-                    scrobbler.Pause();
                     break;
                 case MCTransportState.Stopped:
+                    _trackWatcher.Stopped(ZuneTrack.GetFromCurrentTrack());
                     Logger.Send(GetType(), LogLevel.Info, "Playback stopped");
-                    scrobbler.Stop();
                     break;
                 default:
                     break;

@@ -20,6 +20,7 @@ using System;
 using MicrosoftZuneLibrary;
 using ZuneUI;
 using Zuse.Core;
+using leetreveil.Zuse.Properties;
 
 namespace Zuse.Core
 {
@@ -87,7 +88,7 @@ namespace Zuse.Core
 
         public override string ToString()
         {
-            var fmt = (string) Properties.Settings.Default.TrackDisplayFormat.Clone();
+            var fmt = (string) Settings.Default.TrackDisplayFormat.Clone();
             string str = null;
 
             try
@@ -122,6 +123,11 @@ namespace Zuse.Core
             {
                 return false;
             }
+        }
+
+        public static float CurrentTrackPosition()
+        {
+            return TransportControls.Instance.CurrentTrackPosition;
         }
 
         public static ZuneTrack GetFromCurrentTrack()

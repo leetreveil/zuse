@@ -21,12 +21,13 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using Zuse.Core;
+using leetreveil.Zuse.Properties;
 
 namespace Zuse.Forms
 {
     public partial class FrmSettings : Form
     {
-        private Properties.Settings _zuseSettings = Properties.Settings.Default;
+        private leetreveil.Zuse.Properties.Settings _zuseSettings = Settings.Default;
 
         public FrmSettings()
         {

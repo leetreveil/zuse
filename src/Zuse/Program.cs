@@ -24,8 +24,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using Zuse.Core;
 using Zuse.Forms;
-using Zuse.Scrobbler;
 using Zuse.Web;
+using Zuse.Properties;
+using leetreveil.Zuse.Properties;
+using Lpfm.LastFmScrobbler;
 
 namespace Zuse
 {
@@ -66,8 +68,25 @@ namespace Zuse
 
             windowMinimized = false;
 
+            string ApiKey = "28c09ec38e4b2fc3d0d9685702065295";
+            string ApiSecret = "394e61d41eb59981ca4b4d275073c1d1";
+            var scrobbler = new Scrobbler(ApiKey, ApiSecret, Settings.Default.SessionKey);
+
+            if (String.IsNullOrEmpty(Settings.Default.SessionKey))
+            {
+                MessageBox.Show("Welcome to Zuse! Because this is the first time you have used Zuse " + 
+                    "we need to authorize the application with last.fm. " +
+                    "Please follow the instructions in your web browser. Thank you.");
+
+                // get a url to authenticate this application
+                string url = scrobbler.GetAuthorisationUri();
+
+                // open the URL in the default browser
+                Process.Start(url);
+            }
+
             // Initialize main manager
-            manager = new Manager();
+            manager = new Manager(scrobbler);
             manager.LaunchZune();
         }
 
@@ -130,7 +149,7 @@ namespace Zuse
             string log_path = appdata_path + "\\Logs\\";
             Logger.Init(log_path);
 
-            if (Properties.Settings.Default.CheckForUpdates)
+            if (Settings.Default.CheckForUpdates)
             {
                 //TODO: the update checker blocks the UI thread and will delay app load
                 //UpdateChecker.Check();
